@@ -1703,13 +1703,28 @@ P(failure) = &sigma;(z) = 1 / (1 + e<sup>-z</sup>)</code></pre><figure class="al
                       <p><strong>Speed:</strong> Fast</p>
                     </div>
                   </div>
-                  <p>A decision tree is a flowchart the algorithm builds automatically from your training data. At each step it asks one yes/no question about a feature, splits the data into two groups, and repeats until it can make a confident prediction.</p><p>How it works: the algorithm searches for the single feature and threshold that best separates failures from normal readings. For example, <code>is tool wear &gt; 180 minutes?</code> splits the data so that most failures are on the yes side. It then repeats this for each sub-group independently, building a tree of questions. At each leaf, the bottom of a branch, it outputs the majority class of the training examples that ended up there.</p><p>Real example:</p><pre><code>Is tool wear &gt; 200 min?
-YES: Is torque &gt; 50 Nm?
-     YES: FAILURE (87% failed)
-     NO:  NORMAL
-NO:  Is temp difference &gt; 8.6 K?
-     YES: FAILURE
-     NO:  NORMAL</code></pre><p>What it gives you: a human-readable set of rules. You can print the tree and show it to a maintenance engineer who has never heard of machine learning. They can follow the branches manually and understand why the model made each decision.</p><p class="muted"><strong>Use when:</strong> the rules need to be understood and validated by a domain expert, or you want to discover key threshold values like failures mostly happening above 200 minutes of tool wear.</p><p class="muted"><strong>Do not use when:</strong> your data has many features with complex interactions. A single tree tends to overfit - it memorizes the training data by growing too many branches. This is why Random Forest exists.</p>
+                  <figure class="algorithm-visual algorithm-hero">
+                    <img src="dt_plot1_split_search.png" alt="Decision tree split search showing candidate thresholds and a Gini impurity curve selecting the best split." loading="lazy" />
+                    <figcaption>A decision tree tests possible thresholds and chooses the split that makes the child groups as pure as possible.</figcaption>
+                  </figure>
+                  <p>A decision tree is a flowchart the algorithm builds automatically from your training data. At each step it asks one yes/no question about a feature, splits the data into two groups, and repeats until it can make a confident prediction.</p>
+                  <p>How it works: the algorithm searches for the single feature and threshold that best separates failures from normal readings. For example, <code>is tool wear &gt; 180 minutes?</code> splits the data so that most failures are on the yes side. It then repeats this for each sub-group independently, building a tree of questions. At each leaf, the bottom of a branch, it outputs the majority class of the training examples that ended up there.</p>
+                  <p>Real example: a robot maintenance tree might first ask whether tool wear is high. If yes, it may ask whether torque is also high. If no, it may check temperature difference. The final leaves are the predicted classes.</p>
+                  <figure class="algorithm-visual">
+                    <img src="dt_plot2_tree_diagram.png" alt="Decision tree diagram for robot maintenance with nodes, arrows, yes and no labels, and color-coded normal and failure leaves." loading="lazy" />
+                    <figcaption>The final model is a readable tree of questions, arrows, and class predictions.</figcaption>
+                  </figure>
+                  <p>What it gives you: a human-readable set of rules. You can print the tree and show it to a maintenance engineer who has never heard of machine learning. They can follow the branches manually and understand why the model made each decision.</p>
+                  <figure class="algorithm-visual">
+                    <img src="dt_plot3_regions.png" alt="Decision tree decision regions in two-dimensional feature space showing rectangular class boundaries and a probability heatmap." loading="lazy" />
+                    <figcaption>Because each split is a threshold on one feature, decision trees carve the feature space into rectangular regions.</figcaption>
+                  </figure>
+                  <p>The main control knob is tree depth. A shallow tree may underfit because it asks too few questions. A very deep tree may overfit because it memorizes tiny quirks in the training set instead of learning a stable pattern.</p>
+                  <figure class="algorithm-visual">
+                    <img src="dt_plot4_depth_complexity.png" alt="Decision tree depth comparison from depth 1 to depth 10 showing underfitting, a balanced depth, and overfitting." loading="lazy" />
+                    <figcaption>Depth controls complexity: too shallow misses structure, too deep memorizes noise, and the best model is usually in between.</figcaption>
+                  </figure>
+                  <p class="muted"><strong>Use when:</strong> the rules need to be understood and validated by a domain expert, or you want to discover key threshold values like failures mostly happening above 200 minutes of tool wear.</p><p class="muted"><strong>Do not use when:</strong> your data has many features with complex interactions. A single tree tends to overfit - it memorizes the training data by growing too many branches. This is why Random Forest exists.</p>
                 </section>
                 <hr class="section-divider">
                 <section class="section-card algorithm-section" aria-labelledby="random-forest">
