@@ -1929,6 +1929,32 @@ body.lesson-app .metric-formula-list p {
   position: relative;
 }
 
+.algorithm-visual {
+  margin: 1rem 0 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(13, 17, 23, 0.42);
+}
+
+.algorithm-visual img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.algorithm-visual figcaption {
+  padding: 0.65rem 0.85rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.algorithm-visual.algorithm-hero {
+  margin-top: 0.8rem;
+}
+
 .algorithm-heading {
   position: relative;
   min-height: 34px;
