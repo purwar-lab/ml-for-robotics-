@@ -245,6 +245,25 @@
     });
   }
 
+  function wireInLessonAnchors() {
+    document.addEventListener("click", (event) => {
+      const link = event.target.closest(".lesson-mini-toc a[href^='#']");
+      if (!link || !isLessonApp || !contentPanel) return;
+      const targetId = link.getAttribute("href").slice(1);
+      if (!targetId) return;
+      const activeLesson = document.querySelector(".lesson-content.is-active");
+      const target = activeLesson?.querySelector(`#${targetId}`);
+      if (!target) return;
+
+      event.preventDefault();
+      const panelRect = contentPanel.getBoundingClientRect();
+      const targetRect = target.getBoundingClientRect();
+      const top = contentPanel.scrollTop + targetRect.top - panelRect.top - 12;
+      contentPanel.scrollTo({ top, behavior: "smooth" });
+      history.replaceState(history.state, "", `${location.pathname}${location.search}#${targetId}`);
+    });
+  }
+
   function wireGroups() {
     document.querySelectorAll(".lesson-group-header").forEach((header) => {
       header.addEventListener("click", () => {
@@ -322,6 +341,7 @@
     drawerToggle?.addEventListener("click", () => setSidebarOpen(!body.classList.contains("sidebar-open")));
     drawerScrim?.addEventListener("click", () => setSidebarOpen(false));
     wireLessonLinks();
+    wireInLessonAnchors();
     wireGroups();
     wireCompletion();
     wireProjectChecklists();

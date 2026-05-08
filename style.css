@@ -691,12 +691,19 @@ pre code {
       margin: 1rem 0;
       overflow-x: auto;
     }
-    .flow-row {
-      min-width: 620px;
-      display: grid;
-      grid-template-columns: repeat(5, minmax(115px, 1fr));
+    .diagram.diagram-wide {
+      max-width: none;
+      width: 100%;
+      margin-left: 0;
+      margin-right: 0;
+    }
+    .diagram .flow-row {
+      display: flex;
+      flex-wrap: nowrap;
       align-items: center;
       gap: 0.5rem;
+      min-width: 0;
+      overflow-x: auto;
     }
     .flow-node {
       text-align: center;
@@ -709,6 +716,12 @@ pre code {
       place-items: center;
       color: #e6edf3;
       font-weight: 700;
+      flex: 1 0 115px;
+    }
+    .diagram.diagram-wide .flow-node {
+      padding: 0.6rem 0.8rem;
+      font-size: 0.9rem;
+      white-space: nowrap;
     }
     .flow-node span,
     .flow-node small {
@@ -719,6 +732,10 @@ pre code {
       text-align: center;
       font-family: "JetBrains Mono", Consolas, Monaco, monospace;
       font-weight: 800;
+      flex-shrink: 0;
+    }
+    .diagram.diagram-wide .arrow {
+      flex-shrink: 0;
     }
     .matrix {
       display: grid;
@@ -1343,7 +1360,7 @@ pre code {
       .decision-branches,
       .timeline-item { grid-template-columns: 1fr; }
       .toc-title { display: block; }
-      .flow-row { min-width: 560px; }
+      .diagram .flow-row { min-width: 560px; }
       .code-card pre { font-size: 0.76rem; }
     }
 
@@ -1785,6 +1802,11 @@ body.lesson-app .data-table {
   border: 1px solid #30363d;
 }
 
+body.lesson-app .diagram.diagram-wide {
+  width: min(100%, calc(100vw - var(--sidebar) - 120px));
+  max-width: none;
+}
+
 body.lesson-app .card {
   min-width: 0;
 }
@@ -1851,6 +1873,131 @@ body.lesson-app .metric-formula-list .def-term:first-child {
 body.lesson-app .metric-formula-list p {
   margin: 0;
   font-size: 0.94rem;
+}
+
+.lesson-mini-toc {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 1.25rem 0 1rem;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--chapter-color, var(--chapter-accent, var(--blue)));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--chapter-color, var(--chapter-accent, var(--blue))) 8%, var(--card2, var(--bg-secondary)));
+}
+
+.lesson-mini-toc-title {
+  margin-right: 4px;
+  color: var(--white, var(--text-primary));
+  font: 800 0.78rem "JetBrains Mono", Consolas, Monaco, monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.lesson-mini-toc a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0.25rem 0.65rem;
+  border: 1px solid color-mix(in srgb, var(--chapter-color, var(--chapter-accent, var(--blue))) 42%, var(--border));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--chapter-color, var(--chapter-accent, var(--blue))) 10%, transparent);
+  color: var(--white, var(--text-primary));
+  text-decoration: none;
+  font-size: 0.9rem;
+  line-height: 1.2;
+}
+
+.lesson-mini-toc a:hover,
+.lesson-mini-toc a:focus-visible {
+  border-color: var(--chapter-color, var(--chapter-accent, var(--blue)));
+  background: color-mix(in srgb, var(--chapter-color, var(--chapter-accent, var(--blue))) 18%, transparent);
+}
+
+.algorithm-table-note {
+  margin-bottom: 0.6rem;
+}
+
+.anchor-target,
+.algorithm-heading {
+  scroll-margin-top: 82px;
+}
+
+.algorithm-section {
+  position: relative;
+}
+
+.algorithm-heading {
+  position: relative;
+  min-height: 34px;
+  padding-right: 10.5rem;
+}
+
+.algorithm-heading .algorithm-progress {
+  top: 0;
+  right: 0;
+  display: inline-flex;
+  align-items: center;
+  line-height: 1.2;
+}
+
+.algorithm-glance {
+  margin-top: 0.85rem;
+}
+
+.glance-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.45rem 1rem;
+}
+
+.glance-grid p {
+  margin: 0;
+  font-size: 0.94rem;
+}
+
+.section-divider {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 1.5rem 0;
+}
+
+body.lesson-app .lesson-mini-toc,
+body.lesson-app .algorithm-section {
+  background: var(--bg-secondary);
+  border-color: #30363d;
+}
+
+body.lesson-app .algorithm-section {
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1.35rem 0;
+}
+
+body.lesson-app .lesson-body .algorithm-progress {
+  position: absolute;
+  display: inline-flex;
+}
+
+:is(html.light-mode, html[data-theme="light"]) body.lesson-app .lesson-mini-toc,
+:is(html.light-mode, html[data-theme="light"]) body.lesson-app .algorithm-section {
+  background: #f6f8fa;
+  border-color: #d0d7de;
+}
+
+@media (max-width: 720px) {
+  .algorithm-heading {
+    padding-right: 0;
+  }
+
+  .algorithm-heading .algorithm-progress,
+  body.lesson-app .lesson-body .algorithm-progress {
+    position: static;
+    margin-top: 8px;
+  }
 }
 
 body.lesson-app .step {
@@ -4108,6 +4255,9 @@ html[data-theme="light"] body.lesson-app .p3-finger-state figcaption {
   body.lesson-app .content-panel {
     left: 0;
     padding: 28px 22px 64px;
+  }
+  body.lesson-app .diagram.diagram-wide {
+    width: 100%;
   }
 }
 

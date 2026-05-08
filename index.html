@@ -1627,36 +1627,17 @@ print(f"Tasks performed:     {', '.join(sorted(summary['unique_tasks']))}")</cod
 <h3>3.2 Key Algorithms Explained</h3>
                 <p>You have labeled data. You want a model that can predict the label for new examples. But which algorithm do you use? There is no single correct answer - each algorithm makes different assumptions about the shape of the patterns in your data. Understanding what each one assumes helps you choose wisely and interpret the results honestly.</p>
                 <p>All four algorithms below are classification algorithms - they predict a category, failure versus normal, rather than a number. They all take the same input, a row of features, and produce the same output, a predicted class. The difference is <strong>how</strong> they make that prediction internally.</p>
-                <div class="grid-2">
-                  <div class="card"><h4>Logistic Regression</h4><p>Despite the name, logistic regression is a classifier, not a regressor. The name comes from the logistic, or sigmoid, function it uses internally, not from the type of output it produces.</p><p>How it works: it draws a straight line, or in higher dimensions a flat plane called a hyperplane, that separates the two classes. Every data point on one side is classified as normal, every point on the other side as failure. The line is chosen to maximize the probability of the training labels being correct. The output is a probability between 0 and 1 - values above 0.5 become class 1, below 0.5 become class 0.</p><p>Real example: in the AI4I dataset, logistic regression might learn that failure probability increases linearly with torque and tool wear. It cannot capture <code>failure only happens when both torque and temperature are high simultaneously</code> - that interaction requires a more complex model.</p><p>What it gives you: the weight, or coefficient, for each feature. A weight of +2.3 on torque means higher torque strongly increases failure probability. A weight near 0 means that feature barely matters. This makes logistic regression one of the most interpretable models that exists.</p><p class="muted"><strong>Use when:</strong> you want a fast interpretable baseline, you need to explain which features drive failures, or your data is roughly linearly separable.</p><p class="muted"><strong>Do not use when:</strong> the relationship between features and the label involves complex interactions or non-linear patterns.</p></div>
-                  <div class="card"><h4>Decision Tree</h4><p>A decision tree is a flowchart the algorithm builds automatically from your training data. At each step it asks one yes/no question about a feature, splits the data into two groups, and repeats until it can make a confident prediction.</p><p>How it works: the algorithm searches for the single feature and threshold that best separates failures from normal readings. For example, <code>is tool wear &gt; 180 minutes?</code> splits the data so that most failures are on the yes side. It then repeats this for each sub-group independently, building a tree of questions. At each leaf, the bottom of a branch, it outputs the majority class of the training examples that ended up there.</p><p>Real example:</p><pre><code>Is tool wear &gt; 200 min?
-YES: Is torque &gt; 50 Nm?
-     YES: FAILURE (87% failed)
-     NO:  NORMAL
-NO:  Is temp difference &gt; 8.6 K?
-     YES: FAILURE
-     NO:  NORMAL</code></pre><p>What it gives you: a human-readable set of rules. You can print the tree and show it to a maintenance engineer who has never heard of machine learning. They can follow the branches manually and understand why the model made each decision.</p><p class="muted"><strong>Use when:</strong> the rules need to be understood and validated by a domain expert, or you want to discover key threshold values like failures mostly happening above 200 minutes of tool wear.</p><p class="muted"><strong>Do not use when:</strong> your data has many features with complex interactions. A single tree tends to overfit - it memorizes the training data by growing too many branches. This is why Random Forest exists.</p></div>
-                  <div class="card"><h4>Random Forest</h4><p>A random forest fixes the main weakness of a single decision tree, overfitting, by training hundreds of trees and having them vote. Each tree is trained on a random sample of the training data and uses a random subset of features at each split. This randomness makes each tree slightly different. The final prediction is the majority vote across all trees.</p><p>How it works: imagine 100 decision trees, each trained on a slightly different random sample of your 8,000 training rows. For a new sensor reading, each tree makes its own prediction. If 73 trees say <code>failure</code> and 27 say <code>normal</code>, the forest predicts failure with 73% confidence. The diversity of trees means one tree's quirky overfitting gets outvoted by the crowd.</p><p>Real example: one tree might overfit to a specific pattern of high temperature and low torque that appeared in its training sample. The other 99 trees were not trained on that exact sample and vote it down. The ensemble is much more robust than any individual tree.</p><p>What it gives you: a confidence score, the vote percentage, and feature importance scores - a ranked list of which features the trees used most often for their splits. In the AI4I dataset, tool wear typically ranks as the most important feature for predicting failure.</p><p class="muted"><strong>Use when:</strong> you want strong accuracy on tabular data without heavy tuning. Random Forest is the first algorithm to try on many new classification problems because it is robust and rarely makes catastrophically wrong predictions.</p><p class="muted"><strong>Do not use when:</strong> you need to explain exactly why the model made a specific prediction, because the 100 trees are hard to interpret together, or when you have very high-dimensional sparse data like text.</p></div>
-                  <div class="card"><h4>Support Vector Machine</h4><p>A Support Vector Machine, or SVM, finds the widest possible empty gap - called the margin - between the two classes, then draws the decision boundary down the center of that gap. The training examples closest to the boundary are called support vectors. They are the only points that determine where the line goes. All other training examples are ignored once the margin is found.</p><p>How it works: imagine the training data as dots on a table. You want to place a ruler between the two colored groups with as much space as possible on either side. The SVM finds the optimal ruler position mathematically. Any new data point is then classified based on which side of the ruler it falls on.</p><p>Real example: with torque and tool wear as the two axes, the SVM finds the boundary where normal readings cluster on one side and failure readings cluster on the other, with maximum gap between the two groups. New readings are classified by which side they land on.</p><p>Kernel trick: what if the data is not linearly separable in 2D? SVM can project the data into higher dimensions using a kernel function, where a linear boundary in the higher dimension corresponds to a curve in the original space. The RBF, or radial basis function, kernel is the most common choice and handles most non-linear problems well.</p><p class="muted"><strong>Use when:</strong> your dataset is small to medium sized, under 100,000 rows, the features are clean and scaled, and you want strong generalization with a well-understood mathematical guarantee.</p><p class="muted"><strong>Do not use when:</strong> your dataset is very large, because SVM training is slow on millions of rows, or you need feature importances.</p></div>
-                </div>
-                <h3>How do you choose?</h3>
-                <p>Start with logistic regression as your baseline. It trains in seconds and tells you immediately whether the problem has a linear pattern. If it gets 90% F1 score, you might not need anything more complex. If it gets 65%, you know the pattern is non-linear and you need a tree-based method.</p>
-                <p>Then try Random Forest. It almost always outperforms a single decision tree and requires very little tuning. If you need to explain predictions to non-technical stakeholders, add a single decision tree as an interpretable backup - even if it is not the most accurate model, it shows the rules in plain language.</p>
-                <p>SVM is worth trying when your dataset is small and clean. On larger datasets Random Forest typically wins on both speed and accuracy.</p>
-                <div class="steps">
-                  <div class="step"><div><strong>Always train logistic regression first as a baseline.</strong><p>If accuracy is good enough, stop here.</p></div></div>
-                  <div class="step"><div><strong>Try Random Forest.</strong><p>Compare it to logistic regression on validation F1 score. It usually wins on complex data.</p></div></div>
-                  <div class="step"><div><strong>Try a single Decision Tree if you need interpretability.</strong><p>Accept the accuracy trade-off if explanation is required.</p></div></div>
-                  <div class="step"><div><strong>Try SVM if the dataset is small.</strong><p>Use it when you have under 10,000 rows and Random Forest is not generalizing well.</p></div></div>
-                </div>
-                <div class="diagram">
-                  <div class="matrix">
-                    <div class="card"><h4>Simple + Interpretable</h4><p>Logistic Regression</p></div>
-                    <div class="card"><h4>Complex + Interpretable</h4><p>Decision Tree</p></div>
-                    <div class="card"><h4>Simple + Performance</h4><p>Support Vector Machine</p></div>
-                    <div class="card"><h4>Complex + Performance</h4><p>Random Forest</p></div>
-                  </div>
-                </div>
+                <nav class="lesson-mini-toc" aria-label="In this lesson">
+                  <span class="lesson-mini-toc-title">In this lesson:</span>
+                  <a href="#logistic-regression">&rarr; Logistic Regression</a>
+                  <a href="#decision-tree">&rarr; Decision Tree</a>
+                  <a href="#random-forest">&rarr; Random Forest</a>
+                  <a href="#svm">&rarr; Support Vector Machine</a>
+                  <a href="#how-to-choose">&rarr; How to choose</a>
+                  <a href="#comparison-table">&rarr; Comparison table</a>
+                </nav>
+                <div id="comparison-table" class="anchor-target"></div>
+                <p class="mini muted algorithm-table-note">Click any column header to sort. Use this table to compare at a glance, then read the sections below for full detail.</p>
                 <div class="table-wrap">
                   <table class="data-table sortable" aria-label="Algorithm comparison table">
                     <thead>
@@ -1675,6 +1656,89 @@ NO:  Is temp difference &gt; 8.6 K?
                       <tr><td>Support Vector Machine</td><td>Margin classifier</td><td>Medium</td><td>Medium</td><td>Smaller clean datasets</td></tr>
                     </tbody>
                   </table>
+                </div>
+                <section class="section-card algorithm-section" aria-labelledby="logistic-regression">
+                  <h3 id="logistic-regression" class="algorithm-heading">Logistic Regression <span class="chapter-badge algorithm-progress">Algorithm 1 of 4</span></h3>
+                  <div class="definition-card algorithm-glance" aria-label="Logistic Regression at a glance">
+                    <span class="def-term">At a glance</span>
+                    <div class="glance-grid">
+                      <p><strong>Type:</strong> Linear classifier</p>
+                      <p><strong>Output:</strong> Probability (0 to 1)</p>
+                      <p><strong>Interpretable:</strong> Yes</p>
+                      <p><strong>Speed:</strong> Very fast</p>
+                    </div>
+                  </div>
+                  <p>Despite the name, logistic regression is a classifier, not a regressor. The name comes from the logistic, or sigmoid, function it uses internally, not from the type of output it produces.</p><p>How it works: it draws a straight line, or in higher dimensions a flat plane called a hyperplane, that separates the two classes. Every data point on one side is classified as normal, every point on the other side as failure. The line is chosen to maximize the probability of the training labels being correct. The output is a probability between 0 and 1 - values above 0.5 become class 1, below 0.5 become class 0.</p><p>Real example: on a factory robot arm, logistic regression might learn that failure probability increases linearly with torque and tool wear. It cannot capture <code>failure only happens when both torque and temperature are high simultaneously</code> - that interaction requires a more complex model.</p><div class="definition-card metric-formula-list" aria-label="Logistic regression linear equation example"><span class="def-term">What "linear with torque and tool wear" means</span><p>Suppose the model learns this score equation:</p><pre><code>z = -8 + 2.3T + 1.7W
+P(failure) = &sigma;(z) = 1 / (1 + e<sup>-z</sup>)</code></pre><p>Here, <code>T</code> is torque and <code>W</code> is tool wear. The first equation is linear because the feature terms are added with weights. There is no term that multiplies two features together.</p><span class="def-term">What the interaction would require</span><p>Failure may not depend on torque alone or temperature alone. Instead, failure might depend on their combination. To capture that, add an interaction feature such as <code>Torque &times; Temperature</code>:</p><pre><code>z = b<sub>0</sub> + b<sub>1</sub>(Torque) + b<sub>2</sub>(Temperature)
+    + b<sub>3</sub>(Torque &times; Temperature)</code></pre><p>Or use a more complex model, such as a decision tree, random forest, gradient boosting model, or neural network.</p></div><p>What it gives you: the weight, or coefficient, for each feature. A weight of +2.3 on torque means higher torque strongly increases failure probability. A weight near 0 means that feature barely matters. This makes logistic regression one of the most interpretable models that exists.</p><p class="muted"><strong>Use when:</strong> you want a fast interpretable baseline, you need to explain which features drive failures, or your data is roughly linearly separable.</p><p class="muted"><strong>Do not use when:</strong> the relationship between features and the label involves complex interactions or non-linear patterns.</p>
+                </section>
+                <hr class="section-divider">
+                <section class="section-card algorithm-section" aria-labelledby="decision-tree">
+                  <h3 id="decision-tree" class="algorithm-heading">Decision Tree <span class="chapter-badge algorithm-progress">Algorithm 2 of 4</span></h3>
+                  <div class="definition-card algorithm-glance" aria-label="Decision Tree at a glance">
+                    <span class="def-term">At a glance</span>
+                    <div class="glance-grid">
+                      <p><strong>Type:</strong> Tree-based classifier</p>
+                      <p><strong>Output:</strong> Class + readable rules</p>
+                      <p><strong>Interpretable:</strong> Yes</p>
+                      <p><strong>Speed:</strong> Fast</p>
+                    </div>
+                  </div>
+                  <p>A decision tree is a flowchart the algorithm builds automatically from your training data. At each step it asks one yes/no question about a feature, splits the data into two groups, and repeats until it can make a confident prediction.</p><p>How it works: the algorithm searches for the single feature and threshold that best separates failures from normal readings. For example, <code>is tool wear &gt; 180 minutes?</code> splits the data so that most failures are on the yes side. It then repeats this for each sub-group independently, building a tree of questions. At each leaf, the bottom of a branch, it outputs the majority class of the training examples that ended up there.</p><p>Real example:</p><pre><code>Is tool wear &gt; 200 min?
+YES: Is torque &gt; 50 Nm?
+     YES: FAILURE (87% failed)
+     NO:  NORMAL
+NO:  Is temp difference &gt; 8.6 K?
+     YES: FAILURE
+     NO:  NORMAL</code></pre><p>What it gives you: a human-readable set of rules. You can print the tree and show it to a maintenance engineer who has never heard of machine learning. They can follow the branches manually and understand why the model made each decision.</p><p class="muted"><strong>Use when:</strong> the rules need to be understood and validated by a domain expert, or you want to discover key threshold values like failures mostly happening above 200 minutes of tool wear.</p><p class="muted"><strong>Do not use when:</strong> your data has many features with complex interactions. A single tree tends to overfit - it memorizes the training data by growing too many branches. This is why Random Forest exists.</p>
+                </section>
+                <hr class="section-divider">
+                <section class="section-card algorithm-section" aria-labelledby="random-forest">
+                  <h3 id="random-forest" class="algorithm-heading">Random Forest <span class="chapter-badge algorithm-progress">Algorithm 3 of 4</span></h3>
+                  <div class="definition-card algorithm-glance" aria-label="Random Forest at a glance">
+                    <span class="def-term">At a glance</span>
+                    <div class="glance-grid">
+                      <p><strong>Type:</strong> Ensemble (100+ trees)</p>
+                      <p><strong>Output:</strong> Class + confidence %</p>
+                      <p><strong>Interpretable:</strong> Medium</p>
+                      <p><strong>Speed:</strong> Medium</p>
+                    </div>
+                  </div>
+                  <p>A random forest fixes the main weakness of a single decision tree, overfitting, by training hundreds of trees and having them vote. Each tree is trained on a random sample of the training data and uses a random subset of features at each split. This randomness makes each tree slightly different. The final prediction is the majority vote across all trees.</p><p>How it works: imagine 100 decision trees, each trained on a slightly different random sample of your 8,000 training rows. For a new sensor reading, each tree makes its own prediction. If 73 trees say <code>failure</code> and 27 say <code>normal</code>, the forest predicts failure with 73% confidence. The diversity of trees means one tree's quirky overfitting gets outvoted by the crowd.</p><p>Real example: one tree might overfit to a specific pattern of high temperature and low torque that appeared in its training sample. The other 99 trees were not trained on that exact sample and vote it down. The ensemble is much more robust than any individual tree.</p><p>What it gives you: a confidence score, the vote percentage, and feature importance scores - a ranked list of which features the trees used most often for their splits. In the AI4I dataset, tool wear typically ranks as the most important feature for predicting failure.</p><p class="muted"><strong>Use when:</strong> you want strong accuracy on tabular data without heavy tuning. Random Forest is the first algorithm to try on many new classification problems because it is robust and rarely makes catastrophically wrong predictions.</p><p class="muted"><strong>Do not use when:</strong> you need to explain exactly why the model made a specific prediction, because the 100 trees are hard to interpret together, or when you have very high-dimensional sparse data like text.</p>
+                </section>
+                <hr class="section-divider">
+                <section class="section-card algorithm-section" aria-labelledby="svm">
+                  <h3 id="svm" class="algorithm-heading">Support Vector Machine <span class="chapter-badge algorithm-progress">Algorithm 4 of 4</span></h3>
+                  <div class="definition-card algorithm-glance" aria-label="SVM at a glance">
+                    <span class="def-term">At a glance</span>
+                    <div class="glance-grid">
+                      <p><strong>Type:</strong> Margin classifier</p>
+                      <p><strong>Output:</strong> Class</p>
+                      <p><strong>Interpretable:</strong> Medium</p>
+                      <p><strong>Speed:</strong> Medium (slow on large data)</p>
+                    </div>
+                  </div>
+                  <p>A Support Vector Machine, or SVM, finds the widest possible empty gap - called the margin - between the two classes, then draws the decision boundary down the center of that gap. The training examples closest to the boundary are called support vectors. They are the only points that determine where the line goes. All other training examples are ignored once the margin is found.</p><p>How it works: imagine the training data as dots on a table. You want to place a ruler between the two colored groups with as much space as possible on either side. The SVM finds the optimal ruler position mathematically. Any new data point is then classified based on which side of the ruler it falls on.</p><p>Real example: with torque and tool wear as the two axes, the SVM finds the boundary where normal readings cluster on one side and failure readings cluster on the other, with maximum gap between the two groups. New readings are classified by which side they land on.</p><p>Kernel trick: what if the data is not linearly separable in 2D? SVM can project the data into higher dimensions using a kernel function, where a linear boundary in the higher dimension corresponds to a curve in the original space. The RBF, or radial basis function, kernel is the most common choice and handles most non-linear problems well.</p><p class="muted"><strong>Use when:</strong> your dataset is small to medium sized, under 100,000 rows, the features are clean and scaled, and you want strong generalization with a well-understood mathematical guarantee.</p><p class="muted"><strong>Do not use when:</strong> your dataset is very large, because SVM training is slow on millions of rows, or you need feature importances.</p>
+                </section>
+                <hr class="section-divider">
+                <div id="how-to-choose" class="anchor-target"></div>
+                <h3>How do you choose?</h3>
+                <p>Start with logistic regression as your baseline. It trains in seconds and tells you immediately whether the problem has a linear pattern. If it gets 90% F1 score, you might not need anything more complex. If it gets 65%, you know the pattern is non-linear and you need a tree-based method.</p>
+                <p>Then try Random Forest. It almost always outperforms a single decision tree and requires very little tuning. If you need to explain predictions to non-technical stakeholders, add a single decision tree as an interpretable backup - even if it is not the most accurate model, it shows the rules in plain language.</p>
+                <p>SVM is worth trying when your dataset is small and clean. On larger datasets Random Forest typically wins on both speed and accuracy.</p>
+                <div class="steps">
+                  <div class="step"><div><strong>Always train logistic regression first as a baseline.</strong><p>If accuracy is good enough, stop here.</p></div></div>
+                  <div class="step"><div><strong>Try Random Forest.</strong><p>Compare it to logistic regression on validation F1 score. It usually wins on complex data.</p></div></div>
+                  <div class="step"><div><strong>Try a single Decision Tree if you need interpretability.</strong><p>Accept the accuracy trade-off if explanation is required.</p></div></div>
+                  <div class="step"><div><strong>Try SVM if the dataset is small.</strong><p>Use it when you have under 10,000 rows and Random Forest is not generalizing well.</p></div></div>
+                </div>
+                <div class="diagram">
+                  <div class="matrix">
+                    <div class="card"><h4>Simple + Interpretable</h4><p>Logistic Regression</p></div>
+                    <div class="card"><h4>Complex + Interpretable</h4><p>Decision Tree</p></div>
+                    <div class="card"><h4>Simple + Performance</h4><p>Support Vector Machine</p></div>
+                    <div class="card"><h4>Complex + Performance</h4><p>Random Forest</p></div>
+                  </div>
                 </div>
                 <h3>A note on the word 'best'</h3>
                 <p>No algorithm is universally best. This is formalized in the No Free Lunch theorem - any algorithm that outperforms another on some problems must underperform on others. Random Forest tends to win on tabular data in practice, which is why it is the first choice here. But on the AI4I dataset with 10,000 rows and five features, logistic regression often comes surprisingly close to Random Forest. The lesson: always compare multiple algorithms on your specific data rather than assuming one is always superior.</p>
@@ -1766,7 +1830,7 @@ print("After: ", X_train_scaled[0].round(3))</code></pre></figure>
   <!-- ── What you will build diagram ───────────────────────────── -->
   <h3>What you will build</h3>
   <p>By the end of this project you will have a program that reads sensor data from a robot arm and outputs a failure warning. Here is the full journey:</p>
-  <div class="diagram" aria-label="Project pipeline overview">
+  <div class="diagram diagram-wide" aria-label="Project pipeline overview">
     <div class="flow-row">
       <div class="flow-node">Raw sensor CSV</div><div class="arrow">→</div>
       <div class="flow-node">Explore &amp; clean</div><div class="arrow">→</div>
@@ -2207,7 +2271,7 @@ print(f"Total captured: {sum(var)*100:.1f}% of original information")</code></pr
 
   <p>In robotics this is useful whenever you have sensor readings but no labels — for example, grouping vibration patterns to discover which ones tend to precede a failure, without anyone having hand-labelled the data first.</p>
 
-  <div class="diagram" aria-label="K-Means concept overview">
+  <div class="diagram diagram-wide" aria-label="K-Means concept overview">
     <div class="flow-row">
       <div class="flow-node">Unlabelled<br/>sensor data</div><div class="arrow">→</div>
       <div class="flow-node">K-Means<br/>(you choose K)</div><div class="arrow">→</div>
@@ -8875,7 +8939,7 @@ lastCmdRight = rightSpeed;</code></pre></figure>
 <div class="step"><div>You will understand every line that makes that behavior happen.</div></div>
 </div>
 <h3>The Big Idea</h3>
-<div class="diagram" aria-label="Project 2 classical vision flow">
+<div class="diagram diagram-wide" aria-label="Project 2 classical vision flow">
 <div class="flow-row"><div class="flow-node">Phone camera<br /><span class="mini muted">floor image</span></div><div class="arrow">&rarr;</div><div class="flow-node">OpenCV pipeline<br /><span class="mini muted">threshold + scan rows</span></div><div class="arrow">&rarr;</div><div class="flow-node">LaneFollower<br /><span class="mini muted">two-point steering + PID</span></div><div class="arrow">&rarr;</div><div class="flow-node">Commander<br /><span class="mini muted">UDP motor commands</span></div></div>
 </div>
 <p>Everything after the vision result is familiar. The robot still receives motor commands over UDP and sends telemetry back. Only the project-specific vision and control code changes.</p>
