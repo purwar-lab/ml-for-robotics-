@@ -1589,6 +1589,21 @@ body.lesson-app .lesson-link.is-exercise {
   color: #d29922;
 }
 
+body.lesson-app .lesson-link.algorithm-sublesson {
+  padding-left: 42px;
+  font-size: 0.82rem;
+}
+
+body.lesson-app .lesson-link.algorithm-sublesson span:first-child::before {
+  content: "";
+  display: inline-block;
+  width: 0.55rem;
+  height: 1px;
+  margin: 0 0.45rem 0.2rem 0;
+  background: var(--chapter-accent);
+  opacity: 0.72;
+}
+
 body.lesson-app .completion-dot::after {
   content: "";
   color: #3fb950;
@@ -1918,6 +1933,42 @@ body.lesson-app .metric-formula-list p {
 
 .algorithm-table-note {
   margin-bottom: 0.6rem;
+}
+
+.algorithm-progress-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.8rem 0 1rem;
+}
+
+.algorithm-progress-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 30px;
+  padding: 0.25rem 0.7rem;
+  border: 1px solid color-mix(in srgb, var(--chapter-color, var(--chapter-accent, var(--blue))) 48%, var(--border));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--chapter-color, var(--chapter-accent, var(--blue))) 10%, transparent);
+  color: var(--white, var(--text-primary));
+  text-decoration: none;
+  font: 800 0.76rem "JetBrains Mono", Consolas, Monaco, monospace;
+}
+
+.algorithm-progress-pill:hover,
+.algorithm-progress-pill:focus-visible {
+  border-color: var(--chapter-color, var(--chapter-accent, var(--blue)));
+  background: color-mix(in srgb, var(--chapter-color, var(--chapter-accent, var(--blue))) 18%, transparent);
+  outline: none;
+}
+
+.algorithm-progress-pill.is-complete .completion-dot::after {
+  content: "✓";
+}
+
+.algorithm-overview-link {
+  margin: 0.25rem 0 0.75rem;
 }
 
 .anchor-target,
