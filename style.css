@@ -2798,6 +2798,84 @@ body.lesson-app .pd-bridge-list {
   margin: 1rem 0 1.5rem;
 }
 
+body.lesson-app .pe-system-diagram {
+  display: grid;
+  gap: 12px;
+  margin: 1.2rem 0 1.5rem;
+  overflow-x: auto;
+}
+
+body.lesson-app .pe-system-row {
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) auto minmax(180px, 1fr);
+  gap: 12px;
+  align-items: stretch;
+  min-width: 640px;
+}
+
+body.lesson-app .pe-system-row:nth-child(2) {
+  grid-template-columns: repeat(2, minmax(180px, 1fr));
+}
+
+body.lesson-app .pe-return-path {
+  min-width: 640px;
+  padding: 10px 12px;
+  border: 1px dashed color-mix(in srgb, var(--chapter-accent) 60%, #30363d);
+  border-radius: 8px;
+  color: var(--text-muted);
+  font: 700 0.82rem "JetBrains Mono", monospace;
+  text-align: center;
+}
+
+body.lesson-app .pe-timing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 1rem 0;
+}
+
+body.lesson-app .pe-timing-grid .card,
+body.lesson-app .pe-axis-demo {
+  border-color: color-mix(in srgb, var(--chapter-accent) 45%, #30363d);
+}
+
+body.lesson-app .pe-axis-demo {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 10px;
+  min-height: 92px;
+  padding: 14px;
+  border: 1px solid color-mix(in srgb, var(--chapter-accent) 45%, #30363d);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--chapter-accent) 8%, transparent);
+  color: var(--text-muted);
+  font: 800 0.78rem "JetBrains Mono", monospace;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+body.lesson-app .pe-axis-demo strong {
+  color: var(--text-primary);
+  text-transform: none;
+}
+
+body.lesson-app .pe-pan-axis span:first-child::before,
+body.lesson-app .pe-tilt-axis span:first-child::before {
+  content: "<- ";
+  color: var(--chapter-accent);
+}
+
+body.lesson-app .pe-pan-axis span:last-child::after,
+body.lesson-app .pe-tilt-axis span:last-child::after {
+  content: " ->";
+  color: var(--chapter-accent);
+}
+
+body.lesson-app .pe-source-code {
+  min-height: 120px;
+}
+
 @media (max-width: 760px) {
   body.lesson-app .pc-hardware-table td:first-child {
     white-space: normal;
@@ -2813,7 +2891,8 @@ body.lesson-app .pd-bridge-list {
 
   body.lesson-app .pd-protocol-grid,
   body.lesson-app .pd-loop-grid,
-  body.lesson-app .pd-bridge-list {
+  body.lesson-app .pd-bridge-list,
+  body.lesson-app .pe-timing-grid {
     grid-template-columns: 1fr;
   }
 
@@ -3311,6 +3390,12 @@ body.lesson-app .code-filename,
 body.lesson-app .code-lang {
   color: #8b949e;
   font-family: "JetBrains Mono", monospace;
+}
+
+body.lesson-app .code-lang[data-code-lang="cpp"],
+body.lesson-app .code-lang[data-code-lang="arduino"] {
+  color: #00979d;
+  font-weight: 800;
 }
 
 body.lesson-app .code-actions {

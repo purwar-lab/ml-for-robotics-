@@ -487,18 +487,18 @@ _result
   }
 
   function renderCodeBlock(block, details) {
-    const { code, codeClass, filename, python, runnable, colabOnly, chapter, session, downloadFilename } = details;
+    const { code, codeClass, filename, python, runnable, colabOnly, chapter, session, downloadFilename, displayLang, dataLang } = details;
     block.classList.toggle("is-runnable", runnable);
     block.dataset.runnable = String(runnable);
     block.dataset.chapter = chapter;
     block.dataset.session = session;
     block.dataset.filename = filename;
-    block.dataset.lang = python ? "python" : "text";
+    block.dataset.lang = dataLang;
     block.innerHTML = `
       <div class="code-header">
         <span class="code-filename">${escapeHtml(filename)}</span>
         <div class="code-actions">
-          <span class="code-lang">${python ? "Python" : "Text"}</span>
+          <span class="code-lang" data-code-lang="${escapeHtml(dataLang)}">${escapeHtml(displayLang)}</span>
           <button class="copy-btn" type="button" title="Copy code">Copy</button>
           ${downloadFilename ? `<button class="download-code-btn" type="button" data-download-filename="${escapeHtml(downloadFilename)}" title="Download code">Download</button>` : ""}
           ${runnable ? `<button class="reset-code-btn" type="button" title="Reset this code cell to the original example">↺ Reset</button>` : ""}
@@ -529,9 +529,13 @@ _result
   function blockDetailsFromElement(el, index = 0) {
     const codeEl = el.querySelector("code");
     const sourceEl = el.querySelector('script[type="text/plain"].code-source');
-    const codeClass = codeEl?.className || "";
+    const declaredLang = (el.dataset.lang || "").toLowerCase();
+    const codeLooksPython = isPython(codeEl);
+    const dataLang = declaredLang || (codeLooksPython ? "python" : "text");
+    const codeClass = codeEl?.className || (declaredLang === "cpp" || declaredLang === "arduino" ? "language-cpp" : "");
     const code = cleanCode(el.dataset.code || sourceEl?.textContent || codeEl?.textContent || "");
-    const python = isPython(codeEl) || el.dataset.lang === "python";
+    const python = codeLooksPython || declaredLang === "python";
+    const displayLang = el.dataset.langLabel || (declaredLang === "cpp" || declaredLang === "arduino" ? "Arduino" : python ? "Python" : "Text");
     const chapter = normalizeChapter(el.dataset.chapter, chapterFromElement(el));
     const session = sessionKeyFor(el);
     const caption = el.querySelector("figcaption");
@@ -540,7 +544,7 @@ _result
     const colabOnly = !downloadFilename && python && isColabOnly(code, chapter);
     const declaredRunnable = el.dataset.runnable;
     const runnable = python && !colabOnly && (declaredRunnable === undefined || declaredRunnable === "true");
-    return { code, codeClass, filename, python, runnable, colabOnly, chapter, session, downloadFilename };
+    return { code, codeClass, filename, python, runnable, colabOnly, chapter, session, downloadFilename, displayLang, dataLang };
   }
 
   function transformFigure(figure, index) {
