@@ -120,6 +120,17 @@
                 <h3>4.1 Concept: Clustering & Dimensionality Reduction</h3>
                 <h4>Clustering</h4>
                 <p>Clustering divides a dataset into groups where rows inside each group are more similar to each other than to rows in other groups. The algorithm does not know what the groups represent — that interpretation is your job as the engineer.</p>
+                <figure class="lesson-figure">
+                  <img
+                    src="clustering_image.png"
+                    alt="Scatter plot showing three distinct clusters of data points colored differently, with cluster boundaries visible between the groups"
+                    loading="lazy"
+                    class="lesson-image"
+                  />
+                  <figcaption>
+                    Three clusters found automatically — the algorithm groups similar points together without being told what the groups mean. Labeling each cluster (normal, imbalanced, loose) is the engineer's job, not the algorithm's.
+                  </figcaption>
+                </figure>
                 <p>A vibrating motor shaft might produce three distinct patterns of sensor readings: one when balanced correctly, one with a slight imbalance, and one with a loose bearing. Clustering discovers these three modes automatically even if no one ever labeled which readings belonged to which state.</p>
                 <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="three_vibration_modes.py"><figcaption>Run to see three vibration modes that K-Means will learn to separate</figcaption><pre><code class="language-python">import numpy as np
 import matplotlib.pyplot as plt
@@ -151,8 +162,30 @@ plt.tight_layout()
 plt.show()</code></pre></figure>
                 <h4>PCA</h4>
                 <p>Principal Component Analysis (PCA) is not a clustering algorithm. It is a dimensionality reduction technique: it compresses many features into fewer dimensions while preserving as much variation as possible.</p>
+                <figure class="lesson-figure">
+                  <img
+                    src="pca_plot3_3d_to_2d.png"
+                    alt="Diagram showing 3D data points being projected down onto a 2D plane, with the projection directions indicated by arrows along the axes of greatest variance"
+                    loading="lazy"
+                    class="lesson-image"
+                  />
+                  <figcaption>
+                    PCA projects high-dimensional data onto fewer dimensions. Three features compressed to two — the two directions that capture the most variation in the original data are kept, the rest is discarded.
+                  </figcaption>
+                </figure>
                 <p>Imagine your feature table has 10 columns. You cannot plot 10 dimensions. PCA finds the two directions in that 10-dimensional space that capture the most variation and projects everything onto those two axes. The result is a 2D scatter plot you can actually look at.</p>
                 <p>PCA does not label the axes for you. The first principal component is the direction of greatest variance in your data. It might correspond roughly to overall vibration intensity or frequency content, but you interpret that from the data, not from PCA.</p>
+                <figure class="lesson-figure">
+                  <img
+                    src="pca_plot1_variance_directions.png"
+                    alt="2D scatter plot with two arrows overlaid showing the first and second principal components — PC1 pointing in the direction of greatest spread, PC2 pointing perpendicular to it"
+                    loading="lazy"
+                    class="lesson-image"
+                  />
+                  <figcaption>
+                    PC1 points in the direction of greatest variance in the data. PC2 points perpendicular to PC1, capturing the next largest spread. Neither axis is labeled automatically — you read the data to decide what each principal component represents.
+                  </figcaption>
+                </figure>
                 <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="pca_4_features_to_2d.py"><figcaption>Run to see PCA projecting 4 features into 2D</figcaption><pre><code class="language-python">import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
