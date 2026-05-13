@@ -2172,6 +2172,139 @@ body.lesson-app .lesson-image-card figcaption {
   font-style: italic;
 }
 
+.kmeans-steps {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 0;
+  margin: 2rem 0;
+  overflow-x: auto;
+}
+
+.kmeans-step {
+  flex: 1;
+  min-width: 160px;
+  max-width: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 0.5rem;
+}
+
+.kmeans-step-number {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--chapter-accent, #f59e0b);
+  color: #000;
+  font-weight: 700;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+  flex-shrink: 0;
+}
+
+.kmeans-step-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+  color: var(--color-text-primary);
+}
+
+.kmeans-step-figure {
+  width: 100%;
+  margin: 0 0 0.75rem;
+}
+
+.kmeans-step-figure img {
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid var(--color-border-tertiary, #30363d);
+}
+
+.kmeans-step p {
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--color-text-secondary, #8b949e);
+  margin: 0;
+  text-align: left;
+}
+
+.kmeans-step-arrow {
+  font-size: 1.5rem;
+  color: var(--color-border-secondary, #30363d);
+  padding: 0 0.25rem;
+  margin-top: 60px;
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+
+@media (max-width: 768px) {
+  .kmeans-steps {
+    flex-direction: column;
+    align-items: stretch;
+    overflow-x: visible;
+  }
+
+  .kmeans-step {
+    max-width: 100%;
+    flex-direction: row;
+    text-align: left;
+    gap: 1rem;
+    padding: 0.5rem 0;
+  }
+
+  .kmeans-step-figure {
+    width: 120px;
+    flex-shrink: 0;
+    margin: 0;
+  }
+
+  .kmeans-step-arrow {
+    transform: rotate(90deg);
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 520px) {
+  .kmeans-step {
+    display: grid;
+    grid-template-columns: 36px minmax(0, 1fr);
+    grid-template-areas:
+      "number title"
+      "figure figure"
+      "copy copy";
+    row-gap: 0.6rem;
+  }
+
+  .kmeans-step-number {
+    grid-area: number;
+    margin-bottom: 0;
+  }
+
+  .kmeans-step-title {
+    grid-area: title;
+    align-self: center;
+    min-width: 0;
+    margin: 0;
+  }
+
+  .kmeans-step-figure {
+    grid-area: figure;
+    width: 100%;
+    max-width: 260px;
+    justify-self: center;
+  }
+
+  .kmeans-step p {
+    grid-area: copy;
+    min-width: 0;
+  }
+}
+
 body.lesson-app .prereq-chip {
   display: inline-flex;
   align-items: center;
