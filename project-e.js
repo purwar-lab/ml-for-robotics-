@@ -3,7 +3,7 @@
   window.__PROJECT_E_INSTALLED__ = true;
 
   const ACCENT = "#06b6d4";
-  const CHAPTER_TITLE = "* Project E: Pan-Tilt Ball Tracker";
+  const CHAPTER_TITLE = "* Exercise E: Pan-Tilt Ball Tracker";
 
   const projectELessons = [
     { id: "projE-overview", label: "PE.0 What You Are Building", title: "PE.0 What You Are Building", exercise: true },
@@ -138,7 +138,7 @@ sock.close()`;
 
   const articles = [
     lessonArticle(0, `
-<p class="lead">In Projects 1 and 2 the camera was mounted on a robot that moved its whole body to follow a target. This project keeps the robot fixed and moves only the camera with two small servos.</p>
+<p class="lead">In Projects 1 and 2 the camera was mounted on a robot that moved its whole body to follow a target. This exercise keeps the robot fixed and moves only the camera with two small servos.</p>
 <p>A pan-tilt mount is the same idea used in tracking security cameras, telescope mounts, and camera gimbals. The system has one camera, two servo motors, one YOLO model, and two PID controllers running at the same time.</p>
 <div class="diagram pe-system-diagram" aria-label="Pan tilt tracking system diagram">
   <div class="pe-system-row"><div class="flow-node">Phone Camera<br /><span class="mini muted">MJPEG over WiFi</span></div><div class="arrow">&rarr;</div><div class="flow-node">Laptop Python<br /><span class="mini muted">YOLO finds cx, cy</span></div></div>
@@ -148,12 +148,12 @@ sock.close()`;
 </div>
 <h3>What Is New</h3>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Concept</th><th>Where you saw it</th><th>What is new here</th></tr></thead><tbody>
-<tr><td>YOLO detection</td><td>Project A, Project 1</td><td>Same model call.</td></tr>
-<tr><td>Phone stream</td><td>Project B</td><td>Same <code>MobileVideoStream</code>.</td></tr>
-<tr><td>UDP communication</td><td>Project D</td><td>New packet: <code>SERVO,pan,tilt</code>.</td></tr>
+<tr><td>YOLO detection</td><td>Exercise A, Project 1</td><td>Same model call.</td></tr>
+<tr><td>Phone stream</td><td>Exercise B</td><td>Same <code>MobileVideoStream</code>.</td></tr>
+<tr><td>UDP communication</td><td>Exercise D</td><td>New packet: <code>SERVO,pan,tilt</code>.</td></tr>
 <tr><td>PID controller</td><td>Project 1</td><td>Velocity mode: add the output to an angle.</td></tr>
-<tr><td>DC motors</td><td>Projects C and D</td><td>Replaced by servo motors.</td></tr>
-</tbody></table></div>`, ["Project", "YOLO + servos", "10 min"]),
+<tr><td>DC motors</td><td>Exercises C and D</td><td>Replaced by servo motors.</td></tr>
+</tbody></table></div>`, ["Exercise", "YOLO + servos", "10 min"]),
 
     lessonArticle(1, `
 <p class="lead">A DC motor spins continuously when powered. A servo motor moves to a commanded angle and holds that position.</p>
@@ -165,7 +165,7 @@ sock.close()`;
 </div>
 <div class="callout info" role="note"><div class="callout-icon">i</div><div><div class="callout-title">Servo vs DC motor</div><p>Use a servo when you need position control. Use a DC motor when you need continuous rotation. A camera mount needs to point at a specific angle, so servos are the correct choice.</p></div></div>
 <h3>Servo Angle Range</h3>
-<p>Most hobby servos rotate from 0 to 180 degrees. This project clamps pan to <code>10..170</code> and tilt to <code>30..150</code> to keep the mount and camera cable away from mechanical limits.</p>
+<p>Most hobby servos rotate from 0 to 180 degrees. This exercise clamps pan to <code>10..170</code> and tilt to <code>30..150</code> to keep the mount and camera cable away from mechanical limits.</p>
 <div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">Never command past the physical stop</div><p>The Arduino <code>clampAngle()</code> function and Python <code>np.clip()</code> call both exist to prevent overheating a stalled servo.</p></div></div>`, ["Hardware", "Servo basics", "12 min"]),
 
     lessonArticle(2, `
@@ -201,7 +201,7 @@ sock.close()`;
 <details class="solution"><summary>Complete Arduino sketch - loads from <code>pan_tilt_arduino.ino</code></summary>${sourceFileBlock("pan_tilt_arduino.ino", "cpp", "Complete pan_tilt_arduino.ino", "Arduino")}</details>`, ["Code", "Downloads", "15 min"]),
 
     lessonArticle(4, `
-<p class="lead">The Arduino sketch is the servo version of Project D's UDP firmware. The WiFi and UDP pattern is the same; the output hardware changes from motors to servos.</p>
+<p class="lead">The Arduino sketch is the servo version of Exercise D's UDP firmware. The WiFi and UDP pattern is the same; the output hardware changes from motors to servos.</p>
 <h3>Includes and Constants</h3>
 ${codeBlock("pan_tilt_arduino.ino", "cpp", `#include <Servo.h>
 #include <WiFiS3.h>
@@ -214,7 +214,7 @@ const int TELEM_PORT = 5002;
 
 #define PAN_PIN  A1
 #define TILT_PIN 9`, { caption: "Includes, WiFi, and servo pins", badge: "Arduino" })}
-<p><code>Servo.h</code> handles PWM timing. <code>WiFiS3.h</code> and <code>WiFiUDP.h</code> are the same UNO R4 WiFi libraries used in Project D.</p>
+<p><code>Servo.h</code> handles PWM timing. <code>WiFiS3.h</code> and <code>WiFiUDP.h</code> are the same UNO R4 WiFi libraries used in Exercise D.</p>
 <h3>Servo State</h3>
 ${codeBlock("pan_tilt_arduino.ino", "cpp", `Servo panServo;
 Servo tiltServo;
@@ -258,17 +258,17 @@ udp.endPacket();`, { caption: "Telemetry reply", badge: "Arduino" })}
 <p>The Arduino learns the laptop IP from the first packet it receives, then sends the current commanded angles back on port <code>5002</code>.</p>`, ["Arduino", "Firmware", "25 min"]),
 
     lessonArticle(5, `
-<p class="lead">Project E uses four short text packets. All servo values are integer degrees.</p>
+<p class="lead">Exercise E uses four short text packets. All servo values are integer degrees.</p>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Direction</th><th>Format</th><th>Example</th></tr></thead><tbody>
 <tr><td>Python to Arduino</td><td><code>SERVO,pan,tilt</code></td><td><code>SERVO,95,42</code></td></tr>
 <tr><td>Python to Arduino</td><td><code>HOME</code></td><td><code>HOME</code></td></tr>
 <tr><td>Python to Arduino</td><td><code>STOP</code></td><td><code>STOP</code></td></tr>
 <tr><td>Arduino to Python</td><td><code>SERVO_ACK,pan,tilt</code></td><td><code>SERVO_ACK,95,42</code></td></tr>
 </tbody></table></div>
-<h3>Compared To Project D</h3>
+<h3>Compared To Exercise D</h3>
 <div class="grid-2">
-<article class="card"><h3>Project D: motors</h3><p>Python sends <code>MOTOR,left,right,LEDSTATE</code>.</p><p>Arduino sends encoder telemetry with wheel ticks.</p></article>
-<article class="card"><h3>Project E: servos</h3><p>Python sends <code>SERVO,panAngle,tiltAngle</code>.</p><p>Arduino sends the current commanded servo angles.</p></article>
+<article class="card"><h3>Exercise D: motors</h3><p>Python sends <code>MOTOR,left,right,LEDSTATE</code>.</p><p>Arduino sends encoder telemetry with wheel ticks.</p></article>
+<article class="card"><h3>Exercise E: servos</h3><p>Python sends <code>SERVO,panAngle,tiltAngle</code>.</p><p>Arduino sends the current commanded servo angles.</p></article>
 </div>
 <p>The protocol is simpler because hobby servos do not report measured position. The ACK confirms command handling and smoothing state, not a measured encoder angle.</p>`, ["Protocol", "UDP packets", "10 min"]),
 
@@ -283,13 +283,13 @@ ${codeBlock("pan_and_tilt.py", "python", configSnippet, { caption: "Configuratio
 <article class="card"><h3>Dead zones</h3><p>Horizontal and vertical dead zones ignore tiny errors near the center so the servos do not constantly buzz.</p></article>
 <article class="card"><h3>PID gains</h3><p><code>KP</code> sets response strength, <code>KD</code> damps motion, and <code>MAX_*_SPEED</code> limits degrees per frame.</p></article>
 </div>
-<div class="callout info" role="note"><div class="callout-icon">PID</div><div><div class="callout-title">Velocity-mode output</div><p>In this project the PID output is how many degrees to move this frame, not a motor PWM command.</p></div></div>`, ["Configuration", "Tuning", "18 min"]),
+<div class="callout info" role="note"><div class="callout-icon">PID</div><div><div class="callout-title">Velocity-mode output</div><p>In this exercise the PID output is how many degrees to move this frame, not a motor PWM command.</p></div></div>`, ["Configuration", "Tuning", "18 min"]),
 
     lessonArticle(7, `
-<p class="lead">Project 1 used PID output as a direct motor speed. Project E uses velocity mode: the PID output is a change in angle.</p>
+<p class="lead">Project 1 used PID output as a direct motor speed. Exercise E uses velocity mode: the PID output is a change in angle.</p>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Mode</th><th>Output</th><th>Accumulated by</th><th>Used in</th></tr></thead><tbody>
 <tr><td>Position-like motor command</td><td>Wheel speed</td><td>Nothing</td><td>Project 1</td></tr>
-<tr><td>Velocity-mode servo command</td><td>Degrees per frame</td><td>Adding to current angle</td><td>Project E</td></tr>
+<tr><td>Velocity-mode servo command</td><td>Degrees per frame</td><td>Adding to current angle</td><td>Exercise E</td></tr>
 </tbody></table></div>
 <p>Velocity mode works well for servos because every frame is a small nudge. The accumulated angle is clamped to the safe physical range after each update.</p>
 ${codeBlock("pan_and_tilt.py", "python", velocitySnippet, { caption: "Velocity-mode update", badge: "VS Code" })}
@@ -364,7 +364,7 @@ if now - last_cmd_time >= CMD_INTERVAL:
 <h3>Step 1: Test Servos</h3>
 ${codeBlock("test_servos.py", "python", testServos, { caption: "Standalone servo test", badge: "VS Code", download: true })}
 <h3>Step 2: Run The Tracker</h3>
-${codeBlock("terminal", "text", `python pan_and_tilt.py`, { caption: "Run Project E", badge: "Terminal" })}
+${codeBlock("terminal", "text", `python pan_and_tilt.py`, { caption: "Run Exercise E", badge: "Terminal" })}
 <h3>Common Issues</h3>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Problem</th><th>Likely cause</th><th>Fix</th></tr></thead><tbody>
 <tr><td>Servos do not move</td><td>Wrong <code>ESP_IP</code> or port</td><td>Check Serial Monitor and port <code>5001</code>.</td></tr>
@@ -375,8 +375,8 @@ ${codeBlock("terminal", "text", `python pan_and_tilt.py`, { caption: "Run Projec
 </tbody></table></div>`, ["Run locally", "Testing", "18 min"]),
 
     lessonArticle(12, `
-<p class="lead">Project E adds servo control and dual-axis PID to the ladder you have already built.</p>
-<div class="table-wrap"><table class="data-table"><thead><tr><th>Project</th><th>What you built</th><th>New concept</th></tr></thead><tbody>
+<p class="lead">Exercise E adds servo control and dual-axis PID to the ladder you have already built.</p>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Unit</th><th>What you built</th><th>New concept</th></tr></thead><tbody>
 <tr><td>A</td><td>Custom YOLO detector</td><td>Training and labels.</td></tr>
 <tr><td>B</td><td>Phone stream</td><td>MJPEG and threaded frame reading.</td></tr>
 <tr><td>C</td><td>Encoder motor control</td><td>Ticks, calibration, closed-loop movement.</td></tr>
@@ -407,7 +407,7 @@ ${codeBlock("terminal", "text", `python pan_and_tilt.py`, { caption: "Run Projec
       dashboardProjectD.insertAdjacentHTML("afterend", `
 <article class="chapter-card" data-chapter-card="projE" style="--chapter-accent:${ACCENT}">
 <div class="chapter-card-strip"></div>
-<div class="chapter-card-top"><span>Project E</span><span>13 lessons</span></div>
+<div class="chapter-card-top"><span>Exercise E</span><span>13 lessons</span></div>
 <h2>Pan-Tilt Ball Tracker</h2>
 <p>Use YOLO and two velocity-mode PID loops to center a ball by rotating a camera with servos.</p>
 <div class="chapter-card-progress"><div class="chapter-card-bar"><span></span></div><small data-card-progress="projE">0 / 13 complete</small></div>
@@ -425,7 +425,7 @@ ${codeBlock("terminal", "text", `python pan_and_tilt.py`, { caption: "Run Projec
       projectDNext.href = "?lesson=projE-overview";
       projectDNext.dataset.lessonLink = "projE-overview";
       const title = projectDNext.querySelector(".lesson-nav-title");
-      if (title) title.innerHTML = "Project E &rarr;";
+      if (title) title.innerHTML = "Exercise E &rarr;";
     }
 
     const project1 = document.querySelector('[data-lesson="proj1-overview"]');
@@ -441,11 +441,11 @@ ${codeBlock("terminal", "text", `python pan_and_tilt.py`, { caption: "Run Projec
     if (archiveProjectD && !document.querySelector('[data-lesson="project-archive"] a[data-lesson-link="projE-overview"]')) {
       archiveProjectD.insertAdjacentHTML("afterend", `
 <a class="card" href="index.html?lesson=projE-overview" data-lesson-link="projE-overview" style="display:block;text-decoration:none;border-color:${ACCENT};margin-bottom:1rem">
-<div class="project-label">Project E &mdash; Pan-Tilt Ball Tracker</div>
+<div class="project-label">Exercise E &mdash; Pan-Tilt Ball Tracker</div>
 <h3>Two Servos, One Camera, One Neural Network</h3>
 <p class="muted">A fixed camera rig that tracks a ball with YOLO, UDP servo commands, velocity-mode PID, and two independent pan/tilt control loops.</p>
 <div class="chip-row" style="--chapter-color:${ACCENT}"><span class="chip">YOLO</span><span class="chip">Servo Motors</span><span class="chip">Pan-Tilt</span><span class="chip">Velocity PID</span><span class="chip">UNO R4 WiFi</span></div>
-<strong>Open Project E lessons &rarr;</strong>
+<strong>Open Exercise E lessons &rarr;</strong>
 </a>`);
     }
   }

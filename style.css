@@ -2260,8 +2260,8 @@ body.lesson-app .lesson-image-card figcaption {
 }
 
 .kmeans-step-figure {
-  width: 100%;
-  margin: 0.85rem 0 0;
+  width: min(100%, 760px);
+  margin: 0.85rem auto 0;
 }
 
 .kmeans-step-figure img {
