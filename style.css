@@ -2181,10 +2181,16 @@ body.lesson-app .lesson-image-card figcaption {
   overflow-x: auto;
 }
 
+.kmeans-steps.full-bleed {
+  width: 100vw;
+  margin-left: calc(-1 * (100vw - 100%) / 2);
+  padding: 0 2rem;
+  box-sizing: border-box;
+}
+
 .kmeans-step {
   flex: 1;
-  min-width: 220px;
-  max-width: 320px;
+  min-width: 280px;
   display: flex;
   flex-direction: column;
   align-items: center;
