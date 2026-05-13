@@ -246,10 +246,13 @@ print(f"Total captured: {sum(var)*100:.1f}% of original information")</code></pr
                     purely from the distances between points &mdash; no labels required.
                   </figcaption>
                 </figure>
-                <div class="kmeans-steps full-bleed">
-                  <div class="kmeans-step">
-                    <div class="kmeans-step-number">1</div>
-                    <h4 class="kmeans-step-title">Random Initialization</h4>
+                <p>K-Means repeats four operations until nothing changes. Here is what happens at each step.</p>
+                <div class="kmeans-steps">
+                  <section class="kmeans-step">
+                    <div class="kmeans-step-header">
+                      <div class="kmeans-step-number">1</div>
+                      <h4 class="kmeans-step-title">Random Initialization</h4>
+                    </div>
                     <figure class="kmeans-step-figure">
                       <img src="kmeans_plot1_init.png"
                            alt="Three star-shaped centroids placed at random positions in the feature space before any points are assigned"
@@ -262,13 +265,15 @@ print(f"Total captured: {sum(var)*100:.1f}% of original information")</code></pr
                     run K-Means multiple times with different random starts and keep
                     the best result. scikit-learn's <code>n_init="auto"</code> handles this
                     automatically.</p>
-                  </div>
+                  </section>
 
-                  <div class="kmeans-step-arrow">&rarr;</div>
+                  <div class="kmeans-step-arrow">&darr;</div>
 
-                  <div class="kmeans-step">
-                    <div class="kmeans-step-number">2</div>
-                    <h4 class="kmeans-step-title">Assign</h4>
+                  <section class="kmeans-step">
+                    <div class="kmeans-step-header">
+                      <div class="kmeans-step-number">2</div>
+                      <h4 class="kmeans-step-title">Assign</h4>
+                    </div>
                     <figure class="kmeans-step-figure">
                       <img src="kmeans_plot2_assign.png"
                            alt="Each data point coloured by its nearest centroid with thin lines connecting points to their assigned centroid"
@@ -278,13 +283,15 @@ print(f"Total captured: {sum(var)*100:.1f}% of original information")</code></pr
                     Assign each point to its closest centroid. All points assigned to
                     the same centroid form one cluster. After this step every point
                     belongs to exactly one cluster.</p>
-                  </div>
+                  </section>
 
-                  <div class="kmeans-step-arrow">&rarr;</div>
+                  <div class="kmeans-step-arrow">&darr;</div>
 
-                  <div class="kmeans-step">
-                    <div class="kmeans-step-number">3</div>
-                    <h4 class="kmeans-step-title">Recompute</h4>
+                  <section class="kmeans-step">
+                    <div class="kmeans-step-header">
+                      <div class="kmeans-step-number">3</div>
+                      <h4 class="kmeans-step-title">Recompute</h4>
+                    </div>
                     <figure class="kmeans-step-figure">
                       <img src="kmeans_plot3_recompute.png"
                            alt="Arrows showing each centroid shifting toward the mean position of its assigned group of points"
@@ -294,13 +301,15 @@ print(f"Total captured: {sum(var)*100:.1f}% of original information")</code></pr
                     assigned to it. If cluster 1 contains 50 points, its new centroid
                     is the average position of those 50 points. This is where the word
                     Means in K-Means comes from.</p>
-                  </div>
+                  </section>
 
-                  <div class="kmeans-step-arrow">&rarr;</div>
+                  <div class="kmeans-step-arrow">&darr;</div>
 
-                  <div class="kmeans-step">
-                    <div class="kmeans-step-number">4</div>
-                    <h4 class="kmeans-step-title">Converge</h4>
+                  <section class="kmeans-step">
+                    <div class="kmeans-step-header">
+                      <div class="kmeans-step-number">4</div>
+                      <h4 class="kmeans-step-title">Converge</h4>
+                    </div>
                     <figure class="kmeans-step-figure">
                       <img src="kmeans_plot4_converge.png"
                            alt="Final stable clusters with dashed boundary rings and a CONVERGED checkmark stamp showing the algorithm has finished"
@@ -310,7 +319,7 @@ print(f"Total captured: {sum(var)*100:.1f}% of original information")</code></pr
                     between iterations. At this point centroids have settled and the
                     algorithm has converged. This is guaranteed to happen but is not
                     guaranteed to find the globally best solution &mdash; only a local one.</p>
-                  </div>
+                  </section>
                 </div>
                 <figure class="code-card" data-runnable="true" data-chapter="4" data-filename="kmeans_converge_step_by_step.py"><figcaption>Run to see K-Means converge step by step</figcaption><pre><code class="language-python">import numpy as np
 import matplotlib.pyplot as plt
