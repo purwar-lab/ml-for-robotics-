@@ -2175,8 +2175,45 @@ body.lesson-app .lesson-image-card figcaption {
 .kmeans-steps {
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 1.35rem;
   margin: 2rem 0;
+}
+
+.kmeans-step-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: 0.65rem;
+  color: var(--color-text-secondary, #8b949e);
+  font: 700 0.78rem "JetBrains Mono", monospace;
+}
+
+.kmeans-step-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0.35rem 0.65rem;
+  border: 1px solid var(--color-border-tertiary, #30363d);
+  border-radius: 999px;
+  color: var(--color-text-secondary, #8b949e);
+  background: rgba(22, 27, 34, 0.72);
+  text-decoration: none;
+  transition: border-color 0.16s ease, color 0.16s ease, background 0.16s ease;
+}
+
+.kmeans-step-pill:hover,
+.kmeans-step-pill:focus-visible {
+  border-color: var(--chapter-accent, #f59e0b);
+  color: var(--color-text-primary, #e6edf3);
+  outline: none;
+}
+
+.kmeans-step-pill.is-active {
+  border-color: var(--chapter-accent, #f59e0b);
+  background: color-mix(in srgb, var(--chapter-accent, #f59e0b) 18%, transparent);
+  color: var(--color-text-primary, #e6edf3);
 }
 
 .kmeans-step {
@@ -2184,7 +2221,14 @@ body.lesson-app .lesson-image-card figcaption {
   flex-direction: column;
   align-items: stretch;
   text-align: left;
-  padding: 0;
+  padding: 0 0 1.35rem;
+  border-bottom: 1px solid var(--color-border-tertiary, #30363d);
+  scroll-margin-top: 86px;
+}
+
+.kmeans-step:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
 }
 
 .kmeans-step-header {
@@ -2209,7 +2253,7 @@ body.lesson-app .lesson-image-card figcaption {
 }
 
 .kmeans-step-title {
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 600;
   margin: 0;
   color: var(--color-text-primary);
@@ -2217,7 +2261,7 @@ body.lesson-app .lesson-image-card figcaption {
 
 .kmeans-step-figure {
   width: 100%;
-  margin: 0 0 0.75rem;
+  margin: 0.85rem 0 0;
 }
 
 .kmeans-step-figure img {
@@ -2233,14 +2277,6 @@ body.lesson-app .lesson-image-card figcaption {
   color: var(--color-text-secondary, #8b949e);
   margin: 0;
   text-align: left;
-}
-
-.kmeans-step-arrow {
-  font-size: 1.5rem;
-  color: var(--color-border-secondary, #30363d);
-  line-height: 1;
-  text-align: center;
-  margin: 0.2rem 0 0.75rem;
 }
 
 body.lesson-app .prereq-chip {

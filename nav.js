@@ -12,6 +12,7 @@
   const chapters = window.COURSE_CHAPTERS || [];
   const lessonIds = lessons.map((lesson) => lesson.id);
   const lessonById = new Map(lessons.map((lesson) => [lesson.id, lesson]));
+  let kmeansStepObserver = null;
   const legacyHashLessons = {
     "chapter-0": "ch0-welcome",
     build: "ch0-build",
@@ -232,6 +233,7 @@
     setSidebarOpen(false);
     contentPanel?.scrollTo({ top: 0, behavior: options.instant ? "auto" : "smooth" });
     if (!options.instant) contentPanel?.focus({ preventScroll: true });
+    initKmeansStepNav();
   }
 
   function wireLessonLinks() {
@@ -262,6 +264,100 @@
       contentPanel.scrollTo({ top, behavior: "smooth" });
       history.replaceState(history.state, "", `${location.pathname}${location.search}#${targetId}`);
     });
+  }
+
+  function getKmeansScope() {
+    if (isLessonApp) {
+      return document.querySelector(".lesson-content.is-active .kmeans-steps");
+    }
+    return document.querySelector(".kmeans-steps");
+  }
+
+  function setActiveKmeansPill(scope, stepId) {
+    scope?.querySelectorAll(".kmeans-step-pill").forEach((pill) => {
+      const isActive = pill.getAttribute("href") === `#${stepId}`;
+      pill.classList.toggle("is-active", isActive);
+      if (isActive) {
+        pill.setAttribute("aria-current", "step");
+      } else {
+        pill.removeAttribute("aria-current");
+      }
+    });
+  }
+
+  function scrollToKmeansStep(target) {
+    if (isLessonApp && contentPanel) {
+      const panelRect = contentPanel.getBoundingClientRect();
+      const targetRect = target.getBoundingClientRect();
+      const top = contentPanel.scrollTop + targetRect.top - panelRect.top - 14;
+      contentPanel.scrollTo({ top, behavior: "smooth" });
+      return;
+    }
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function wireKmeansStepNav() {
+    document.addEventListener("click", (event) => {
+      const link = event.target.closest(".kmeans-step-nav a[href^='#']");
+      if (!link) return;
+      const scope = link.closest(".kmeans-steps");
+      const targetId = link.getAttribute("href").slice(1);
+      const target = Array.from(scope?.querySelectorAll(".kmeans-step") || [])
+        .find((step) => step.id === targetId);
+      if (!target) return;
+
+      event.preventDefault();
+      setActiveKmeansPill(scope, targetId);
+      scrollToKmeansStep(target);
+      history.replaceState(history.state, "", `${location.pathname}${location.search}#${targetId}`);
+    });
+  }
+
+  function initKmeansStepNav() {
+    if (kmeansStepObserver) {
+      kmeansStepObserver.disconnect();
+      kmeansStepObserver = null;
+    }
+
+    const scope = getKmeansScope();
+    if (!scope) return;
+
+    const steps = Array.from(scope.querySelectorAll(".kmeans-step[id]"));
+    if (!steps.length) return;
+
+    setActiveKmeansPill(scope, steps[0].id);
+
+    if (!("IntersectionObserver" in window)) return;
+
+    const observerRoot = isLessonApp ? contentPanel : null;
+    const updateActiveFromPosition = () => {
+      const rootRect = observerRoot?.getBoundingClientRect();
+      const rootTop = rootRect?.top || 0;
+      const rootHeight = rootRect?.height || window.innerHeight;
+      const activationLine = rootTop + rootHeight * 0.32;
+      let activeStep = steps[0];
+
+      steps.forEach((step) => {
+        if (step.getBoundingClientRect().top <= activationLine) {
+          activeStep = step;
+        }
+      });
+
+      if (activeStep?.id) {
+        setActiveKmeansPill(scope, activeStep.id);
+      }
+    };
+
+    kmeansStepObserver = new IntersectionObserver(() => {
+      updateActiveFromPosition();
+    }, {
+      root: observerRoot,
+      rootMargin: "0px 0px -60% 0px",
+      threshold: [0, 0.05, 0.25, 0.5]
+    });
+
+    steps.forEach((step) => kmeansStepObserver.observe(step));
+    requestAnimationFrame(updateActiveFromPosition);
   }
 
   function wireGroups() {
@@ -334,6 +430,8 @@
       themeToggle = button;
     }
     initTheme();
+    wireKmeansStepNav();
+    initKmeansStepNav();
   }
 
   function initLessonApp() {
@@ -342,6 +440,7 @@
     drawerScrim?.addEventListener("click", () => setSidebarOpen(false));
     wireLessonLinks();
     wireInLessonAnchors();
+    wireKmeansStepNav();
     wireGroups();
     wireCompletion();
     wireProjectChecklists();
