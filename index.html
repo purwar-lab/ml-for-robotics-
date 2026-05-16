@@ -10406,7 +10406,22 @@ commander.motors(-left_speed / MOTOR_OUTPUT_SCALE, right_speed / MOTOR_OUTPUT_SC
 <div class="lesson-meta"><span>MediaPipe</span><span>Pre-trained model</span><span>12 min</span></div>
 <hr class="lesson-divider" />
 <div class="lesson-body">
-<p class="lead">In Project 1 you trained your own YOLO model from scratch: 150 images, Roboflow labels, 15 minutes of Colab training. That gave you a model that detects exactly what you chose. In Project 2 you used no model at all, just pixel math. In Project 3 you use a third approach: a pre-trained model built by Google for one specific task.</p>
+<p class="lead">In Project 1 you trained your own YOLO model from scratch: 150 images, Roboflow labels, 15 minutes of Colab training. That gave you a model that detects exactly what you chose. In Project 2 you used no model at all, just pixel math. In Project 3 you use a third approach: a pre-trained model built by Google for one specific task — controlling a robot with nothing but your hands.</p>
+<figure class="lesson-figure">
+  <video
+    src="hand_gesture.mp4"
+    autoplay
+    loop
+    muted
+    playsinline
+    class="lesson-image"
+    style="border-radius:8px; border:1px solid var(--color-border-tertiary);"
+  ></video>
+  <figcaption>
+    MediaPipe reads your hand landmarks in real time and translates
+    gestures into robot commands over WiFi — no model training required.
+  </figcaption>
+</figure>
 <p>MediaPipe is a collection of ready-made ML pipelines for common computer vision tasks. Hand tracking, face detection, pose estimation, object detection: all available as Python imports with no training required. You do not collect data, you do not train, you do not export weights. You install the library and call three lines of code.</p>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Approach</th><th>Project 1 YOLO</th><th>Project 2 Classical</th><th>Project 3 MediaPipe</th></tr></thead><tbody>
 <tr><td>Model</td><td>You trained it</td><td>No model</td><td>Google pre-trained</td></tr>
