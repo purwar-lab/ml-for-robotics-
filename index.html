@@ -9200,6 +9200,20 @@ lastCmdRight = rightSpeed;</code></pre></figure>
 <div class="lesson-body">
 <p class="lead">In Project 1 you used YOLO, a neural network, to find an object in an image. YOLO learned from thousands of labeled examples. Project 2 uses classical computer vision instead: direct mathematical operations on pixels.</p>
 <p>Classical computer vision does not learn. It applies rules such as grayscale conversion, blurring, thresholding, morphology, and row scanning. For a controlled problem like following tape on the floor, those rules are faster, smaller, and easier to debug than a trained model.</p>
+<figure class="lesson-figure">
+  <video
+    src="lane_follower.mp4"
+    autoplay
+    loop
+    muted
+    playsinline
+    class="lesson-image"
+    style="border-radius:8px; border:1px solid var(--color-border-tertiary);"
+  ></video>
+  <figcaption>
+    The robot follows black tape on the floor using only pixel math — no trained model, no GPU required.
+  </figcaption>
+</figure>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Approach</th><th>YOLO in Project 1</th><th>OpenCV classical vision in Project 2</th></tr></thead><tbody>
 <tr><td>Input</td><td>Any image with the trained object visible.</td><td>A controlled image where the line contrasts with the floor.</td></tr>
 <tr><td>What it detects</td><td>Objects it was trained to recognize.</td><td>Specific pixel patterns: dark line, light floor, or the inverse.</td></tr>
