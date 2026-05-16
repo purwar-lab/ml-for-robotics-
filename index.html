@@ -7393,6 +7393,20 @@ telem_sock.close()</code></pre></figure>
 </div>
 <div class="flow-row" style="margin-top:1rem"><div class="flow-node">Project 1<br /><span class="mini muted">YOLO detects ball -> PID computes steering -> UDP sends motors -> encoders return -> state machine manages behavior -> HUD shows it live</span></div></div>
 </div>
+<figure class="lesson-figure">
+  <video
+    src="project_1.mp4"
+    autoplay
+    loop
+    muted
+    playsinline
+    class="lesson-image"
+    style="border-radius:8px; border:1px solid var(--color-border-tertiary); max-width:55%; display:block; margin:0 auto;"
+  ></video>
+  <figcaption>
+    All four exercises converging — the robot detects, steers, and tracks autonomously.
+  </figcaption>
+</figure>
 <h3>The Five Components</h3>
 <div class="grid-2">
 <div class="card"><h4>1. Object Detection</h4><p><strong>What it does:</strong> finds the ball in every camera frame and returns center position plus bounding-box area.</p><p><strong>Where you learned it:</strong> Exercise A, especially PA.8 and PA.9.</p><p><strong>New here:</strong> none. It is the same YOLO call you used in <code>detect_stream.py</code>.</p></div>
@@ -9208,7 +9222,7 @@ lastCmdRight = rightSpeed;</code></pre></figure>
     muted
     playsinline
     class="lesson-image"
-    style="border-radius:8px; border:1px solid var(--color-border-tertiary);"
+    style="border-radius:8px; border:1px solid var(--color-border-tertiary); max-width:55%; display:block; margin:0 auto;"
   ></video>
   <figcaption>
     The robot follows black tape on the floor using only pixel math — no trained model, no GPU required.
@@ -10429,7 +10443,7 @@ commander.motors(-left_speed / MOTOR_OUTPUT_SCALE, right_speed / MOTOR_OUTPUT_SC
     muted
     playsinline
     class="lesson-image"
-    style="border-radius:8px; border:1px solid var(--color-border-tertiary);"
+    style="border-radius:8px; border:1px solid var(--color-border-tertiary); max-width:55%; display:block; margin:0 auto;"
   ></video>
   <figcaption>
     MediaPipe reads your hand landmarks in real time and translates
