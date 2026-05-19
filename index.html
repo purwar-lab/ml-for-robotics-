@@ -3042,22 +3042,21 @@ plt.show()</code></pre></figure>
 <p>TensorFlow Playground is a neural network that runs live in your browser. You set the architecture, hit play, and watch the network train in real time. The decision boundary — the boundary between classes — updates every few milliseconds as the network learns. This makes concepts that are invisible in code completely visible.</p>
 <a class="colab-btn playground-btn" href="https://playground.tensorflow.org" target="_blank" rel="noreferrer">Open TensorFlow Playground</a>
 <h3>What you are looking at</h3>
-<div class="diagram" aria-label="TensorFlow Playground interface layout">
-  <div class="playground-wireframe">
-    <div class="playground-toolbar" aria-hidden="true">
-      <div class="playground-chip"><strong>Dataset</strong><span>selector</span></div>
-      <div class="playground-chip"><strong>Features</strong><span>checkboxes</span></div>
-      <div class="playground-chip"><strong>Hidden Layers</strong><span>+ / - neurons</span></div>
-      <div class="playground-chip"><strong>Output</strong><span>preview</span></div>
-      <div class="playground-chip"><strong>Loss</strong><span>graph</span></div>
-    </div>
-    <div class="playground-main">
-      <div class="playground-panel"><div><strong>DATA</strong><span>left</span></div></div>
-      <div class="playground-panel"><div><strong>NETWORK ARCHITECTURE</strong><span>center</span></div></div>
-      <div class="playground-panel"><div><strong>OUTPUT</strong><span>right</span></div></div>
-    </div>
-  </div>
-</div>
+<figure class="lesson-figure">
+  <video
+    src="tf_playground.mp4"
+    autoplay
+    loop
+    muted
+    playsinline
+    controls
+    class="lesson-image"
+    style="max-width:760px; margin:0 auto;"
+  ></video>
+  <figcaption>
+    TensorFlow Playground shows the dataset, input features, network layers, output boundary, and loss graph in one live interface.
+  </figcaption>
+</figure>
 <ul>
   <li><strong>Data panel (left):</strong> choose your dataset and how noisy it is.</li>
   <li><strong>Features (above network):</strong> which input columns the network sees.</li>

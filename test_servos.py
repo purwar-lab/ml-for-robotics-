@@ -1,7 +1,7 @@
 """
 test_servos.py
 
-Quick UDP test for the Project E pan-tilt Arduino sketch.
+Quick UDP test for the Exercise E pan-tilt Arduino sketch.
 Run this before pan_and_tilt.py to verify the servos respond.
 """
 
