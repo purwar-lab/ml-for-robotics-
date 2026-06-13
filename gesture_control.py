@@ -7,7 +7,7 @@ from mediapipe.tasks.python import vision as mp_vision
 
 from shared import Commander, MobileVideoStream
 
-
+######
 # ================= CONFIGURATION =================
 ESP_IP = "192.168.137.35"
 UDP_CMD_PORT = 5001
