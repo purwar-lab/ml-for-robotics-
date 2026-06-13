@@ -3485,11 +3485,51 @@ html[data-theme="light"] body:not(.lesson-app) .static-code-shell code {
   border: 0;
 }
 
-html.light-mode :where(.code-block, .code-card, .static-code-shell) .hljs,
-html.light-mode :where(.code-block, .code-card, .static-code-shell) .hljs *,
-html[data-theme="light"] :where(.code-block, .code-card, .static-code-shell) .hljs,
-html[data-theme="light"] :where(.code-block, .code-card, .static-code-shell) .hljs * {
+/* Light mode: Colab / Jupyter-style syntax colors for highlighted code.
+   The atom-one-dark theme is built for dark backgrounds, so in light mode we
+   override the token colors with a high-contrast palette that reads like the
+   Google Colab editor. */
+:is(html.light-mode, html[data-theme="light"]) :where(.code-block, .code-card, .static-code-shell) .hljs {
   background: transparent !important;
+  color: #1f2328 !important;
+}
+:is(html.light-mode, html[data-theme="light"]) :where(.code-block, .code-card, .static-code-shell) .hljs-comment,
+:is(html.light-mode, html[data-theme="light"]) :where(.code-block, .code-card, .static-code-shell) .hljs-quote {
+  color: #408080 !important;
+  font-style: italic;
+}
+:is(html.light-mode, html[data-theme="light"]) :where(.code-block, .code-card, .static-code-shell) .hljs-keyword,
+:is(html.light-mode, html[data-theme="light"]) :where(.code-block, .code-card, .static-code-shell) .hljs-literal,
+:is(html.light-mode, html[data-theme="light"]) :where(.code-block, .code-card, .static-code-shell) .hljs-built_in,
+:is(html.light-mode, html[data-theme="light"]) :where(.code-block, .code-card, .static-code-shell) .hljs-selector-tag {
+  color: #008000 !important;
+  font-weight: 600;
+}
+:is(html.light-mode, html[data-theme="light"]) :where(.code-block, .code-card, .static-code-shell) .hljs-string,
+:is(html.light-mode, html[data-theme="light"]) :where(.code-block, .code-card, .static-code-shell) .hljs-regexp,
+:is(html.light-mode, html[data-theme="light"]) :where(.code-block, .code-card, .static-code-shell) .hljs-meta .hljs-string {
+  color: #ba2121 !important;
+}
+:is(html.light-mode, html[data-theme="light"]) :where(.code-block, .code-card, .static-code-shell) .hljs-number,
+:is(html.light-mode, html[data-theme="light"]) :where(.code-block, .code-card, .static-code-shell) .hljs-symbol {
+  color: #1c7d4d !important;
+}
+:is(html.light-mode, html[data-theme="light"]) :where(.code-block, .code-card, .static-code-shell) .hljs-title,
+:is(html.light-mode, html[data-theme="light"]) :where(.code-block, .code-card, .static-code-shell) .hljs-title.function_,
+:is(html.light-mode, html[data-theme="light"]) :where(.code-block, .code-card, .static-code-shell) .hljs-section,
+:is(html.light-mode, html[data-theme="light"]) :where(.code-block, .code-card, .static-code-shell) .hljs-attr,
+:is(html.light-mode, html[data-theme="light"]) :where(.code-block, .code-card, .static-code-shell) .hljs-attribute {
+  color: #0000ff !important;
+}
+:is(html.light-mode, html[data-theme="light"]) :where(.code-block, .code-card, .static-code-shell) .hljs-meta,
+:is(html.light-mode, html[data-theme="light"]) :where(.code-block, .code-card, .static-code-shell) .hljs-doctag,
+:is(html.light-mode, html[data-theme="light"]) :where(.code-block, .code-card, .static-code-shell) .hljs-type {
+  color: #aa22ff !important;
+}
+:is(html.light-mode, html[data-theme="light"]) :where(.code-block, .code-card, .static-code-shell) .hljs-variable,
+:is(html.light-mode, html[data-theme="light"]) :where(.code-block, .code-card, .static-code-shell) .hljs-params,
+:is(html.light-mode, html[data-theme="light"]) :where(.code-block, .code-card, .static-code-shell) .hljs-operator,
+:is(html.light-mode, html[data-theme="light"]) :where(.code-block, .code-card, .static-code-shell) .hljs-punctuation {
   color: #1f2328 !important;
 }
 
