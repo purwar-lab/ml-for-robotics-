@@ -2184,10 +2184,10 @@ print("Logistic Regression trained.")</code></pre></figure>
   <p><strong>Cell 12</strong> evaluates that model and draws a confusion matrix — a 2×2 grid that shows exactly which types of mistakes it made.</p>
   <div class="diagram" aria-label="Confusion matrix explanation">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;max-width:380px;margin:0 auto;text-align:center;font-size:0.85rem">
-      <div style="padding:0.6rem;background:#245cd3;border-radius:6px"><strong>True Negative</strong><br/>Predicted Normal ✓<br/>Was actually Normal</div>
-      <div style="padding:0.6rem;background:#851515;border-radius:6px"><strong>False Positive</strong><br/>Predicted Failure ✗<br/>Was actually Normal</div>
-      <div style="padding:0.6rem;background:#851515;border-radius:6px"><strong>False Negative</strong><br/>Predicted Normal ✗<br/>Was actually a Failure<br/><small>(the dangerous mistake)</small></div>
-      <div style="padding:0.6rem;background:#245cd3;border-radius:6px"><strong>True Positive</strong><br/>Predicted Failure ✓<br/>Was actually a Failure</div>
+      <div style="padding:0.6rem;background:#245cd3;border-radius:6px;color:#fff"><strong>True Negative</strong><br/>Predicted Normal ✓<br/>Was actually Normal</div>
+      <div style="padding:0.6rem;background:#851515;border-radius:6px;color:#fff"><strong>False Positive</strong><br/>Predicted Failure ✗<br/>Was actually Normal</div>
+      <div style="padding:0.6rem;background:#851515;border-radius:6px;color:#fff"><strong>False Negative</strong><br/>Predicted Normal ✗<br/>Was actually a Failure<br/><small>(the dangerous mistake)</small></div>
+      <div style="padding:0.6rem;background:#245cd3;border-radius:6px;color:#fff"><strong>True Positive</strong><br/>Predicted Failure ✓<br/>Was actually a Failure</div>
     </div>
   </div>
   <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 12: Evaluate Logistic Regression"><figcaption>Cell 12: Evaluate Logistic Regression</figcaption><pre><code class="language-python">print(classification_report(y_test, log_pred))
