@@ -2128,8 +2128,8 @@ print(X.shape, y.shape)</code></pre></figure>
   <div class="diagram" aria-label="Train test split illustration">
     <div class="flow-row">
       <div class="flow-node" style="flex:4">10,000 rows<br/><small>full dataset</small></div><div class="arrow">→</div>
-      <div class="flow-node" style="flex:3;background:var(--ch1-light,#d1fae5)">8,000 rows<br/><small>training set</small></div><div class="arrow">+</div>
-      <div class="flow-node" style="flex:1;background:var(--ch7-light,#fce7f3)">2,000 rows<br/><small>test set</small></div>
+      <div class="flow-node" style="flex:3;background:var(--ch1-light,#1b48dd)">8,000 rows<br/><small>training set</small></div><div class="arrow">+</div>
+      <div class="flow-node" style="flex:1;background:var(--ch7-light,#5f1c68)">2,000 rows<br/><small>test set</small></div>
     </div>
   </div>
   <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 9: Train / test split"><figcaption>Cell 9: Train / test split</figcaption><pre><code class="language-python">X_train, X_test, y_train, y_test = train_test_split(
@@ -2184,10 +2184,10 @@ print("Logistic Regression trained.")</code></pre></figure>
   <p><strong>Cell 12</strong> evaluates that model and draws a confusion matrix — a 2×2 grid that shows exactly which types of mistakes it made.</p>
   <div class="diagram" aria-label="Confusion matrix explanation">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;max-width:380px;margin:0 auto;text-align:center;font-size:0.85rem">
-      <div style="padding:0.6rem;background:#d1fae5;border-radius:6px"><strong>True Negative</strong><br/>Predicted Normal ✓<br/>Was actually Normal</div>
-      <div style="padding:0.6rem;background:#fef3c7;border-radius:6px"><strong>False Positive</strong><br/>Predicted Failure ✗<br/>Was actually Normal</div>
-      <div style="padding:0.6rem;background:#fecaca;border-radius:6px"><strong>False Negative</strong><br/>Predicted Normal ✗<br/>Was actually a Failure<br/><small>(the dangerous mistake)</small></div>
-      <div style="padding:0.6rem;background:#d1fae5;border-radius:6px"><strong>True Positive</strong><br/>Predicted Failure ✓<br/>Was actually a Failure</div>
+      <div style="padding:0.6rem;background:#245cd3;border-radius:6px"><strong>True Negative</strong><br/>Predicted Normal ✓<br/>Was actually Normal</div>
+      <div style="padding:0.6rem;background:#851515;border-radius:6px"><strong>False Positive</strong><br/>Predicted Failure ✗<br/>Was actually Normal</div>
+      <div style="padding:0.6rem;background:#851515;border-radius:6px"><strong>False Negative</strong><br/>Predicted Normal ✗<br/>Was actually a Failure<br/><small>(the dangerous mistake)</small></div>
+      <div style="padding:0.6rem;background:#245cd3;border-radius:6px"><strong>True Positive</strong><br/>Predicted Failure ✓<br/>Was actually a Failure</div>
     </div>
   </div>
   <figure class="code-card" data-runnable="true" data-chapter="3" data-filename="Cell 12: Evaluate Logistic Regression"><figcaption>Cell 12: Evaluate Logistic Regression</figcaption><pre><code class="language-python">print(classification_report(y_test, log_pred))
