@@ -454,6 +454,50 @@
     });
   }
 
+  // Click any .png plot to view it enlarged; click again (or press Esc) to restore.
+  function initImageLightbox() {
+    let overlay = null;
+
+    function close() {
+      if (!overlay) return;
+      overlay.remove();
+      overlay = null;
+      document.body.classList.remove("lightbox-open");
+    }
+
+    function open(img) {
+      close();
+      overlay = document.createElement("div");
+      overlay.className = "img-lightbox-overlay";
+      const big = document.createElement("img");
+      big.src = img.currentSrc || img.src;
+      big.alt = img.alt || "";
+      overlay.appendChild(big);
+      document.body.appendChild(overlay);
+      document.body.classList.add("lightbox-open");
+    }
+
+    document.addEventListener("click", (event) => {
+      if (overlay) {
+        close();
+        return;
+      }
+      const img = event.target.closest("img");
+      if (!img) return;
+      const src = img.currentSrc || img.getAttribute("src") || "";
+      if (!/\.png(\?.*)?$/i.test(src)) return;
+      event.preventDefault();
+      event.stopPropagation();
+      open(img);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") close();
+    });
+  }
+
+  initImageLightbox();
+
   if (isLessonApp) {
     initLessonApp();
   } else {

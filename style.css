@@ -4657,3 +4657,38 @@ body.lesson-app .dial-icon::after {
   transform: translate(-50%, -100%) rotate(34deg);
   border-radius: 999px;
 }
+
+/* Click-to-enlarge plots (lightbox) */
+img[src$=".png" i],
+img[src$=".PNG"] {
+  cursor: zoom-in;
+}
+body.lightbox-open {
+  overflow: hidden;
+}
+.img-lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5vmin;
+  background: rgba(0, 0, 0, 0.85);
+  cursor: zoom-out;
+  animation: lightbox-fade 0.15s ease-out;
+}
+.img-lightbox-overlay img {
+  max-width: 96vw;
+  max-height: 94vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
+  background: #fff;
+}
+@keyframes lightbox-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
