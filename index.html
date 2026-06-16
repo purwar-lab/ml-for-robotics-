@@ -3977,7 +3977,26 @@ plt.show()</code></pre></figure>
 <div class="lesson-meta"><span>Colab</span><span>25 min</span></div>
 <hr class="lesson-divider" />
 <div class="lesson-body">
-<h3>6.10 From NumPy to Keras</h3>
+<p>So far you have built networks by hand in NumPy - every dot product, every activation, every line of the Adam update written out yourself. That was the point: you now know exactly what a neural network does. But nobody trains real networks that way. In practice you use a framework, and the most common one for beginners is <strong>Keras</strong>.</p>
+<h3>What is Keras?</h3>
+<p>Keras is a high-level deep learning library. "High-level" means it lets you describe a network in terms of <em>what</em> you want - "a layer of 20 neurons with ReLU" - instead of <em>how</em> to compute it. It then handles the forward pass, the backpropagation, and the weight updates for you. The math you wrote by hand in the last few lessons is still happening; Keras just writes it for you.</p>
+<p>Keras runs on top of <strong>TensorFlow</strong>, Google's machine learning engine. TensorFlow does the heavy numerical work (and can run it on a GPU); Keras is the friendly layer you actually type against. When you install one modern package you get both.</p>
+<h3>Its philosophy</h3>
+<p>Keras was designed around one idea: <strong>make the common things easy</strong>. A network is described as a stack of layers, training is one function call, and sensible defaults are chosen for you. The goal is that the code you write looks like the picture of the network in your head - layers stacked top to bottom - with as little boilerplate as possible.</p>
+<ul>
+<li><strong>Stack layers</strong> to define the architecture.</li>
+<li><strong>Compile</strong> the model with a loss function and an optimizer.</li>
+<li><strong>Fit</strong> it to your data - this runs the whole training loop you wrote by hand.</li>
+</ul>
+<p>Those three steps - define, compile, fit - are the entire workflow, and you will see them in every Keras program for the rest of this course.</p>
+<h3>Installing it</h3>
+<p>If you are using <strong>Google Colab</strong> (the "Open in Colab" button below), TensorFlow and Keras are already installed - you do not have to do anything. To run it on your own machine instead, install it once with pip:</p>
+<figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Install TensorFlow (includes Keras)"><figcaption>Install TensorFlow (includes Keras)</figcaption><pre><code class="language-bash">pip install tensorflow</code></pre></figure>
+<p>That single package gives you both TensorFlow and Keras. You then import Keras in Python like this:</p>
+<figure class="code-card" data-runnable="false" data-chapter="6" data-filename="Importing Keras"><figcaption>Importing Keras</figcaption><pre><code class="language-python">import tensorflow as tf
+from tensorflow import keras</code></pre></figure>
+<div class="callout tip" role="note"><div class="callout-icon">TIP</div><div><div class="callout-title">Don't relearn the network - relearn the syntax</div><p>You already understand what every piece does. This lesson is not new theory; it is the same sine network you trained in NumPy, written the way professionals write it. Read each Keras line and ask: "which part of my hand-written code does this replace?"</p></div></div>
+<h3>The same network, two ways</h3>
 <p>The math is identical to the sin(x) experiment. Only the syntax changes.</p>
 <div class="language-compare">
 <figure class="code-card" data-runnable="false" data-chapter="6" data-filename="NumPy forward pass and Adam update"><figcaption>sin.ipynb NumPy version</figcaption><pre><code class="language-python"># Forward pass
