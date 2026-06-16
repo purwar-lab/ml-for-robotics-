@@ -1253,12 +1253,24 @@ pre code {
     html[data-theme="light"] .callout strong,
     html[data-theme="light"] .expected strong,
     html[data-theme="light"] .flow-node {
-      color: var(--white);
+      color: #1f2328;
+      background: #eaeef2;
+      border-color: #d0d7de;
     }
     html[data-theme="light"] .flow-node span,
-    html[data-theme="light"] .flow-node small,
+    html[data-theme="light"] .flow-node small {
+      color: #57606a;
+    }
     html[data-theme="light"] .arrow {
       color: var(--muted);
+    }
+    /* Flow nodes with an inline (dark) background keep light text in light mode */
+    html[data-theme="light"] .flow-node[style*="background"] {
+      color: #fff;
+    }
+    html[data-theme="light"] .flow-node[style*="background"] span,
+    html[data-theme="light"] .flow-node[style*="background"] small {
+      color: rgba(255, 255, 255, 0.82);
     }
     html[data-theme="light"] .toc-group,
     html[data-theme="light"] .journey-step {
