@@ -243,6 +243,10 @@
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+# In the browser sandbox there is no GUI window, so plt.show() would only emit a
+# "non-GUI backend" warning. The runner captures the open figure automatically
+# after this code runs, so we make plt.show() a no-op to keep output clean.
+plt.show = lambda *args, **kwargs: None
 ${code}
 `;
 
