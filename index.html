@@ -4682,7 +4682,7 @@ os.chmod("/root/.kaggle/kaggle.json", 0o600)
 <p>Open the VS Code terminal in your <code>my-detector</code> folder and run these commands. After activation, the terminal prompt should start with <code>(venv)</code>.</p>
 <figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="Terminal"><figcaption><span>Terminal setup commands</span></figcaption><pre><code class="language-bash">python --version
 python -m venv venv
-venv\Scripts\activate      # Windows, if not working, then try full path
+venv\Scripts\activate      # Windows, if you get an error related to permissions, please run this first in Powershell: Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 source venv/bin/activate    # macOS / Linux
 python -m pip install ultralytics roboflow opencv-python</code></pre></figure>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Package</th><th>Role in this exercise</th></tr></thead><tbody><tr><td><code>ultralytics</code></td><td>Loads YOLO26, runs training, runs inference</td></tr><tr><td><code>roboflow</code></td><td>Downloads your labeled dataset from Roboflow in the right format</td></tr><tr><td><code>opencv-python</code></td><td>Opens your webcam and displays the detection results</td></tr></tbody></table></div>
