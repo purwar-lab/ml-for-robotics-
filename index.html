@@ -4256,20 +4256,29 @@ plt.show()
 <div class="lesson-body">
 <h3>7.2 Tools: OpenCV</h3>
                 <p>OpenCV is the Open Source Computer Vision Library, the general-purpose toolkit for image processing. An image is a NumPy array: height x width x color channels.</p>
-                <figure class="code-card" data-runnable="false" data-chapter="7" data-filename="opencv_quick_demo.py"><figcaption>OpenCV quick demo</figcaption><pre><code class="language-python">import cv2
-      import matplotlib.pyplot as plt
-      
-      img_bgr = cv2.imread("traffic_sign.jpg")
-      print(img_bgr.shape)             # height, width, channels
-      
-      img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
-      small = cv2.resize(img_rgb, (32, 32))
-      edges = cv2.Canny(small, threshold1=50, threshold2=150)
-      
-      cv2.rectangle(img_rgb, (20, 20), (120, 120), (0, 255, 0), 2)
-      plt.imshow(img_rgb)
-      plt.axis("off")
-      plt.show()</code></pre></figure>
+                <figure class="code-card" data-runnable="false" data-chapter="7" data-filename="opencv_quick_demo.py"><figcaption>OpenCV quick demo</figcaption><pre><code class="language-python">
+                  import cv2
+                  import matplotlib.pyplot as plt
+
+                  img_bgr = cv2.imread("sample_data/traffic_sign.jpg")
+                  print(img_bgr.shape)             # height, width, channels
+
+                  img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB) # Convert BGR to RGB for correct color display
+                  small = cv2.resize(img_rgb, (32, 32)) # Resize to 32x32 for faster processing
+                  edges = cv2.Canny(small, threshold1=50, threshold2=150) # Canny edge detection; less than 50 = black, more than 150 = white, in between = gray
+
+                  # Display both the original image with rectangle and the edges
+                  fig, axes = plt.subplots(1, 2, figsize=(10, 5))
+
+                  axes[0].imshow(img_rgb)
+                  axes[0].set_title('Original Image with Rectangle')
+                  axes[0].axis('off')
+
+                  axes[1].imshow(edges, cmap='gray')
+                  axes[1].set_title('Detected Edges (Resized)')
+                  axes[1].axis('off')
+
+                  plt.show()</code></pre></figure>
                 <div class="callout warning" role="alert"><div class="callout-icon">⚠️</div><div><div class="callout-title">BGR vs RGB</div><p>OpenCV loads images as BGR. Matplotlib expects RGB. Convert before displaying or colors look wrong.</p></div></div>
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="ch7-opencv">Mark as Complete</button></div>
