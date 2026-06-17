@@ -4673,18 +4673,18 @@ os.chmod("/root/.kaggle/kaggle.json", 0o600)
 <div class="steps">
 <div class="step"><div><strong>Install VS Code.</strong><br />Go to <a href="https://code.visualstudio.com/" target="_blank" rel="noreferrer">code.visualstudio.com</a> and install the free editor for Windows, macOS, or Linux.</div></div>
 <div class="step"><div><strong>Install the Python extension.</strong><br />Open VS Code, click Extensions, search for <strong>Python</strong>, and install the Microsoft extension.</div></div>
-<div class="step"><div><strong>Install Python.</strong><br />Use Python 3.10 or 3.11 for the smoothest package compatibility. On Windows, tick <strong>Add Python to PATH</strong>.</div></div>
+<div class="step"><div><strong>Install Python.</strong><br />Go to <a href="https://www.python.org/downloads" target="_blank" rel="noreferrer">https://www.python.org/downloads/</a> and install Python. Use Python 3.10 or 3.11 for the smoothest package compatibility. On Windows, tick <strong>Add Python to PATH</strong>.</div></div>
 <div class="step"><div><strong>Create a folder.</strong><br />Make a new folder called <code>my-detector</code>. Keep it separate from the later <code>object-tracker</code> folder.</div></div>
 </div>
-<div class="callout warning" role="alert"><div class="callout-icon">⚠</div><div><div class="callout-title">Windows PATH warning</div><p>If you skip <strong>Add Python to PATH</strong>, commands like <code>python --version</code> can fail with <code>python is not recognized</code>. Re-run the Python installer and tick that box.</p></div></div>
+<div class="callout warning" role="alert"><div class="callout-icon">⚠</div><div><div class="callout-title">Windows PATH warning</div><p>If you skip <strong>Add Python to PATH,</strong> commands like <code>python --version</code> can fail with <code>python is not recognized</code>. Re-run the Python installer and tick that box.</p></div></div>
 <h3>pip and Virtual Environments</h3>
 <p><code>pip</code> is Python's package manager. It downloads and installs libraries from the internet. A virtual environment is an isolated copy of Python just for this exercise, so packages installed here do not affect other Python projects on your machine.</p>
 <p>Open the VS Code terminal in your <code>my-detector</code> folder and run these commands. After activation, the terminal prompt should start with <code>(venv)</code>.</p>
 <figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="Terminal"><figcaption><span>Terminal setup commands</span></figcaption><pre><code class="language-bash">python --version
 python -m venv venv
-venv\Scripts\activate      # Windows
+venv\Scripts\activate      # Windows, if not working, then try full path
 source venv/bin/activate    # macOS / Linux
-pip install ultralytics roboflow opencv-python</code></pre></figure>
+python -m pip install ultralytics roboflow opencv-python</code></pre></figure>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Package</th><th>Role in this exercise</th></tr></thead><tbody><tr><td><code>ultralytics</code></td><td>Loads YOLO26, runs training, runs inference</td></tr><tr><td><code>roboflow</code></td><td>Downloads your labeled dataset from Roboflow in the right format</td></tr><tr><td><code>opencv-python</code></td><td>Opens your webcam and displays the detection results</td></tr></tbody></table></div>
 <h3>Verify Installation</h3>
 <p>Create <code>test_setup.py</code>, type this code, and run <code>python test_setup.py</code>. If <strong>All good!</strong> prints, the environment is ready.</p>
