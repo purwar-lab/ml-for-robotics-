@@ -5674,8 +5674,8 @@ frame = cv2.imdecode(...)             # decode bytes into an image array</code><
 <div class="lesson-body">
 
 <p class="lead">Most beginner robot tutorials control motors with a simple on/off command: turn the motor on, wait two seconds, turn it off. The robot moves roughly forward for roughly two seconds. How far it actually traveled depends on the battery level, floor surface, motor temperature, wheel slip, and many other small effects. You never really know.</p>
-<p>Encoder motors solve this problem. An encoder is a sensor built into the motor assembly that counts how many times the motor shaft has rotated. Every rotation is divided into a fixed number of pulses. By counting these pulses, the Arduino can estimate how far each wheel has traveled regardless of the motor speed or battery level.</p>
-<p>This is called <strong>closed-loop control</strong>. The motor does not just receive a command and run blindly. It receives a command, then the Arduino continuously checks whether the motor has done what was requested. Open-loop is guessing. Closed-loop is measuring.</p>
+<p>Encoder motors solve this problem. An encoder is a sensor built into the motor assembly that counts how many times the motor shaft has rotated. Every rotation is divided into a fixed number of pulses. By counting these pulses, it can be estimated how far each wheel has traveled and send speed corrections to motors.</p>
+<p>This is called <strong>closed-loop control</strong>. The motor does not just receive a command and run blindly. It receives a command, then the controller continuously checks whether the motor has done what was requested. Open-loop is guessing. Closed-loop is measuring.</p>
 
 <h3>Hardware List</h3>
 <p>Students need every item below before starting. Keep the motor battery separate from USB power, and do not connect the battery until the wiring lesson tells you to.</p>
@@ -5684,12 +5684,12 @@ frame = cv2.imdecode(...)             # decode bytes into an image array</code><
 <thead><tr><th>Item</th><th>Quantity</th><th>Notes</th></tr></thead>
 <tbody>
 <tr><td>Arduino UNO R4 WiFi</td><td>1</td><td>The microcontroller brain that runs the sketch and reads encoder pulses.</td></tr>
-<tr><td>Custom motor shield</td><td>1</td><td>Plugs directly onto Arduino, has the TB6612FNG integrated, and is designed by Samar Singh.</td></tr>
+<tr><td>Custom motor shield</td><td>1</td><td>Plugs directly onto Arduino and has a <MOSFET-based></MOSFET-based> motor driver TB6612FNG integrated.</td></tr>
 <tr><td>DC encoder motors with gearbox</td><td>2</td><td>Must provide A and B channel output.</td></tr>
 <tr><td>Robot chassis with wheels</td><td>1</td><td>Use a 2WD differential-drive chassis.</td></tr>
 <tr><td>WS2812B RGB LED or similar</td><td>1</td><td>Status indicator. Data wire connects to A3.</td></tr>
-<tr><td>7.4V LiPo battery pack</td><td>1</td><td>Powers motors through the shield.</td></tr>
-<tr><td>USB-A to USB-C cable</td><td>1</td><td>Programming and Serial Monitor connection.</td></tr>
+<tr><td>7.4V LiPo or 6V Alkaline battery pack</td><td>1</td><td>Powers motors through the shield.</td></tr>
+<tr><td>USB-C cable</td><td>1</td><td>Programming and Serial Monitor connection.</td></tr>
 <tr><td>Jumper wires, male to male</td><td>15+</td><td>Encoder and LED signal wires.</td></tr>
 <tr><td>Small screwdriver</td><td>1</td><td>Used for the motor screw terminals.</td></tr>
 </tbody>
