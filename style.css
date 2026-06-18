@@ -2938,6 +2938,13 @@ body.lesson-app .pd-bridge-list {
   margin: 1rem 0 1.5rem;
 }
 
+/* Long inline-code tokens (e.g. threading.Thread(target=self._run))
+   must wrap inside the narrow bridge-list columns instead of overflowing. */
+body.lesson-app .pd-bridge-list code {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
 body.lesson-app .pe-system-diagram {
   display: grid;
   gap: 12px;
