@@ -5289,7 +5289,7 @@ cv2.destroyAllWindows()</code></pre></figure>
 <div class="lesson-body">
 
 <div class="steps">
-<div class="step"><div><strong>Install IP Webcam.</strong><br />Open the Play Store on your Android phone. Search for <a href="https://play.google.com/store/apps/details?id=com.pas.webcam" target="_blank" rel="noreferrer"><strong>IP Webcam</strong></a> by Thyoni Tech (used to be by Pavel Khlebovich before). Install it. It is free with no required account.</div></div>
+<div class="step"><div><strong>Install IP Webcam.</strong><br />Open the Play Store on your Android phone. Search for <a href="https://play.google.com/store/apps/details?id=com.pas.webcam" target="_blank" rel="noreferrer"><strong>IP Webcam</strong></a> by Thyoni Tech (used to be by Pavel Khlebovich before). Install it. It is free with no required account, but shows ads in the beginning. There is a paid, ad-free version available as well. </div></div>
 <div class="step"><div><strong>Open the app.</strong><br />Open IP Webcam. You will see a long list of settings. Leave everything at the default for now. Scroll all the way to the bottom of the settings list.</div></div>
 <div class="step"><div><strong>Start the server.</strong><br />Tap <strong>Start server</strong> at the very bottom of the screen. The phone screen turns into a live camera preview.</div></div>
 </div>
@@ -5374,7 +5374,7 @@ http://10.0.0.3:8080</code></pre></figure>
 <hr class="lesson-divider" />
 <div class="lesson-body">
 
-<p class="lead">Before writing any Python, confirm the stream works using your browser. This takes 30 seconds and immediately tells you if the network connection is working.</p>
+<p class="lead">Before writing any Python code, confirm the stream works using your browser. This takes 30 seconds and immediately tells you if the network connection is working.</p>
 <div class="steps">
 <div class="step"><div><strong>Open your laptop browser.</strong><br />Open Chrome, Firefox, or Safari on your laptop.</div></div>
 <div class="step"><div><strong>Type the stream URL in the address bar.</strong><br />For Android use <code>http://PHONE_IP:8080/video</code>. For iPhone use <code>http://PHONE_IP:8080/live</code>. Replace <code>PHONE_IP</code> with the address shown in your app.</div></div>
@@ -5582,7 +5582,60 @@ frame = cv2.imdecode(...)             # decode bytes into an image array</code><
 <hr class="lesson-divider" />
 <div class="lesson-body">
 
-<p class="lead">Look at the <code>MobileVideoStream</code> class in <code>shared.py</code> from Project 1. Open the file in VS Code and read through it now. You will recognize every concept.</p>
+<p class="lead">Project 1's robot uses a class called <code>MobileVideoStream</code> (in a file named <code>shared.py</code>) to pull frames from the phone. You have not started Project 1 yet, so here is that exact class printed below. Read through it now &mdash; you will recognize every concept from this exercise. When you reach Project 1, this file will already be familiar instead of new.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-b" data-filename="shared.py"><figcaption><span>MobileVideoStream (from Project 1's shared.py)</span></figcaption><pre><code class="language-python">class MobileVideoStream:
+    &quot;&quot;&quot;Continuously pulls MJPEG frames from a phone camera in a background thread.&quot;&quot;&quot;
+
+    def __init__(self, url):
+        self.url       = url
+        self.frame     = None
+        self.fid       = 0
+        self.connected = False
+        self.running   = True
+        self._lock     = threading.Lock()
+        threading.Thread(target=self._run, daemon=True).start()
+
+    def _run(self):
+        backoff = 1.0
+        while self.running:
+            try:
+                response = requests.get(self.url, stream=True, timeout=10)
+                if response.status_code != 200:
+                    raise ConnectionError(&quot;Non-200 status&quot;)
+
+                self.connected = True
+                backoff = 1.0
+                buf = b&quot;&quot;
+
+                for chunk in response.iter_content(1024):
+                    buf += chunk
+                    start = buf.find(b&quot;\xff\xd8&quot;)
+                    end   = buf.find(b&quot;\xff\xd9&quot;)
+
+                    if start != -1 and end != -1:
+                        jpg = buf[start : end + 2]
+                        buf = buf[end + 2 :]
+                        img = cv2.imdecode(np.frombuffer(jpg, np.uint8), cv2.IMREAD_COLOR)
+                        if img is not None:
+                            with self._lock:
+                                self.frame = img
+                                self.fid  += 1
+
+                    if not self.running:
+                        break
+
+            except Exception:
+                self.connected = False
+                time.sleep(backoff)
+                backoff = min(backoff * 2, 8.0)
+
+    def read(self):
+        with self._lock:
+            return self.frame, self.fid
+
+    def stop(self):
+        self.running = False</code></pre></figure>
+<p>Here is what each part does, mapped to what you already built:</p>
 <div class="steps">
 <div class="step"><div><strong>The <code>__init__</code> method:</strong> creates the stream URL and starts a background thread. You now know why a background thread exists: to keep frames flowing without blocking the main detection loop.</div></div>
 <div class="step"><div><strong>The <code>_run</code> method:</strong> contains the MJPEG parsing loop. The <code>buf.find()</code> calls for <code>0xff 0xd8</code> and <code>0xff 0xd9</code> are exactly the same as <code>read_frame</code> in your <code>detect_stream.py</code>. The difference is that <code>MobileVideoStream</code> runs this loop in a background thread and stores the latest frame in <code>self.frame</code>, while your simple script reads frames one at a time in the main loop.</div></div>
@@ -5602,7 +5655,7 @@ frame = cv2.imdecode(...)             # decode bytes into an image array</code><
 <div class="step"><label><input type="checkbox" data-checklist-key="projB-live-feed" />The detection window shows your phone camera feed live.</label></div>
 <div class="step"><label><input type="checkbox" data-checklist-key="projB-object-detected" />Your trained object is detected with a bounding box when held in front of the camera.</label></div>
 <div class="step"><label><input type="checkbox" data-checklist-key="projB-jpeg-markers" />You understand what <code>0xff 0xd8</code> and <code>0xff 0xd9</code> are and why the code searches for them.</label></div>
-<div class="step"><label><input type="checkbox" data-checklist-key="projB-mobile-stream" />You can explain the difference between <code>read_frame</code> in this exercise and <code>MobileVideoStream</code> in Project 1.</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="projB-mobile-stream" />You can explain the difference between <code>read_frame</code> in this exercise and the <code>MobileVideoStream</code> class shown above.</label></div>
 </div>
 <p>When all boxes are checked you are ready for Exercise C, where the robot hardware starts moving with encoder feedback.</p>
 
