@@ -4762,7 +4762,7 @@ print(f&quot;Model loaded. Parameters: {sum(p.numel() for p in model.model.param
 <div class="step"><div><strong>Partial views:</strong> place the object half behind another object in some shots. The model needs to recognize the object even when partially blocked.</div></div>
 </div>
 <div class="callout warning" role="alert"><div class="callout-icon">⚠</div><div><div class="callout-title">Vary your backgrounds deliberately</div><p>The single biggest beginner mistake is collecting all images in one location with one background color. The model will learn the background pattern instead of the object. It will detect perfectly in that room and fail completely everywhere else. Vary your backgrounds deliberately even if it feels unnecessary.</p></div></div>
-<p>Use your phone camera. Take photos manually or record a short video and extract frames. Roboflow accepts both.</p>
+<p>Use your web camera. Take photos manually or record a short video and extract frames. Roboflow accepts both.</p>
 <p>For video extraction: record a 30-second video walking around the object from different angles and distances. Roboflow will extract one frame per second automatically, giving you 30 images from one recording. Do this in 5 different locations for 150 images total.</p>
 <h3>Step 7 — Upload your images to Roboflow</h3>
 <p>Return to the Roboflow upload tab in your browser. Drag and drop your image files or your video files directly into the upload area. You can upload everything at once.</p>
