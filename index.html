@@ -5759,8 +5759,8 @@ frame = cv2.imdecode(...)             # decode bytes into an image array</code><
 </div>
 <p>The R4 WiFi version also includes a WiFi module and LED matrix. WiFi is not used in Exercise C, but it matters in Project 1 when the robot receives commands and streams telemetry.</p>
 
-<h3>This Shield Is an All-In-One Board</h3>
-<p>The motor shield you are using is a custom board designed specifically for this course. Unlike generic motor shields that only route signals, this board has the TB6612FNG motor driver chip already integrated directly on it. You do not need a separate motor driver module. The shield plugs directly onto the Arduino UNO R4 WiFi.</p>
+<h3>The SnappyXO Motor Shield V3 Is an All-In-One Board</h3>
+<p>The motor shield you are using is a custom board designed specifically for this course. Rather than the older L298N driver found on many cheap shields, it integrates the modern TB6612FNG motor driver, plus an onboard voltage regulator and power selection, all on one board. You do not need a separate motor driver module, and the shield plugs directly onto the Arduino UNO R4 WiFi.</p>
 <div class="table-wrap">
 <table class="data-table">
 <thead><tr><th>Shield feature</th><th>What it gives you</th></tr></thead>
@@ -5768,8 +5768,7 @@ frame = cv2.imdecode(...)             # decode bytes into an image array</code><
 <tr><td>DC Motors #1 and #2</td><td>Two green screw-terminal outputs on the right side of the board for the left and right DC motors.</td></tr>
 <tr><td>Servo connectors</td><td>Two connectors labeled Servos, A0 and A1, for future servo experiments.</td></tr>
 <tr><td>Battery terminal</td><td>A green screw terminal labeled Battery for the motor battery input.</td></tr>
-<tr><td>Onboard voltage regulator</td><td>Regulates battery power for the shield and, when selected, the Arduino.</td></tr>
-<tr><td>Power selection jumper</td><td><code>UNO PWR</code> or <code>BATT PWR</code> selects whether the Arduino is powered from USB or from the battery through the regulator.</td></tr>
+<tr><td>Onboard voltage regulator</td><td>Regulates battery power for DC and servo motors to 6V.</td></tr>
 </tbody>
 </table>
 </div>
