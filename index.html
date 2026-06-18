@@ -5697,20 +5697,32 @@ frame = cv2.imdecode(...)             # decode bytes into an image array</code><
 </div>
 
 <h3>System Diagram</h3>
-<div class="diagram pc-system-diagram" aria-label="Exercise C hardware data and power flow">
-<div class="pc-node battery">Battery<br /><span>7.4V motor power</span></div>
-<div class="pc-arrow right">power</div>
-<div class="pc-node driver">Custom Motor Shield<br /><span>TB6612FNG + regulator</span></div>
-<div class="pc-arrow right">motor output</div>
-<div class="pc-node motor">Left Motor + Encoder<br /><span>wheel motion</span></div>
-<div class="pc-node shield">Shield Headers<br /><span>plugs onto Arduino</span></div>
-<div class="pc-arrow up">control</div>
-<div class="pc-node arduino">Arduino UNO R4 WiFi<br /><span>counts ticks, runs control</span></div>
-<div class="pc-arrow up">encoder pulses</div>
-<div class="pc-node right-motor">Right Motor + Encoder<br /><span>wheel motion</span></div>
-<div class="pc-node usb">USB to Laptop<br /><span>programming + serial monitor</span></div>
-<div class="pc-arrow right">upload sketch</div>
-<div class="pc-node arduino-repeat">Arduino UNO R4 WiFi<br /><span>same board</span></div>
+<p>Three separate things move through this system. Follow each one on its own row below.</p>
+
+<p class="mini muted"><strong>1. Command path</strong> &mdash; your code travels from the laptop down to the wheels:</p>
+<div class="diagram" aria-label="Command path: laptop to Arduino to motor shield to motors">
+<div class="flow-row">
+<div class="flow-node">Laptop<br /><small>USB: upload sketch + serial monitor</small></div><div class="arrow">→</div>
+<div class="flow-node">Arduino UNO R4 WiFi<br /><small>runs control, counts ticks</small></div><div class="arrow">→</div>
+<div class="flow-node">Motor Shield<br /><small>TB6612FNG driver + regulator</small></div><div class="arrow">→</div>
+<div class="flow-node">Left + Right Motors<br /><small>wheels turn</small></div>
+</div>
+</div>
+
+<p class="mini muted"><strong>2. Feedback path</strong> &mdash; the encoders report wheel motion back to the Arduino:</p>
+<div class="diagram" aria-label="Feedback path: encoders back to Arduino">
+<div class="flow-row">
+<div class="flow-node">Encoders on each motor<br /><small>generate pulses as wheels turn</small></div><div class="arrow">→</div>
+<div class="flow-node">Arduino UNO R4 WiFi<br /><small>interrupts count the pulses</small></div>
+</div>
+</div>
+
+<p class="mini muted"><strong>3. Power path</strong> &mdash; kept separate from the logic; the battery only feeds the motors:</p>
+<div class="diagram" aria-label="Power path: battery to motor shield">
+<div class="flow-row">
+<div class="flow-node">Battery 6V<br /><small>motor power only</small></div><div class="arrow">→</div>
+<div class="flow-node">Motor Shield<br /><small>powers the motors</small></div>
+</div>
 </div>
 
 <h3>What You Will Learn</h3>
