@@ -7535,7 +7535,63 @@ telem_sock.close()</code></pre></figure>
 <hr class="lesson-divider" />
 <div class="lesson-body">
 
-<p class="lead">Open <code>shared.py</code> in VS Code and find the <code>Commander</code> and <code>Telemetry</code> classes. Exercise D was designed so those classes look familiar instead of mysterious.</p>
+<p class="lead">Project 1's robot code includes two classes in a file called <code>shared.py</code>: <code>Commander</code> (sends motor commands) and <code>Telemetry</code> (receives encoder data). You have not started Project 1 yet, so both classes are printed below. Read through them now &mdash; Exercise D was designed so they look familiar instead of mysterious. When you reach Project 1, this file will already make sense.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="shared.py"><figcaption><span>Commander and Telemetry (from Project 1's shared.py)</span></figcaption><pre><code class="language-python">class Commander:
+    &quot;&quot;&quot;Sends UDP motor commands to the ESP.&quot;&quot;&quot;
+
+    def __init__(self, ip, port):
+        self.ip    = ip
+        self.port  = port
+        self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+    def motors(self, left, right, light=&quot;off&quot;):
+        msg = f&quot;MOTOR,{int(left)},{int(right)},{light.upper()}&quot;
+        self._sock.sendto(msg.encode(), (self.ip, self.port))
+
+    def stop(self):
+        self._sock.sendto(b&quot;STOP,OFF&quot;, (self.ip, self.port))
+
+class Telemetry:
+    &quot;&quot;&quot;Receives encoder telemetry from the ESP over UDP.&quot;&quot;&quot;
+
+    def __init__(self, port):
+        self.left_ticks  = 0
+        self.right_ticks = 0
+        self.cmd_left    = 0
+        self.cmd_right   = 0
+        self.running     = True
+        self._lock       = threading.Lock()
+        self._sock       = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self._sock.bind((&quot;&quot;, port))
+        self._sock.settimeout(1.0)
+        threading.Thread(target=self._run, daemon=True).start()
+
+    def _run(self):
+        while self.running:
+            try:
+                data, _ = self._sock.recvfrom(128)
+                parts   = data.decode().strip().split(&quot;,&quot;)
+                if parts[0] == &quot;ENC&quot; and len(parts) == 5:
+                    with self._lock:
+                        self.left_ticks  = int(parts[1])
+                        self.right_ticks = int(parts[2])
+                        self.cmd_left    = int(parts[3])
+                        self.cmd_right   = int(parts[4])
+            except Exception:
+                pass
+
+    def read(self):
+        with self._lock:
+            return {
+                &quot;left_ticks&quot;:  self.left_ticks,
+                &quot;right_ticks&quot;: self.right_ticks,
+                &quot;cmd_left&quot;:    self.cmd_left,
+                &quot;cmd_right&quot;:   self.cmd_right,
+            }
+
+    def stop(self):
+        self.running = False
+        self._sock.close()</code></pre></figure>
 
 <h3>The Commander Class</h3>
 <div class="pd-bridge-list">
@@ -7571,7 +7627,7 @@ telem_sock.close()</code></pre></figure>
 <div class="step"><label><input type="checkbox" data-checklist-key="projD-csv-log" /><code>telemetry_log.csv</code> was generated and opened successfully.</label></div>
 <div class="step"><label><input type="checkbox" data-checklist-key="projD-bind-sendto" />You can explain the difference between <code>bind()</code> and <code>sendto()</code>.</label></div>
 <div class="step"><label><input type="checkbox" data-checklist-key="projD-timeout" />You can explain what <code>CMD_TIMEOUT_MS</code> does and why it matters.</label></div>
-<div class="step"><label><input type="checkbox" data-checklist-key="projD-project1-classes" />You have read <code>Commander</code> and <code>Telemetry</code> in <code>shared.py</code> and recognized the Exercise D patterns.</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="projD-project1-classes" />You can recognize the Exercise D patterns in the <code>Commander</code> and <code>Telemetry</code> classes shown above.</label></div>
 </div>
 <p>When all boxes are checked, you are ready for Project 1.</p>
 
