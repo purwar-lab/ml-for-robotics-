@@ -6838,20 +6838,31 @@ void turnDegrees(float degrees, int speed) {
 <hr class="lesson-divider" />
 <div class="lesson-body">
 
-<p class="lead">This sketch maintains a WiFi connection, listens for UDP motor command packets from the laptop, drives the motors through the custom Exercise C shield, and sends encoder telemetry back every 50 ms.</p>
+<p class="lead">This sketch maintains a WiFi connection, listens for UDP motor command packets from the laptop, drives the motors through the SnappyXO shield, and sends encoder telemetry back every 50 ms.</p>
 <p>Upload this after you have confirmed Exercise C motor and encoder wiring. Leave the robot wheels lifted off the table for the first test.</p>
 
-<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="robot_udp.ino"><figcaption><span>robot_udp.ino</span><span class="local-run-badge">Arduino</span></figcaption><pre><code class="language-cpp">#include &lt;WiFiS3.h&gt;
+<p>First create a second file in the same sketch folder called <code>arduino_secrets.h</code>. This keeps your WiFi name and password out of the main sketch. In the Arduino IDE, click the three dots ... on the right of the tab bar, choose <strong>New Tab</strong>, name it <code>arduino_secrets.h</code>, and paste this:</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="arduino_secrets.h"><figcaption><span>arduino_secrets.h</span><span class="local-run-badge">Arduino</span></figcaption><pre><code class="language-cpp">// arduino_secrets.h header file
+#define SECRET_SSID "yournetwork"
+#define SECRET_PASS "yourpassword"</code></pre></figure>
+
+<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="robot_udp.ino"><figcaption><span>robot_udp.ino</span><span class="local-run-badge">Arduino</span></figcaption><pre><code class="language-cpp">
+#include &lt;WiFiS3.h&gt;
 #include &lt;WiFiUDP.h&gt;
+#include "arduino_secrets.h"
 
-// CONFIGURATION - fill in your own values.
-const char* WIFI_SSID     = "YOUR_NETWORK_NAME";
-const char* WIFI_PASSWORD = "YOUR_NETWORK_PASSWORD";
-const char* LAPTOP_IP     = "192.168.x.x";   // your laptop's IP
-const int   CMD_PORT      = 5001;            // Arduino listens here
-const int   TELEM_PORT    = 5002;            // Arduino sends here
+// WiFi credentials from arduino_secrets.h
+const char* WIFI_SSID     = SECRET_SSID;
+const char* WIFI_PASSWORD = SECRET_PASS;
 
-// Motor pins - matches the custom shield from Exercise C.
+// IMPORTANT:
+// This must be your laptop's IP address on the SAME local WiFi
+// as the Arduino. Check it using ipconfig on Windows.
+const char* LAPTOP_IP     = "192.168.5.245";   // CHANGE THIS
+const int   CMD_PORT      = 5001;
+const int   TELEM_PORT    = 5002;
+
+// Motor pins
 #define LEFT_IN1_PIN    4
 #define LEFT_IN2_PIN    5
 #define LEFT_EN_PIN     6
@@ -6859,15 +6870,23 @@ const int   TELEM_PORT    = 5002;            // Arduino sends here
 #define RIGHT_IN2_PIN   13
 #define RIGHT_EN_PIN    11
 
-// Encoder pins.
+// Encoder pins
 #define ENC_LEFT_A      2
 #define ENC_LEFT_B      A0
 #define ENC_RIGHT_A     3
 #define ENC_RIGHT_B     8
 
-// Encoder counters.
 volatile long ticksLeft  = 0;
 volatile long ticksRight = 0;
+
+WiFiUDP udp;
+char packetBuffer[64];
+
+unsigned long lastCmdTime = 0;
+const unsigned long CMD_TIMEOUT_MS = 500;
+
+unsigned long lastTelemTime = 0;
+const unsigned long TELEM_INTERVAL_MS = 50;
 
 void leftEncoderISR() {
   if (digitalRead(ENC_LEFT_B) == HIGH) ticksLeft++;
@@ -6879,56 +6898,137 @@ void rightEncoderISR() {
   else ticksRight--;
 }
 
-// WiFi and UDP objects.
-WiFiUDP udp;
-char packetBuffer[64];
-
-// Safety timeout - stop motors if no command received for this long.
-unsigned long lastCmdTime = 0;
-const unsigned long CMD_TIMEOUT_MS = 500;
-
-// Telemetry timer.
-unsigned long lastTelemTime = 0;
-const unsigned long TELEM_INTERVAL_MS = 50;
-
 void setMotors(int leftSpeed, int rightSpeed) {
   leftSpeed  = constrain(leftSpeed, -255, 255);
   rightSpeed = constrain(rightSpeed, -255, 255);
 
-  digitalWrite(LEFT_IN1_PIN, leftSpeed &gt;= 0 ? HIGH : LOW);
-  digitalWrite(LEFT_IN2_PIN, leftSpeed &gt;= 0 ? LOW : HIGH);
+  digitalWrite(LEFT_IN1_PIN, leftSpeed >= 0 ? HIGH : LOW);
+  digitalWrite(LEFT_IN2_PIN, leftSpeed >= 0 ? LOW : HIGH);
   analogWrite(LEFT_EN_PIN, abs(leftSpeed));
 
-  digitalWrite(RIGHT_IN1_PIN, rightSpeed &gt;= 0 ? HIGH : LOW);
-  digitalWrite(RIGHT_IN2_PIN, rightSpeed &gt;= 0 ? LOW : HIGH);
+  digitalWrite(RIGHT_IN1_PIN, rightSpeed >= 0 ? HIGH : LOW);
+  digitalWrite(RIGHT_IN2_PIN, rightSpeed >= 0 ? LOW : HIGH);
   analogWrite(RIGHT_EN_PIN, abs(rightSpeed));
 }
 
 void stopMotors() {
   analogWrite(LEFT_EN_PIN, 0);
   analogWrite(RIGHT_EN_PIN, 0);
+
   digitalWrite(LEFT_IN1_PIN, LOW);
   digitalWrite(LEFT_IN2_PIN, LOW);
   digitalWrite(RIGHT_IN1_PIN, LOW);
   digitalWrite(RIGHT_IN2_PIN, LOW);
 }
 
-void parseCommand(char* packet) {
-  // Expected format: "MOTOR,leftSpeed,rightSpeed"
-  // Example:         "MOTOR,150,-150"
-  // Stop command:    "STOP"
+bool ipIsValid(IPAddress ip) {
+  return !(ip[0] == 0 && ip[1] == 0 && ip[2] == 0 && ip[3] == 0);
+}
 
+void connectToWiFi() {
+  Serial.print("Connecting to WiFi: ");
+  Serial.println(WIFI_SSID);
+
+  // Disconnect from any previous mode/session
+  WiFi.disconnect();
+  delay(1000);
+
+  int attempts = 0;
+
+  while (true) {
+    Serial.println("Starting WiFi connection...");
+    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+
+    unsigned long startAttemptTime = millis();
+
+    // Wait up to 20 seconds for connection and valid IP
+    while (millis() - startAttemptTime < 20000) {
+      int status = WiFi.status();
+      IPAddress ip = WiFi.localIP();
+
+      Serial.print("WiFi status: ");
+      Serial.print(status);
+      Serial.print("    IP: ");
+      Serial.println(ip);
+
+      if (status == WL_CONNECTED && ipIsValid(ip)) {
+        Serial.println();
+        Serial.println("WiFi connected with valid IP.");
+        return;
+      }
+
+      delay(1000);
+    }
+
+    attempts++;
+
+    Serial.println();
+    Serial.println("WiFi connection attempt failed or IP stayed 0.0.0.0.");
+    Serial.println("Retrying...");
+    Serial.println();
+
+    WiFi.disconnect();
+    delay(2000);
+
+    if (attempts >= 5) {
+      Serial.println("Could not get a valid IP after 5 attempts.");
+      Serial.println("Check SSID, password, router DHCP, and 2.4 GHz WiFi.");
+      while (true) {
+        delay(1000);
+      }
+    }
+  }
+}
+
+void printWiFiInfo() {
+  IPAddress ip = WiFi.localIP();
+
+  Serial.println();
+  Serial.println("===== WiFi Info =====");
+  Serial.print("SSID: ");
+  Serial.println(WiFi.SSID());
+
+  Serial.print("Arduino IP address: ");
+  Serial.println(ip);
+
+  Serial.print("Signal strength RSSI: ");
+  Serial.print(WiFi.RSSI());
+  Serial.println(" dBm");
+
+  Serial.print("Command port: ");
+  Serial.println(CMD_PORT);
+
+  Serial.print("Telemetry destination laptop IP: ");
+  Serial.println(LAPTOP_IP);
+
+  Serial.print("Telemetry port: ");
+  Serial.println(TELEM_PORT);
+  Serial.println("=====================");
+  Serial.println();
+}
+
+void parseCommand(char* packet) {
   if (strncmp(packet, "STOP", 4) == 0) {
     stopMotors();
+    lastCmdTime = millis();
     return;
   }
 
   if (strncmp(packet, "MOTOR,", 6) == 0) {
     int leftSpeed = 0;
     int rightSpeed = 0;
-    sscanf(packet, "MOTOR,%d,%d", &amp;leftSpeed, &amp;rightSpeed);
-    setMotors(leftSpeed, rightSpeed);
-    lastCmdTime = millis();
+
+    int matched = sscanf(packet, "MOTOR,%d,%d", &leftSpeed, &rightSpeed);
+
+    if (matched == 2) {
+      setMotors(leftSpeed, rightSpeed);
+      lastCmdTime = millis();
+
+      Serial.print("Motor command: ");
+      Serial.print(leftSpeed);
+      Serial.print(", ");
+      Serial.println(rightSpeed);
+    }
   }
 }
 
@@ -6940,7 +7040,6 @@ void sendTelemetry() {
   long r = ticksRight;
   interrupts();
 
-  // Format: "ENC,leftTicks,rightTicks"
   snprintf(buf, sizeof(buf), "ENC,%ld,%ld", l, r);
 
   udp.beginPacket(LAPTOP_IP, TELEM_PORT);
@@ -6950,56 +7049,80 @@ void sendTelemetry() {
 
 void setup() {
   Serial.begin(115200);
-  delay(1000);
+  delay(2000);
+
+  Serial.println();
+  Serial.println("Arduino UNO R4 WiFi UDP Robot Controller");
 
   pinMode(LEFT_IN1_PIN, OUTPUT);
   pinMode(LEFT_IN2_PIN, OUTPUT);
   pinMode(LEFT_EN_PIN, OUTPUT);
+
   pinMode(RIGHT_IN1_PIN, OUTPUT);
   pinMode(RIGHT_IN2_PIN, OUTPUT);
   pinMode(RIGHT_EN_PIN, OUTPUT);
+
   stopMotors();
 
   pinMode(ENC_LEFT_A, INPUT_PULLUP);
   pinMode(ENC_LEFT_B, INPUT_PULLUP);
   pinMode(ENC_RIGHT_A, INPUT_PULLUP);
   pinMode(ENC_RIGHT_B, INPUT_PULLUP);
+
   attachInterrupt(digitalPinToInterrupt(ENC_LEFT_A), leftEncoderISR, RISING);
   attachInterrupt(digitalPinToInterrupt(ENC_RIGHT_A), rightEncoderISR, RISING);
 
-  Serial.print("Connecting to WiFi: ");
-  Serial.println(WIFI_SSID);
-  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
+  if (WiFi.status() == WL_NO_MODULE) {
+    Serial.println("Communication with WiFi module failed!");
+    while (true) {
+      delay(1000);
+    }
   }
 
-  Serial.println();
-  Serial.println("WiFi connected.");
-  Serial.print("Arduino IP address: ");
-  Serial.println(WiFi.localIP());  // paste this into your Python script
+  String fv = WiFi.firmwareVersion();
+  Serial.print("WiFi firmware version: ");
+  Serial.println(fv);
 
-  udp.begin(CMD_PORT);
-  Serial.print("Listening for commands on port ");
-  Serial.println(CMD_PORT);
+  if (fv < WIFI_FIRMWARE_LATEST_VERSION) {
+    Serial.println("Warning: WiFi firmware may need to be updated.");
+  }
+
+  connectToWiFi();
+  printWiFiInfo();
+
+  if (udp.begin(CMD_PORT)) {
+    Serial.print("UDP listening for commands on port ");
+    Serial.println(CMD_PORT);
+  } else {
+    Serial.println("UDP begin failed.");
+  }
+
+  lastCmdTime = millis();
+
   Serial.println("Ready.");
 }
 
 void loop() {
   int packetSize = udp.parsePacket();
-  if (packetSize &gt; 0) {
+
+  if (packetSize > 0) {
     int len = udp.read(packetBuffer, sizeof(packetBuffer) - 1);
-    packetBuffer[len] = '\0';
-    parseCommand(packetBuffer);
+
+    if (len > 0) {
+      packetBuffer[len] = '\0';
+
+      Serial.print("Received UDP packet: ");
+      Serial.println(packetBuffer);
+
+      parseCommand(packetBuffer);
+    }
   }
 
-  if (millis() - lastCmdTime &gt; CMD_TIMEOUT_MS) {
+  if (millis() - lastCmdTime > CMD_TIMEOUT_MS) {
     stopMotors();
   }
 
-  if (millis() - lastTelemTime &gt;= TELEM_INTERVAL_MS) {
+  if (millis() - lastTelemTime >= TELEM_INTERVAL_MS) {
     sendTelemetry();
     lastTelemTime = millis();
   }
