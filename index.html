@@ -6295,7 +6295,7 @@ void loop() {
 <div class="definition-card"><span class="def-term">Ticks per revolution</span><p><code>______ ticks</code></p></div>
 <div class="definition-card"><span class="def-term">CM_PER_TICK</span><p><code>(______ x 3.14159) / ______ = ______</code></p></div>
 </div>
-<div class="callout info" role="note"><div class="callout-icon">i</div><div><div class="callout-title">Why measure instead of trusting a datasheet?</div><p>Budget gearbox ratios are often approximate. A nominal 30:1 gearbox might be 29.8:1. On one movement the error is small; over many movements it accumulates. Measuring your actual wheel and encoder count reduces that error.</p></div></div>
+<div class="callout info" role="note"><div class="callout-icon">i</div><div><div class="callout-title">Why measure instead of trusting a datasheet?</div><p>Budget gearbox ratios are often approximate. A nominal 30:1 gearbox might be 29.8:1. On one movement the error is small; over many movements it accumulates. Measuring your actual wheel diameter and encoder count reduces that error.</p></div></div>
 
 </div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projC-distance">Mark as Complete</button></div>
@@ -6313,7 +6313,7 @@ void loop() {
 <div class="lesson-body">
 
 <p class="lead">This is the first sketch that moves the robot. Before uploading, prop the robot on a book or box so the wheels spin freely. Verify direction before letting the robot drive on the floor.</p>
-<p>You must fill in the values measured earlier: <code>TICKS_PER_REV</code> and <code>WHEEL_DIAM_CM</code>. The motor pins below match the custom Samar Singh shield used in this course.</p>
+<p>You must fill in the values measured earlier: <code>TICKS_PER_REV</code> and <code>WHEEL_DIAM_CM</code>. The motor pins below match the SnappyXO shield used in this course.</p>
 
 <figure class="code-card" data-runnable="false" data-chapter="project-c" data-filename="drive_distance.ino"><figcaption><span>drive_distance.ino</span></figcaption><pre><code class="language-cpp">#include &lt;Arduino.h&gt;
 #include &lt;math.h&gt;
