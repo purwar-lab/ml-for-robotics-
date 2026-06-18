@@ -4682,7 +4682,9 @@ os.chmod("/root/.kaggle/kaggle.json", 0o600)
 <p>Open the VS Code terminal in your <code>my-detector</code> folder and run these commands. After activation, the terminal prompt should start with <code>(venv)</code>.</p>
 <figure class="code-card" data-runnable="false" data-chapter="project-a" data-filename="Terminal"><figcaption><span>Terminal setup commands</span></figcaption><pre><code class="language-bash">python --version
 python -m venv venv
-venv\Scripts\activate      # Windows, if you get an error related to permissions, please run this first in Powershell: Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+venv\Scripts\activate      # Windows
+# If you get an error related to permissions while running above command, then
+# please run this first in VS Code Powershell: Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 source venv/bin/activate    # macOS / Linux
 python -m pip install ultralytics roboflow opencv-python</code></pre></figure>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Package</th><th>Role in this exercise</th></tr></thead><tbody><tr><td><code>ultralytics</code></td><td>Loads YOLO26, runs training, runs inference</td></tr><tr><td><code>roboflow</code></td><td>Downloads your labeled dataset from Roboflow in the right format</td></tr><tr><td><code>opencv-python</code></td><td>Opens your webcam and displays the detection results</td></tr></tbody></table></div>
@@ -4724,16 +4726,14 @@ print(f&quot;Model loaded. Parameters: {sum(p.numel() for p in model.model.param
 <p>After signing up you will be asked to choose between two plans.</p>
 <figure class="lesson-image-card"><img src="tier_type.png" alt="Roboflow public plan selection screen" loading="lazy" /><figcaption>Choose the Public Plan to keep the project free.</figcaption></figure>
 <p>Choose the <strong>Public Plan</strong> by clicking <strong>Continue with Public</strong>. The public plan is completely free and has everything needed for this course. The only difference from the paid plan is your dataset will be publicly visible on Roboflow Universe, which is fine for a learning project.</p>
-<h3>Step 2 — Skip the invite screen</h3>
+<h3>Step 2 — Skip the "What do you want to do with Roboflow" (or, choose the first two options) and skip Invite "Collaboartor" screen</h3>
 <p>Roboflow will ask if you want to invite collaborators to your workspace. You are working alone. Click <strong>Skip</strong> or continue without adding anyone.</p>
-<h3>Step 3 — Create a new project</h3>
+<h3>Step 3 — Create a new project (If you don't see this option, click on Roboflow icon to go to your portal)</h3>
 <p>You will land on a screen asking you to create a project.</p>
 <figure class="lesson-image-card"><img src="project_type.png" alt="Roboflow create project screen" loading="lazy" /><figcaption>Create a public Object Detection project and enter your class label.</figcaption></figure>
 <div class="steps">
 <div class="step"><div><strong>Project Name:</strong> use a name describing what you are detecting. Examples: <code>tennis-ball-detector</code>, <code>orange-cone-tracker</code>, <code>red-mug-detector</code>. Use lowercase and hyphens, no spaces.</div></div>
 <div class="step"><div><strong>Project Type:</strong> leave this as the default <strong>Object Detection</strong>. Do not change it. Object detection is what YOLO does: it finds objects and draws boxes around them with their coordinates.</div></div>
-<div class="step"><div><strong>What will your model identify:</strong> type one single word in lowercase, such as <code>ball</code>, <code>cone</code>, or <code>mug</code>. This exact word is what the model outputs when it detects your object. It must exactly match the <code>TARGET_OBJECT</code> variable in Project 1's code. One typo here means the tracker never responds to the detection.</div></div>
-</div>
 <p>Click <strong>Create Public Project</strong> to continue.</p>
 <h3>Step 4 — Choose the Traditional Model Builder</h3>
 <p><strong>If you do not see this section then skip this.</strong></p>
@@ -4849,7 +4849,7 @@ print(f&quot;Model loaded. Parameters: {sum(p.numel() for p in model.model.param
 <h3>Step 5 — Add images to the dataset and approve all</h3>
 <p>After reviewing and fixing an image, click the checkmark button in the top right of the annotation editor.</p>
 <figure class="lesson-image-card"><img src="BB.png" alt="Roboflow annotation editor approve control" loading="lazy" /><figcaption>Use the approve control after the label is correct.</figcaption></figure>
-<p>A popup appears. The dropdown labeled <strong>TRAIN</strong>, <strong>VALID</strong>, or <strong>TEST</strong> determines which split this image goes into. Leave it on whatever Roboflow assigned automatically. Click <strong>Add 1 Image</strong> to confirm. The image moves from Annotating to Dataset.</p>
+<p>A popup appears. The dropdown labeled <strong>TRAIN</strong>, <strong>VALID</strong>, or <strong>TEST</strong> determines which split this image goes into. Choose a reasonable split.</p>
 <p>Once you have gone through all images, return to the main Annotate view. Click <strong>Approve All</strong> to move all reviewed images to the Dataset column in one action.</p>
 <div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Approve All when auto-label quality is high</div><p>If you have a large number of images and most of the auto-labels look correct, you can click <strong>Approve All</strong> from the Annotating column without opening each image individually. Then spot-check 10 to 15 images at random to confirm quality. This is the workflow professional data teams use when auto-label accuracy is high.</p></div></div>
 <h3>What You Now Have</h3>
@@ -4930,7 +4930,7 @@ print(f&quot;Model loaded. Parameters: {sum(p.numel() for p in model.model.param
 rf = Roboflow(api_key=&quot;YOUR_API_KEY_HERE&quot;)
 project = rf.workspace(&quot;your-workspace-name&quot;).project(&quot;your-project-name&quot;)
 version = project.version(1)
-dataset = version.download(&quot;yolov8&quot;)</code></pre></figure>
+dataset = version.download(&quot;yolo26&quot;)</code></pre></figure>
 <p>Copy this snippet. You will paste it into your Colab training notebook in lesson PA.6. Do not share your <code>api_key</code> publicly: it is tied to your Roboflow account and allows anyone with it to read and modify your projects.</p>
 <div class="callout tip" role="note"><div class="callout-icon">💡</div><div><div class="callout-title">Save the snippet locally</div><p>Save this snippet in a text file in your project folder right now. Colab sessions reset when you close them. Having the snippet saved locally means you can re-download your dataset in under 10 seconds whenever you start a new Colab session, without going back through the Roboflow interface.</p></div></div>
 <h3>What You Now Have</h3>
@@ -5134,7 +5134,11 @@ while True:
 
     cv2.imshow(&quot;My Detector&quot;, annotated)
 
-    if cv2.waitKey(1) &amp; 0xFF == ord(&quot;q&quot;):
+    key = cv2.waitKey(1) & 0xFF
+    if key == ord("q") or key == ord("Q") or key == 27:  # q, Q, or Esc
+        break
+    # also exit if the user clicks the window's X button
+    if cv2.getWindowProperty("My Detector", cv2.WND_PROP_VISIBLE) < 1:
         break
 
 cap.release()
