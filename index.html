@@ -5261,7 +5261,7 @@ cv2.destroyAllWindows()</code></pre></figure>
 <hr class="lesson-divider" />
 <div class="lesson-body">
 
-<p class="lead">In Exercise A you ran detection on a webcam plugged into your laptop. That works for a desktop demo but it is useless for a robot. A robot moves. It cannot drag a USB cable behind it. The camera must be wireless.</p>
+<p class="lead">In Exercise A you ran detection on a webcam plugged into your laptop. That works for a desktop demo but it is useless for a robot. A robot moves. It cannot drag a USB cable behind it unless you mount the whole computer on the robot, which sometimes may be impractical. The camera must be wireless.</p>
 <p>A phone is the perfect solution for learning. It already has a high quality camera, a battery, WiFi, and a screen. Both apps we use turn the phone into a network camera that streams live video over your local WiFi. Your laptop connects to that stream over the network exactly the way a browser loads a video: no cable, no Bluetooth, no special hardware.</p>
 <p>This is also exactly how Project 1's robot works. The <code>MobileVideoStream</code> class in <code>shared.py</code> connects to a phone stream using the same URL format you will set up in this exercise. By the end of Exercise B you will understand every line of that class.</p>
 <div class="callout robotics" role="note"><div class="callout-icon">⚙</div><div><div class="callout-title">Same architecture, smaller scale</div><p>Professional mobile robots use the same concept at a higher level. A drone streams its camera feed over WiFi or 4G to a ground station running detection algorithms. An autonomous vehicle streams from multiple cameras to an onboard computer. The architecture is identical to what you are building here: the difference is bandwidth and latency.</p></div></div>
@@ -5289,7 +5289,7 @@ cv2.destroyAllWindows()</code></pre></figure>
 <div class="lesson-body">
 
 <div class="steps">
-<div class="step"><div><strong>Install IP Webcam.</strong><br />Open the Play Store on your Android phone. Search for <strong>IP Webcam</strong> by Pavel Khlebovich. Install it. It is free with no required account.</div></div>
+<div class="step"><div><strong>Install IP Webcam.</strong><br />Open the Play Store on your Android phone. Search for <a href="https://play.google.com/store/apps/details?id=com.pas.webcam" target="_blank" rel="noreferrer"><strong>IP Webcam</strong></a> by Thyoni Tech (used to be by Pavel Khlebovich before). Install it. It is free with no required account.</div></div>
 <div class="step"><div><strong>Open the app.</strong><br />Open IP Webcam. You will see a long list of settings. Leave everything at the default for now. Scroll all the way to the bottom of the settings list.</div></div>
 <div class="step"><div><strong>Start the server.</strong><br />Tap <strong>Start server</strong> at the very bottom of the screen. The phone screen turns into a live camera preview.</div></div>
 </div>
