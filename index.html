@@ -5825,7 +5825,7 @@ frame = cv2.imdecode(...)             # decode bytes into an image array</code><
 
 <h3>Hardware Interrupts</h3>
 <p>A common beginner mistake is reading encoder pulses inside <code>loop()</code> using <code>digitalRead()</code>. That can work slowly by hand, but motors produce pulses quickly. The main loop might be busy printing to Serial, checking a target distance, or updating motor power. If the loop is busy when a pulse arrives, that pulse is missed.</p>
-<p>Hardware interrupts solve this. When a pin interrupt fires, the Arduino pauses the current code, runs a tiny function called an ISR, and then resumes. The ISR should be extremely short because it can interrupt anything else the sketch is doing.</p>
+<p>Hardware interrupts solve this. When a pin interrupt fires, the Arduino pauses the current code, runs a tiny function called an Interrupt Service Routine (ISR), and then resumes. The ISR should be extremely short because it can interrupt anything else the sketch is doing.</p>
 <div class="grid-2">
 <div class="card"><h4>Good ISR behavior</h4><ul><li>Increment or decrement one counter.</li><li>Use variables declared as <code>volatile</code>.</li><li>Return immediately.</li></ul></div>
 <div class="card"><h4>Bad ISR behavior</h4><ul><li>Do not use <code>Serial.print()</code>.</li><li>Do not call <code>delay()</code>.</li><li>Do not run slow calculations.</li></ul></div>
@@ -5860,7 +5860,7 @@ void rightEncoderISR() {
 <hr class="lesson-divider" />
 <div class="lesson-body">
 
-<p class="lead">The custom motor shield plugs directly onto the Arduino UNO R4 WiFi. There is no external motor driver module to wire. The TB6612FNG chip is already on the shield. Your only wiring tasks are connecting the motors to the shield screw terminals, connecting encoder signal wires to specific Arduino pins, connecting the RGB LED, and connecting the battery.</p>
+<p class="lead">The SnappyXO motor shield plugs directly onto the Arduino UNO R4 WiFi. There is no external motor driver module to wire. The TB6612FNG chip is already on the shield. Your only wiring tasks are connecting the motors to the shield screw terminals, connecting encoder signal wires to specific Arduino pins, connecting the RGB LED, and connecting the battery.</p>
 <p>Work through each group one at a time. After each group, do a visual check before moving to the next one.</p>
 
 <h3>Connection Group 1: Motor Shield</h3>
@@ -5868,7 +5868,7 @@ void rightEncoderISR() {
 <div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">Pins reserved by the shield</div><p>The shield uses Arduino pins <code>4</code>, <code>5</code>, and <code>6</code> for Motor #1, and pins <code>11</code>, <code>12</code>, and <code>13</code> for Motor #2. Do not connect anything else to those pins.</p></div></div>
 
 <h3>Connection Group 2: Motors to Shield Screw Terminals</h3>
-<p>Connect the two motor power wires to the green screw terminals on the right side of the shield labeled DC Motors.</p>
+<p>Connect the motor power wires to the green screw terminals labeled DC Motors.</p>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Motor wire</th><th>Terminal on shield</th></tr></thead><tbody>
 <tr><td>Left motor +</td><td><code>DC Motor #1 +</code></td></tr>
 <tr><td>Left motor -</td><td><code>DC Motor #1 -</code></td></tr>
@@ -5903,11 +5903,11 @@ void rightEncoderISR() {
 
 <h3>Connection Group 5: Battery Power</h3>
 <div class="table-wrap"><table class="data-table"><thead><tr><th>Wire</th><th>Where to connect</th></tr></thead><tbody>
-<tr><td>7.4V battery positive (+)</td><td>Shield <code>VM</code> or <code>VIN</code> screw terminal.</td></tr>
-<tr><td>7.4V battery negative (-)</td><td>Shield <code>GND</code> screw terminal.</td></tr>
+<tr><td>6V battery positive (+)</td><td>Shield <code>Battery +</code> screw terminal.</td></tr>
+<tr><td>6V battery negative (-)</td><td>Shield <code>Battery -</code> screw terminal.</td></tr>
 </tbody></table></div>
 <div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">Connect battery last</div><p>Connect the battery last, after all other wiring is complete and double-checked. Disconnect the battery first before making any wiring changes. A wiring error with the battery connected can damage the motor driver chip instantly.</p></div></div>
-<p>Set the shield jumper to <code>BATT PWR</code> when running on battery with motors active. Set it to <code>UNO PWR</code> when running on USB only for uploading and testing encoder reads without motors. Never set both jumpers at the same time.</p>
+
 
 <h3>Pins Available for Future Use</h3>
 <p>These pins are completely free and are not used by the shield, encoders, or LED: <code>7</code>, <code>9</code>, <code>10</code>, <code>A1</code>, <code>A2</code>, <code>A4</code>, and <code>A5</code>. They are available for additional sensors, a buzzer, or other peripherals in later projects.</p>
