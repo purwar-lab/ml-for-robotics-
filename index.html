@@ -187,6 +187,10 @@
 <a class="lesson-link" href="?lesson=projD-project1" data-lesson-link="projD-project1"><span>PD.7 Connect to Project 1</span><span class="completion-dot" aria-hidden="true"></span></a>
 </div>
 </div>
+<div class="lesson-group" data-chapter="projE" style="--chapter-accent:#06b6d4">
+<button class="lesson-group-header" type="button" aria-expanded="false"><span>* Exercise E: Pan-Tilt Ball Tracker</span><span class="group-chevron">v</span></button>
+<div class="lesson-group-body"><a class="lesson-link is-exercise" href="?lesson=projE-overview" data-lesson-link="projE-overview"><span>* PE.0 What You Are Building</span><span class="completion-dot" aria-hidden="true"></span></a><a class="lesson-link" href="?lesson=projE-servo" data-lesson-link="projE-servo"><span>PE.1 Servo Motors</span><span class="completion-dot" aria-hidden="true"></span></a><a class="lesson-link" href="?lesson=projE-mechanism" data-lesson-link="projE-mechanism"><span>PE.2 Pan-Tilt Mechanism</span><span class="completion-dot" aria-hidden="true"></span></a><a class="lesson-link" href="?lesson=projE-get-code" data-lesson-link="projE-get-code"><span>PE.3 Get the Code</span><span class="completion-dot" aria-hidden="true"></span></a><a class="lesson-link" href="?lesson=projE-arduino" data-lesson-link="projE-arduino"><span>PE.4 Arduino Sketch</span><span class="completion-dot" aria-hidden="true"></span></a><a class="lesson-link" href="?lesson=projE-protocol" data-lesson-link="projE-protocol"><span>PE.5 SERVO Protocol</span><span class="completion-dot" aria-hidden="true"></span></a><a class="lesson-link" href="?lesson=projE-config" data-lesson-link="projE-config"><span>PE.6 Configuration</span><span class="completion-dot" aria-hidden="true"></span></a><a class="lesson-link" href="?lesson=projE-velocity-pid" data-lesson-link="projE-velocity-pid"><span>PE.7 Velocity PID</span><span class="completion-dot" aria-hidden="true"></span></a><a class="lesson-link" href="?lesson=projE-tracker-class" data-lesson-link="projE-tracker-class"><span>PE.8 PanTiltTracker</span><span class="completion-dot" aria-hidden="true"></span></a><a class="lesson-link" href="?lesson=projE-dual-pid" data-lesson-link="projE-dual-pid"><span>PE.9 Two PIDs</span><span class="completion-dot" aria-hidden="true"></span></a><a class="lesson-link" href="?lesson=projE-main-loop" data-lesson-link="projE-main-loop"><span>PE.10 Main Loop</span><span class="completion-dot" aria-hidden="true"></span></a><a class="lesson-link" href="?lesson=projE-running" data-lesson-link="projE-running"><span>PE.11 Running</span><span class="completion-dot" aria-hidden="true"></span></a><a class="lesson-link" href="?lesson=projE-dots" data-lesson-link="projE-dots"><span>PE.12 Connecting Dots</span><span class="completion-dot" aria-hidden="true"></span></a></div>
+</div>
 <div class="lesson-group" data-chapter="proj1" style="--chapter-accent:#f97316">
 <button class="lesson-group-header" type="button" aria-expanded="false"><span>★ Project 1: Object Tracker</span><span class="group-chevron">v</span></button>
 <div class="lesson-group-body">
@@ -367,6 +371,14 @@
 <p>Send UDP motor commands from Python, receive live encoder telemetry, and drive the robot from the keyboard.</p>
 <div class="chapter-card-progress"><div class="chapter-card-bar"><span></span></div><small data-card-progress="projD">0 / 8 complete</small></div>
 <a class="chapter-start-btn" href="?lesson=projD-udp" data-lesson-link="projD-udp">Start</a>
+</article>
+<article class="chapter-card" data-chapter-card="projE" style="--chapter-accent:#06b6d4">
+<div class="chapter-card-strip"></div>
+<div class="chapter-card-top"><span>Exercise E</span><span>13 lessons</span></div>
+<h2>Pan-Tilt Ball Tracker</h2>
+<p>Use YOLO and two velocity-mode PID loops to center a ball by rotating a camera with servos.</p>
+<div class="chapter-card-progress"><div class="chapter-card-bar"><span></span></div><small data-card-progress="projE">0 / 13 complete</small></div>
+<a class="chapter-start-btn" href="?lesson=projE-overview" data-lesson-link="projE-overview">Start</a>
 </article>
 <article class="chapter-card" data-chapter-card="proj1" style="--chapter-accent:#f97316">
 <div class="chapter-card-strip"></div>
@@ -7635,8 +7647,1534 @@ class Telemetry:
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projD-project1">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
 <a class="lesson-nav-btn" href="?lesson=projD-loop" data-lesson-link="projD-loop"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PD.6 Full Loop</span></a>
-<a class="lesson-nav-btn next" href="?lesson=proj1-overview" data-lesson-link="proj1-overview"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">Project 1 &rarr;</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projE-overview" data-lesson-link="projE-overview"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">Exercise E &rarr;</span></a>
 </nav>
+</article>
+
+<article class="lesson-content exercise-lesson" data-lesson="projE-overview" data-chapter="projE" data-chapter-title="* Exercise E: Pan-Tilt Ball Tracker" style="--chapter-accent:#06b6d4;--chapter-color:#06b6d4">
+<div class="lesson-kicker">* Exercise E: Pan-Tilt Ball Tracker <span>&rsaquo;</span> PE.0 What You Are Building</div>
+<h1>PE.0 What You Are Building</h1>
+<div class="lesson-meta"><span>Exercise</span><span>YOLO + servos</span><span>10 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p class="lead">In Projects 1 and 2 the camera was mounted on a robot that moved its whole body to follow a target. This exercise keeps the robot fixed and moves only the camera with two small servos.</p>
+<p>A pan-tilt mount is the same idea used in tracking security cameras, telescope mounts, and camera gimbals. The system has one camera, two servo motors, one YOLO model, and two PID controllers running at the same time.</p>
+<div class="diagram pe-system-diagram" aria-label="Pan tilt tracking system diagram">
+  <div class="pe-system-row"><div class="flow-node">Phone Camera<br /><span class="mini muted">MJPEG over WiFi</span></div><div class="arrow">&rarr;</div><div class="flow-node">Laptop Python<br /><span class="mini muted">YOLO finds cx, cy</span></div></div>
+  <div class="pe-system-row"><div class="flow-node">PAN PID<br /><span class="mini muted">horizontal error to delta angle</span></div><div class="flow-node">TILT PID<br /><span class="mini muted">vertical error to delta angle</span></div></div>
+  <div class="pe-system-row"><div class="flow-node">UDP command<br /><code>SERVO,pan,tilt</code></div><div class="arrow">&rarr;</div><div class="flow-node">Arduino UNO R4 WiFi<br /><span class="mini muted">drives pan and tilt servos</span></div></div>
+  <div class="pe-return-path">Arduino replies with <code>SERVO_ACK,current_pan,current_tilt</code>.</div>
+</div>
+<h3>What Is New</h3>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Concept</th><th>Where you saw it</th><th>What is new here</th></tr></thead><tbody>
+<tr><td>YOLO detection</td><td>Exercise A, Project 1</td><td>Same model call.</td></tr>
+<tr><td>Phone stream</td><td>Exercise B</td><td>Same <code>MobileVideoStream</code>.</td></tr>
+<tr><td>UDP communication</td><td>Exercise D</td><td>New packet: <code>SERVO,pan,tilt</code>.</td></tr>
+<tr><td>PID controller</td><td>Project 1</td><td>Velocity mode: add the output to an angle.</td></tr>
+<tr><td>DC motors</td><td>Exercises C and D</td><td>Replaced by servo motors.</td></tr>
+</tbody></table></div></div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projE-overview">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons"><a class="lesson-nav-btn" href="?lesson=projD-project1" data-lesson-link="projD-project1"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PD.7 Project 1 Bridge</span></a><a class="lesson-nav-btn next" href="?lesson=projE-servo" data-lesson-link="projE-servo"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PE.1 Servo Motors &rarr;</span></a></nav>
+</article>
+<article class="lesson-content" data-lesson="projE-servo" data-chapter="projE" data-chapter-title="* Exercise E: Pan-Tilt Ball Tracker" style="--chapter-accent:#06b6d4;--chapter-color:#06b6d4">
+<div class="lesson-kicker">* Exercise E: Pan-Tilt Ball Tracker <span>&rsaquo;</span> PE.1 What Is a Servo Motor?</div>
+<h1>PE.1 What Is a Servo Motor?</h1>
+<div class="lesson-meta"><span>Hardware</span><span>Servo basics</span><span>12 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p class="lead">A DC motor spins continuously when powered. A servo motor moves to a commanded angle and holds that position.</p>
+<p>A servo has a built-in position sensor and control circuit. You tell it <code>servo.write(90)</code>, and the Arduino Servo library generates the timing signal that makes the motor move to 90 degrees.</p>
+<div class="pe-timing-grid">
+  <div class="card"><h4>1 ms pulse</h4><p>Servo goes near 0 degrees.</p></div>
+  <div class="card"><h4>1.5 ms pulse</h4><p>Servo goes near 90 degrees.</p></div>
+  <div class="card"><h4>2 ms pulse</h4><p>Servo goes near 180 degrees.</p></div>
+</div>
+<div class="callout info" role="note"><div class="callout-icon">i</div><div><div class="callout-title">Servo vs DC motor</div><p>Use a servo when you need position control. Use a DC motor when you need continuous rotation. A camera mount needs to point at a specific angle, so servos are the correct choice.</p></div></div>
+<h3>Servo Angle Range</h3>
+<p>Most hobby servos rotate from 0 to 180 degrees. This exercise clamps pan to <code>10..170</code> and tilt to <code>30..150</code> to keep the mount and camera cable away from mechanical limits.</p>
+<div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">Never command past the physical stop</div><p>The Arduino <code>clampAngle()</code> function and Python <code>np.clip()</code> call both exist to prevent overheating a stalled servo.</p></div></div></div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projE-servo">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons"><a class="lesson-nav-btn" href="?lesson=projE-overview" data-lesson-link="projE-overview"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PE.0 What You Are Building</span></a><a class="lesson-nav-btn next" href="?lesson=projE-mechanism" data-lesson-link="projE-mechanism"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PE.2 Pan-Tilt Mechanism &rarr;</span></a></nav>
+</article>
+<article class="lesson-content" data-lesson="projE-mechanism" data-chapter="projE" data-chapter-title="* Exercise E: Pan-Tilt Ball Tracker" style="--chapter-accent:#06b6d4;--chapter-color:#06b6d4">
+<div class="lesson-kicker">* Exercise E: Pan-Tilt Ball Tracker <span>&rsaquo;</span> PE.2 The Pan-Tilt Mechanism</div>
+<h1>PE.2 The Pan-Tilt Mechanism</h1>
+<div class="lesson-meta"><span>Mechanism</span><span>Mounting</span><span>10 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p class="lead">A pan-tilt mechanism is two servo motors mounted at 90 degrees to each other. One controls left-right pan. The other controls up-down tilt.</p>
+<div class="grid-2">
+<article class="card"><h3>Top view</h3><div class="pe-axis-demo pe-pan-axis"><span>left</span><strong>Pan servo</strong><span>right</span></div><p>The pan axis rotates the camera horizontally.</p></article>
+<article class="card"><h3>Side view</h3><div class="pe-axis-demo pe-tilt-axis"><span>up</span><strong>Tilt servo</strong><span>down</span></div><p>The tilt axis raises and lowers the camera.</p></article>
+</div>
+<h3>Home Position</h3>
+<p><code>PAN_HOME = 90</code> points straight ahead. <code>TILT_HOME = 40</code> points slightly downward, useful when the ball is on a table or floor.</p>
+<div class="callout tip" role="note"><div class="callout-icon">OK</div><div><div class="callout-title">First upload test</div><p>When the Arduino sketch starts, both servos immediately move to home. That confirms power, signal wiring, and pin choices before Python runs.</p></div></div>
+<h3>Inversion Variables</h3>
+<p>If the camera moves the wrong way, change the matching Python flag: <code>PAN_INVERT</code> or <code>TILT_INVERT</code>. No rewiring is required.</p></div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projE-mechanism">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons"><a class="lesson-nav-btn" href="?lesson=projE-servo" data-lesson-link="projE-servo"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PE.1 Servo Motors</span></a><a class="lesson-nav-btn next" href="?lesson=projE-get-code" data-lesson-link="projE-get-code"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PE.3 Get the Code &rarr;</span></a></nav>
+</article>
+<article class="lesson-content" data-lesson="projE-get-code" data-chapter="projE" data-chapter-title="* Exercise E: Pan-Tilt Ball Tracker" style="--chapter-accent:#06b6d4;--chapter-color:#06b6d4">
+<div class="lesson-kicker">* Exercise E: Pan-Tilt Ball Tracker <span>&rsaquo;</span> PE.3 Get the Code</div>
+<h1>PE.3 Get the Code</h1>
+<div class="lesson-meta"><span>Code</span><span>Downloads</span><span>15 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p class="lead">Place these files in the same folder as <code>shared.py</code> and <code>best.pt</code>. Open the Arduino sketch in Arduino IDE and upload it to the UNO R4 WiFi.</p>
+<div class="grid-2">
+<article class="card download-card"><h3>shared.py</h3><p>Already used in Projects 1 and 2. Keep it beside the tracker script.</p><a class="download-card-btn" href="shared.py" download>Download</a></article>
+<article class="card download-card"><h3>pan_and_tilt.py</h3><p>The Python YOLO tracker and servo commander.</p><a class="download-card-btn" href="pan_and_tilt.py" download>Download</a></article>
+<article class="card download-card"><h3>pan_tilt_arduino.ino</h3><p>The Arduino servo-over-WiFi sketch.</p><a class="download-card-btn" href="pan_tilt_arduino.ino" download>Download</a></article>
+<article class="card download-card"><h3>test_servos.py</h3><p>A quick command-only test before running YOLO.</p><a class="download-card-btn" href="test_servos.py" download>Download</a></article>
+</div>
+<h3>Values You Must Fill In</h3>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>File</th><th>Variable</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>pan_and_tilt.py</code></td><td><code>ESP_IP</code></td><td>Arduino IP from Serial Monitor.</td></tr>
+<tr><td><code>pan_and_tilt.py</code></td><td><code>MOBILE_IP</code></td><td>Phone camera app IP address.</td></tr>
+<tr><td><code>pan_and_tilt.py</code></td><td><code>TARGET_OBJECT</code></td><td>Your YOLO class name, usually <code>ball</code>.</td></tr>
+<tr><td><code>pan_and_tilt.py</code></td><td><code>PAN_INVERT</code>, <code>TILT_INVERT</code></td><td>Set to <code>True</code> only if an axis moves backward.</td></tr>
+<tr><td><code>pan_tilt_arduino.ino</code></td><td><code>SSID</code>, <code>PASSWORD</code></td><td>Your WiFi network name and password.</td></tr>
+</tbody></table></div>
+<div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">Fill in WiFi first</div><p>If <code>SSID</code> or <code>PASSWORD</code> is wrong, the Arduino will never print an IP address and Python cannot reach it.</p></div></div>
+<details class="solution"><summary>Complete Python file - loads from <code>pan_and_tilt.py</code></summary><figure class="code-card" data-runnable="false" data-chapter="projE" data-filename="pan_and_tilt.py" data-download-filename="pan_and_tilt.py" data-lang="python"><figcaption><span>Complete pan_and_tilt.py</span><span class="local-run-badge">VS Code</span></figcaption><script type="text/plain" class="code-source">"""
+pan_and_tilt.py
+
+YOLO ball tracker for a fixed pan-tilt camera rig.
+
+Architecture:
+  - A phone streams camera frames over WiFi.
+  - YOLO detects the target object in each frame.
+  - One PID controls pan from horizontal image error.
+  - One PID controls tilt from vertical image error.
+  - Each PID outputs degrees per frame, which are added to the current angle.
+  - Python sends UDP packets as SERVO,<pan>,<tilt> to the Arduino.
+  - The Arduino replies with SERVO_ACK,<pan>,<tilt> for the HUD.
+
+Place this file in the same folder as shared.py and best.pt.
+"""
+
+import socket
+import threading
+import time
+
+import cv2
+import numpy as np
+
+from shared import PID, MobileVideoStream, RobotState
+
+
+# -----------------------------------------------------------------------------
+# CONFIGURATION - fill these in for your setup
+# -----------------------------------------------------------------------------
+
+# Network
+ESP_IP = "192.168.x.x"       # Arduino IP from Serial Monitor
+MOBILE_IP = "192.168.x.x"    # Phone IP from IP Webcam or Simple IP Camera
+UDP_CMD_PORT = 5001
+UDP_TELEM_PORT = 5002
+
+# Vision
+TARGET_OBJECT = "ball"
+
+# Servo physical limits in degrees
+PAN_MIN, PAN_MAX = 10, 170
+TILT_MIN, TILT_MAX = 30, 150
+PAN_HOME = 90
+TILT_HOME = 40
+
+# Flip these if the camera moves the wrong direction on that axis.
+PAN_INVERT = False
+TILT_INVERT = False
+
+# Ignore tiny image errors near center to prevent buzzing.
+ANGLE_DEAD_ZONE_H = 0.03
+ANGLE_DEAD_ZONE_V = 0.01
+
+# PID gains for velocity-mode output in degrees per frame.
+PAN_KP = 8.0
+PAN_KI = 0.0
+PAN_KD = 2.0
+MAX_PAN_SPEED = 3.0
+MAX_PAN_INTEGRAL = 0.3
+
+TILT_KP = 6.0
+TILT_KI = 0.0
+TILT_KD = 1.5
+MAX_TILT_SPEED = 3.0
+MAX_TILT_INTEGRAL = 0.3
+
+# State machine
+ACQUIRE_FRAMES = 5
+LOST_TIMEOUT = 1.2
+SEARCH_PAN_SPEED = 1.5
+SEARCH_TILT_SPEED = 0.0
+CMD_INTERVAL = 0.03
+
+
+# -----------------------------------------------------------------------------
+# COMMANDER - sends SERVO commands to the Arduino
+# -----------------------------------------------------------------------------
+
+class ServoCommander:
+    """Sends UDP servo commands to the Arduino."""
+
+    def __init__(self, ip, port):
+        self._ip = ip
+        self._port = port
+        self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+    def _send(self, message):
+        self._sock.sendto(message.encode("utf-8"), (self._ip, self._port))
+
+    def servos(self, pan, tilt):
+        """Send absolute servo angles in integer degrees."""
+        self._send(f"SERVO,{int(pan)},{int(tilt)}")
+
+    def home(self):
+        """Ask the Arduino to return both servos to their home angles."""
+        self._send("HOME")
+
+    def stop(self):
+        """Ask the Arduino to home the rig before the Python script exits."""
+        self._send("STOP")
+        self._sock.close()
+
+
+# -----------------------------------------------------------------------------
+# TELEMETRY - receives optional SERVO_ACK packets from the Arduino
+# -----------------------------------------------------------------------------
+
+class ServoTelemetry:
+    """
+    Receives SERVO_ACK,pan,tilt packets from the Arduino.
+
+    Servos do not provide encoder feedback in this project. The ACK contains the
+    Arduino's current commanded angle after its smoothing step.
+    """
+
+    def __init__(self, port):
+        self.pan = PAN_HOME
+        self.tilt = TILT_HOME
+        self.running = True
+        self._lock = threading.Lock()
+        self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self._sock.bind(("", port))
+        self._sock.settimeout(1.0)
+        threading.Thread(target=self._run, daemon=True).start()
+
+    def _run(self):
+        while self.running:
+            try:
+                data, _ = self._sock.recvfrom(64)
+                parts = data.decode("utf-8").strip().split(",")
+                if parts[0] == "SERVO_ACK" and len(parts) == 3:
+                    with self._lock:
+                        self.pan = int(parts[1])
+                        self.tilt = int(parts[2])
+            except (OSError, socket.timeout, UnicodeDecodeError, ValueError):
+                pass
+
+    def read(self):
+        with self._lock:
+            return {"pan": self.pan, "tilt": self.tilt}
+
+    def stop(self):
+        self.running = False
+        self._sock.close()
+
+
+# -----------------------------------------------------------------------------
+# PAN-TILT TRACKER
+# -----------------------------------------------------------------------------
+
+class PanTiltTracker:
+    """YOLO-based target tracker that drives two independent servo axes."""
+
+    STATE_COLORS = {
+        RobotState.STOPPED: (100, 100, 100),
+        RobotState.SEARCHING: (255, 165, 0),
+        RobotState.ACQUIRING: (255, 255, 0),
+        RobotState.TRACKING: (0, 255, 0),
+    }
+
+    def __init__(self, model_path, target):
+        print("Loading YOLO model...")
+        from ultralytics import YOLO
+
+        self.model = YOLO(model_path)
+        self.target = target
+
+        try:
+            self.model.to("cuda")
+            print("  Using CUDA")
+        except Exception:
+            print("  Using CPU")
+        self.model.fuse()
+
+        self.pid_pan = PID(
+            PAN_KP,
+            PAN_KI,
+            PAN_KD,
+            max_integral=MAX_PAN_INTEGRAL,
+            output_limits=(-MAX_PAN_SPEED, MAX_PAN_SPEED),
+        )
+        self.pid_tilt = PID(
+            TILT_KP,
+            TILT_KI,
+            TILT_KD,
+            max_integral=MAX_TILT_INTEGRAL,
+            output_limits=(-MAX_TILT_SPEED, MAX_TILT_SPEED),
+        )
+
+        self.pan_angle = float(PAN_HOME)
+        self.tilt_angle = float(TILT_HOME)
+
+        self.state = RobotState.STOPPED
+        self.acquire_count = 0
+        self.last_seen_t = 0.0
+        self.last_turn_dir = 1.0
+        self.speed_limit = 1.0
+
+    def _detect(self, frame):
+        """Return the largest target bounding box as (x1, y1, x2, y2), or None."""
+        results = self.model(frame, imgsz=320, verbose=False, conf=0.60)
+        best = None
+        best_area = 0
+
+        for result in results:
+            for box in result.boxes:
+                class_name = self.model.names[int(box.cls[0])]
+                if class_name != self.target:
+                    continue
+
+                x1, y1, x2, y2 = map(int, box.xyxy[0].cpu().numpy())
+                area = (x2 - x1) * (y2 - y1)
+                if area > best_area:
+                    best_area = area
+                    best = (x1, y1, x2, y2)
+
+        return best
+
+    def _update_state(self, found):
+        if found:
+            self.last_seen_t = time.time()
+            if self.state in (RobotState.STOPPED, RobotState.SEARCHING):
+                self.state = RobotState.ACQUIRING
+                self.acquire_count = 0
+                self.speed_limit = 0.4
+            elif self.state == RobotState.ACQUIRING:
+                self.acquire_count += 1
+                self.speed_limit = 0.4 + 0.6 * self.acquire_count / ACQUIRE_FRAMES
+                if self.acquire_count >= ACQUIRE_FRAMES:
+                    self.state = RobotState.TRACKING
+                    self.speed_limit = 1.0
+            else:
+                self.speed_limit = 1.0
+            return
+
+        elapsed = time.time() - self.last_seen_t
+        if elapsed < LOST_TIMEOUT:
+            self.state = RobotState.SEARCHING
+            self.speed_limit = 0.4
+        else:
+            self.state = RobotState.STOPPED
+            self.speed_limit = 0.0
+            self.pid_pan.reset()
+            self.pid_tilt.reset()
+
+    def control(self, frame):
+        """
+        Run one detection and control cycle.
+
+        Returns:
+            pan_angle, tilt_angle, debug_dict
+        """
+        h, w = frame.shape[:2]
+        bbox = self._detect(frame)
+        self._update_state(bbox is not None)
+
+        if bbox is not None:
+            x1, y1, x2, y2 = bbox
+            cx = (x1 + x2) / 2
+            cy = (y1 + y2) / 2
+
+            err_pan = (cx - w / 2) / w
+            err_tilt = (cy - h / 2) / h
+
+            if abs(err_pan) < ANGLE_DEAD_ZONE_H:
+                err_pan = 0.0
+            if abs(err_tilt) < ANGLE_DEAD_ZONE_V:
+                err_tilt = 0.0
+
+            if err_pan != 0.0:
+                self.last_turn_dir = float(np.sign(err_pan))
+
+            pan_sign = -1.0 if PAN_INVERT else 1.0
+            tilt_sign = -1.0 if TILT_INVERT else 1.0
+
+            # PID outputs angular velocity in degrees per frame.
+            delta_pan = self.pid_pan.update(err_pan) * self.speed_limit * pan_sign
+            delta_tilt = self.pid_tilt.update(err_tilt) * self.speed_limit * tilt_sign
+            debug_cx, debug_cy = int(cx), int(cy)
+
+        elif self.state == RobotState.SEARCHING:
+            if self.pan_angle <= PAN_MIN + 1:
+                self.last_turn_dir = 1.0
+            elif self.pan_angle >= PAN_MAX - 1:
+                self.last_turn_dir = -1.0
+
+            delta_pan = SEARCH_PAN_SPEED * self.last_turn_dir * self.speed_limit
+            delta_tilt = SEARCH_TILT_SPEED
+            err_pan = 0.0
+            err_tilt = 0.0
+            debug_cx, debug_cy = w // 2, h // 2
+
+        else:
+            delta_pan = 0.0
+            delta_tilt = 0.0
+            err_pan = 0.0
+            err_tilt = 0.0
+            debug_cx, debug_cy = w // 2, h // 2
+
+        self.pan_angle = float(np.clip(self.pan_angle + delta_pan, PAN_MIN, PAN_MAX))
+        self.tilt_angle = float(np.clip(self.tilt_angle + delta_tilt, TILT_MIN, TILT_MAX))
+
+        debug = {
+            "state": self.state,
+            "bbox": bbox,
+            "err_pan": err_pan,
+            "err_tilt": err_tilt,
+            "delta_pan": delta_pan,
+            "delta_tilt": delta_tilt,
+            "pan_angle": self.pan_angle,
+            "tilt_angle": self.tilt_angle,
+            "speed_limit": self.speed_limit,
+            "cx": debug_cx,
+            "cy": debug_cy,
+        }
+        return round(self.pan_angle), round(self.tilt_angle), debug
+
+    def home(self):
+        self.pan_angle = float(PAN_HOME)
+        self.tilt_angle = float(TILT_HOME)
+        self.pid_pan.reset()
+        self.pid_tilt.reset()
+
+
+# -----------------------------------------------------------------------------
+# VISUALIZATION
+# -----------------------------------------------------------------------------
+
+def draw_overlay(frame, debug, pan, tilt, telem, scale_x=1.0, scale_y=1.0):
+    h, w = frame.shape[:2]
+    state_color = PanTiltTracker.STATE_COLORS.get(debug["state"], (255, 255, 255))
+
+    cx_frame, cy_frame = w // 2, h // 2
+    cv2.line(frame, (cx_frame, 0), (cx_frame, h), (0, 255, 0), 1)
+    cv2.line(frame, (0, cy_frame), (w, cy_frame), (0, 255, 0), 1)
+
+    if debug["bbox"] is not None:
+        x1, y1, x2, y2 = debug["bbox"]
+        x1 = int(x1 * scale_x)
+        y1 = int(y1 * scale_y)
+        x2 = int(x2 * scale_x)
+        y2 = int(y2 * scale_y)
+        cx_scaled = int(debug["cx"] * scale_x)
+        cy_scaled = int(debug["cy"] * scale_y)
+
+        centered = (
+            abs(debug["err_pan"]) < ANGLE_DEAD_ZONE_H
+            and abs(debug["err_tilt"]) < ANGLE_DEAD_ZONE_V
+        )
+        box_color = (0, 255, 0) if centered else (0, 165, 255)
+        cv2.rectangle(frame, (x1, y1), (x2, y2), box_color, 2)
+        cv2.circle(frame, (cx_scaled, cy_scaled), 6, (0, 0, 255), -1)
+        cv2.line(frame, (cx_frame, cy_frame), (cx_scaled, cy_scaled), (0, 200, 255), 1)
+
+    lines = [
+        (f"STATE:  {debug['state']}", state_color),
+        (f"PAN:    {pan:3d} deg  err:{debug['err_pan']:+.3f}", (0, 255, 255)),
+        (f"TILT:   {tilt:3d} deg  err:{debug['err_tilt']:+.3f}", (255, 200, 0)),
+        (
+            f"dPAN:  {debug['delta_pan']:+.2f} deg/f  "
+            f"dTILT:{debug['delta_tilt']:+.2f} deg/f",
+            (200, 200, 200),
+        ),
+        (f"SPD LIM: {debug['speed_limit']:.0%}", (255, 255, 255)),
+        (f"TELEM pan:{telem['pan']} deg  tilt:{telem['tilt']} deg", (255, 165, 0)),
+    ]
+
+    for i, (text, color) in enumerate(lines):
+        bold = i in (0, 1, 2)
+        cv2.putText(
+            frame,
+            text,
+            (10, 25 + i * 25),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.60 if bold else 0.50,
+            color,
+            2 if bold else 1,
+        )
+
+
+# -----------------------------------------------------------------------------
+# MAIN LOOP
+# -----------------------------------------------------------------------------
+
+def main():
+    stream_url = f"http://{MOBILE_IP}:8080/video"
+    print(f"Video stream : {stream_url}")
+    print(f"ESP target   : {ESP_IP}:{UDP_CMD_PORT}")
+
+    video = MobileVideoStream(stream_url)
+    commander = ServoCommander(ESP_IP, UDP_CMD_PORT)
+    telemetry = ServoTelemetry(UDP_TELEM_PORT)
+
+    print("Waiting for camera", end="", flush=True)
+    for _ in range(30):
+        if video.connected:
+            break
+        time.sleep(0.5)
+        print(".", end="", flush=True)
+    print()
+
+    if not video.connected:
+        print("Could not connect to camera. Check MOBILE_IP and the camera app.")
+        video.stop()
+        telemetry.stop()
+        return
+
+    tracker = PanTiltTracker("best.pt", TARGET_OBJECT)
+    commander.home()
+    time.sleep(0.5)
+
+    print(f"\nTracking: {TARGET_OBJECT}")
+    print("Q = quit   H = home servos   R = reset PIDs")
+    print("=" * 60)
+
+    last_fid = -1
+    last_cmd_time = 0.0
+    fps_count = 0
+    fps_timer = time.time()
+
+    try:
+        while True:
+            frame, fid = video.read()
+            if frame is None or fid == last_fid:
+                time.sleep(0.005)
+                continue
+
+            last_fid = fid
+            frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
+
+            fps_count += 1
+            if fps_count >= 30:
+                elapsed = time.time() - fps_timer
+                fps = fps_count / elapsed
+                print(
+                    f"FPS:{fps:.1f}  pan:{tracker.pan_angle:.1f}  "
+                    f"tilt:{tracker.tilt_angle:.1f}  state:{tracker.state}"
+                )
+                fps_count = 0
+                fps_timer = time.time()
+
+            pan_cmd, tilt_cmd, debug = tracker.control(frame)
+
+            now = time.time()
+            if now - last_cmd_time >= CMD_INTERVAL:
+                commander.servos(pan_cmd, tilt_cmd)
+                last_cmd_time = now
+
+            orig_h, orig_w = frame.shape[:2]
+            disp = cv2.resize(frame, (640, 480))
+            draw_overlay(
+                disp,
+                debug,
+                pan_cmd,
+                tilt_cmd,
+                telemetry.read(),
+                640 / orig_w,
+                480 / orig_h,
+            )
+
+            cv2.imshow(f"Pan-Tilt Tracker - {TARGET_OBJECT}", disp)
+
+            key = cv2.waitKey(1) & 0xFF
+            if key == ord("q"):
+                break
+            if key == ord("h"):
+                tracker.home()
+                commander.home()
+                print(f"Servos homed to {PAN_HOME}/{TILT_HOME}")
+            elif key == ord("r"):
+                tracker.pid_pan.reset()
+                tracker.pid_tilt.reset()
+                print("PIDs reset")
+
+    finally:
+        print("\nShutting down...")
+        try:
+            commander.stop()
+        finally:
+            video.stop()
+            telemetry.stop()
+            cv2.destroyAllWindows()
+        print("Done.")
+
+
+if __name__ == "__main__":
+    main()
+</script></figure></details>
+<details class="solution"><summary>Complete Arduino sketch - loads from <code>pan_tilt_arduino.ino</code></summary><figure class="code-card" data-runnable="false" data-chapter="projE" data-filename="pan_tilt_arduino.ino" data-download-filename="pan_tilt_arduino.ino" data-lang="cpp" data-lang-label="Arduino"><figcaption><span>Complete pan_tilt_arduino.ino</span><span class="local-run-badge">Arduino</span></figcaption><script type="text/plain" class="code-source">#include <Servo.h>
+#include <WiFiS3.h>
+#include <WiFiUDP.h>
+
+// Fill in your WiFi network before uploading.
+const char* SSID = "YOUR_WIFI_NAME";
+const char* PASSWORD = "YOUR_WIFI_PASSWORD";
+
+const int UDP_PORT = 5001;
+const int TELEM_PORT = 5002;
+
+#define PAN_PIN  A1
+#define TILT_PIN 9
+
+const int PAN_MIN = 10;
+const int PAN_MAX = 170;
+const int TILT_MIN = 30;
+const int TILT_MAX = 150;
+const int PAN_HOME = 90;
+const int TILT_HOME = 40;
+
+const int SMOOTH_STEP = 2;
+const unsigned long SMOOTH_INTERVAL_MS = 20;
+
+Servo panServo;
+Servo tiltServo;
+
+int currentPan = PAN_HOME;
+int currentTilt = TILT_HOME;
+int targetPan = PAN_HOME;
+int targetTilt = TILT_HOME;
+
+WiFiUDP udp;
+char buf[64];
+
+IPAddress laptopIP;
+bool laptopKnown = false;
+unsigned long lastSmoothMs = 0;
+
+int clampAngle(int angle, int minAngle, int maxAngle) {
+  if (angle < minAngle) return minAngle;
+  if (angle > maxAngle) return maxAngle;
+  return angle;
+}
+
+int stepToward(int current, int target, int step) {
+  if (current == target) return current;
+
+  int delta = (target > current) ? step : -step;
+  int next = current + delta;
+
+  if ((delta > 0 && next > target) || (delta < 0 && next < target)) {
+    next = target;
+  }
+
+  return next;
+}
+
+void sendAck() {
+  if (!laptopKnown) return;
+
+  char ack[32];
+  snprintf(ack, sizeof(ack), "SERVO_ACK,%d,%d", currentPan, currentTilt);
+  udp.beginPacket(laptopIP, TELEM_PORT);
+  udp.write((const uint8_t*)ack, strlen(ack));
+  udp.endPacket();
+}
+
+void parseCommand(char* message) {
+  if (strncmp(message, "SERVO,", 6) == 0) {
+    int pan = 0;
+    int tilt = 0;
+    if (sscanf(message + 6, "%d,%d", &pan, &tilt) == 2) {
+      targetPan = clampAngle(pan, PAN_MIN, PAN_MAX);
+      targetTilt = clampAngle(tilt, TILT_MIN, TILT_MAX);
+    }
+  }
+  else if (strcmp(message, "HOME") == 0 || strcmp(message, "STOP") == 0) {
+    targetPan = PAN_HOME;
+    targetTilt = TILT_HOME;
+  }
+}
+
+void connectWiFi() {
+  Serial.print("Connecting to WiFi: ");
+  Serial.println(SSID);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    WiFi.begin(SSID, PASSWORD);
+
+    for (int i = 0; i < 20 && WiFi.status() != WL_CONNECTED; i++) {
+      delay(500);
+      Serial.print(".");
+    }
+  }
+
+  Serial.println();
+  Serial.print("Connected! IP: ");
+  Serial.println(WiFi.localIP());
+}
+
+void setup() {
+  Serial.begin(115200);
+  delay(1000);
+
+  panServo.attach(PAN_PIN);
+  tiltServo.attach(TILT_PIN);
+  panServo.write(PAN_HOME);
+  tiltServo.write(TILT_HOME);
+
+  connectWiFi();
+
+  udp.begin(UDP_PORT);
+  Serial.print("Listening for servo commands on UDP port ");
+  Serial.println(UDP_PORT);
+  Serial.println("Commands: SERVO,pan,tilt   HOME   STOP");
+}
+
+void loop() {
+  int packetSize = udp.parsePacket();
+  if (packetSize > 0) {
+    int len = udp.read(buf, sizeof(buf) - 1);
+    if (len > 0) {
+      buf[len] = '\0';
+      laptopIP = udp.remoteIP();
+      laptopKnown = true;
+      parseCommand(buf);
+    }
+  }
+
+  unsigned long now = millis();
+  if (now - lastSmoothMs >= SMOOTH_INTERVAL_MS) {
+    lastSmoothMs = now;
+
+    int nextPan = stepToward(currentPan, targetPan, SMOOTH_STEP);
+    int nextTilt = stepToward(currentTilt, targetTilt, SMOOTH_STEP);
+    bool moved = (nextPan != currentPan) || (nextTilt != currentTilt);
+
+    currentPan = nextPan;
+    currentTilt = nextTilt;
+
+    if (moved) {
+      panServo.write(currentPan);
+      tiltServo.write(currentTilt);
+      sendAck();
+    }
+  }
+}
+</script></figure></details></div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projE-get-code">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons"><a class="lesson-nav-btn" href="?lesson=projE-mechanism" data-lesson-link="projE-mechanism"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PE.2 Pan-Tilt Mechanism</span></a><a class="lesson-nav-btn next" href="?lesson=projE-arduino" data-lesson-link="projE-arduino"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PE.4 Arduino Sketch &rarr;</span></a></nav>
+</article>
+<article class="lesson-content" data-lesson="projE-arduino" data-chapter="projE" data-chapter-title="* Exercise E: Pan-Tilt Ball Tracker" style="--chapter-accent:#06b6d4;--chapter-color:#06b6d4">
+<div class="lesson-kicker">* Exercise E: Pan-Tilt Ball Tracker <span>&rsaquo;</span> PE.4 The Arduino Sketch: Servos Over WiFi</div>
+<h1>PE.4 The Arduino Sketch: Servos Over WiFi</h1>
+<div class="lesson-meta"><span>Arduino</span><span>Firmware</span><span>25 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p class="lead">The Arduino sketch is the servo version of Exercise D's UDP firmware. The WiFi and UDP pattern is the same; the output hardware changes from motors to servos.</p>
+<h3>Includes and Constants</h3>
+<figure class="code-card" data-runnable="false" data-chapter="projE" data-filename="pan_tilt_arduino.ino" data-lang="cpp" data-lang-label="Arduino"><figcaption><span>Includes, WiFi, and servo pins</span><span class="local-run-badge">Arduino</span></figcaption><script type="text/plain" class="code-source">#include <Servo.h>
+#include <WiFiS3.h>
+#include <WiFiUDP.h>
+
+const char* SSID = "YOUR_WIFI_NAME";
+const char* PASSWORD = "YOUR_WIFI_PASSWORD";
+const int UDP_PORT = 5001;
+const int TELEM_PORT = 5002;
+
+#define PAN_PIN  A1
+#define TILT_PIN 9</script></figure>
+<p><code>Servo.h</code> handles PWM timing. <code>WiFiS3.h</code> and <code>WiFiUDP.h</code> are the same UNO R4 WiFi libraries used in Exercise D.</p>
+<h3>Servo State</h3>
+<figure class="code-card" data-runnable="false" data-chapter="projE" data-filename="pan_tilt_arduino.ino" data-lang="cpp" data-lang-label="Arduino"><figcaption><span>Current angles and target angles</span><span class="local-run-badge">Arduino</span></figcaption><script type="text/plain" class="code-source">Servo panServo;
+Servo tiltServo;
+
+int currentPan = PAN_HOME;
+int currentTilt = TILT_HOME;
+int targetPan = PAN_HOME;
+int targetTilt = TILT_HOME;</script></figure>
+<p>The current angle moves toward the target angle by a small step each loop. That keeps the camera from snapping violently to a new direction.</p>
+<h3>stepToward()</h3>
+<figure class="code-card" data-runnable="false" data-chapter="projE" data-filename="pan_tilt_arduino.ino" data-lang="cpp" data-lang-label="Arduino"><figcaption><span>Smoothing helper</span><span class="local-run-badge">Arduino</span></figcaption><script type="text/plain" class="code-source">int stepToward(int current, int target, int step) {
+  if (current == target) return current;
+
+  int delta = (target > current) ? step : -step;
+  int next = current + delta;
+
+  if ((delta > 0 && next > target) || (delta < 0 && next < target)) {
+    next = target;
+  }
+
+  return next;
+}</script></figure>
+<h3>Parsing Commands</h3>
+<figure class="code-card" data-runnable="false" data-chapter="projE" data-filename="pan_tilt_arduino.ino" data-lang="cpp" data-lang-label="Arduino"><figcaption><span>SERVO, HOME, and STOP parser</span><span class="local-run-badge">Arduino</span></figcaption><script type="text/plain" class="code-source">if (strncmp(message, "SERVO,", 6) == 0) {
+  int pan = 0;
+  int tilt = 0;
+  if (sscanf(message + 6, "%d,%d", &pan, &tilt) == 2) {
+    targetPan = clampAngle(pan, PAN_MIN, PAN_MAX);
+    targetTilt = clampAngle(tilt, TILT_MIN, TILT_MAX);
+  }
+}
+else if (strcmp(message, "HOME") == 0 || strcmp(message, "STOP") == 0) {
+  targetPan = PAN_HOME;
+  targetTilt = TILT_HOME;
+}</script></figure>
+<h3>Acknowledgment</h3>
+<figure class="code-card" data-runnable="false" data-chapter="projE" data-filename="pan_tilt_arduino.ino" data-lang="cpp" data-lang-label="Arduino"><figcaption><span>Telemetry reply</span><span class="local-run-badge">Arduino</span></figcaption><script type="text/plain" class="code-source">snprintf(ack, sizeof(ack), "SERVO_ACK,%d,%d", currentPan, currentTilt);
+udp.beginPacket(laptopIP, TELEM_PORT);
+udp.write((const uint8_t*)ack, strlen(ack));
+udp.endPacket();</script></figure>
+<p>The Arduino learns the laptop IP from the first packet it receives, then sends the current commanded angles back on port <code>5002</code>.</p></div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projE-arduino">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons"><a class="lesson-nav-btn" href="?lesson=projE-get-code" data-lesson-link="projE-get-code"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PE.3 Get the Code</span></a><a class="lesson-nav-btn next" href="?lesson=projE-protocol" data-lesson-link="projE-protocol"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PE.5 SERVO Protocol &rarr;</span></a></nav>
+</article>
+<article class="lesson-content" data-lesson="projE-protocol" data-chapter="projE" data-chapter-title="* Exercise E: Pan-Tilt Ball Tracker" style="--chapter-accent:#06b6d4;--chapter-color:#06b6d4">
+<div class="lesson-kicker">* Exercise E: Pan-Tilt Ball Tracker <span>&rsaquo;</span> PE.5 Understanding the SERVO Command Protocol</div>
+<h1>PE.5 Understanding the SERVO Command Protocol</h1>
+<div class="lesson-meta"><span>Protocol</span><span>UDP packets</span><span>10 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p class="lead">Exercise E uses four short text packets. All servo values are integer degrees.</p>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Direction</th><th>Format</th><th>Example</th></tr></thead><tbody>
+<tr><td>Python to Arduino</td><td><code>SERVO,pan,tilt</code></td><td><code>SERVO,95,42</code></td></tr>
+<tr><td>Python to Arduino</td><td><code>HOME</code></td><td><code>HOME</code></td></tr>
+<tr><td>Python to Arduino</td><td><code>STOP</code></td><td><code>STOP</code></td></tr>
+<tr><td>Arduino to Python</td><td><code>SERVO_ACK,pan,tilt</code></td><td><code>SERVO_ACK,95,42</code></td></tr>
+</tbody></table></div>
+<h3>Compared To Exercise D</h3>
+<div class="grid-2">
+<article class="card"><h3>Exercise D: motors</h3><p>Python sends <code>MOTOR,left,right,LEDSTATE</code>.</p><p>Arduino sends encoder telemetry with wheel ticks.</p></article>
+<article class="card"><h3>Exercise E: servos</h3><p>Python sends <code>SERVO,panAngle,tiltAngle</code>.</p><p>Arduino sends the current commanded servo angles.</p></article>
+</div>
+<p>The protocol is simpler because hobby servos do not report measured position. The ACK confirms command handling and smoothing state, not a measured encoder angle.</p></div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projE-protocol">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons"><a class="lesson-nav-btn" href="?lesson=projE-arduino" data-lesson-link="projE-arduino"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PE.4 Arduino Sketch</span></a><a class="lesson-nav-btn next" href="?lesson=projE-config" data-lesson-link="projE-config"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PE.6 Configuration &rarr;</span></a></nav>
+</article>
+<article class="lesson-content" data-lesson="projE-config" data-chapter="projE" data-chapter-title="* Exercise E: Pan-Tilt Ball Tracker" style="--chapter-accent:#06b6d4;--chapter-color:#06b6d4">
+<div class="lesson-kicker">* Exercise E: Pan-Tilt Ball Tracker <span>&rsaquo;</span> PE.6 Configuration: Your Variables</div>
+<h1>PE.6 Configuration: Your Variables</h1>
+<div class="lesson-meta"><span>Configuration</span><span>Tuning</span><span>18 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p class="lead">Most setup problems come from configuration values. Start by editing only the configuration block at the top of <code>pan_and_tilt.py</code>.</p>
+<figure class="code-card" data-runnable="false" data-chapter="projE" data-filename="pan_and_tilt.py" data-lang="python"><figcaption><span>Configuration block</span><span class="local-run-badge">VS Code</span></figcaption><script type="text/plain" class="code-source"># Network
+ESP_IP = "192.168.x.x"       # Arduino IP from Serial Monitor
+MOBILE_IP = "192.168.x.x"    # Phone IP from IP Webcam or Simple IP Camera
+UDP_CMD_PORT = 5001
+UDP_TELEM_PORT = 5002
+
+# Vision
+TARGET_OBJECT = "ball"
+
+# Servo physical limits in degrees
+PAN_MIN, PAN_MAX = 10, 170
+TILT_MIN, TILT_MAX = 30, 150
+PAN_HOME = 90
+TILT_HOME = 40
+
+# Flip these if the camera moves the wrong direction on that axis.
+PAN_INVERT = False
+TILT_INVERT = False</script></figure>
+<div class="grid-2">
+<article class="card"><h3>Network</h3><p><code>ESP_IP</code> is the Arduino IP printed in Serial Monitor. <code>MOBILE_IP</code> is the phone running the camera app. Ports must match the Arduino sketch.</p></article>
+<article class="card"><h3>Vision</h3><p><code>TARGET_OBJECT</code> must exactly match the class label in your trained YOLO model, including capitalization.</p></article>
+<article class="card"><h3>Servo limits</h3><p><code>PAN_MIN</code>, <code>PAN_MAX</code>, <code>TILT_MIN</code>, and <code>TILT_MAX</code> protect the mount from hitting its physical stops.</p></article>
+<article class="card"><h3>Invert flags</h3><p>If the camera moves opposite the target, flip only the matching axis flag and test again.</p></article>
+<article class="card"><h3>Dead zones</h3><p>Horizontal and vertical dead zones ignore tiny errors near the center so the servos do not constantly buzz.</p></article>
+<article class="card"><h3>PID gains</h3><p><code>KP</code> sets response strength, <code>KD</code> damps motion, and <code>MAX_*_SPEED</code> limits degrees per frame.</p></article>
+</div>
+<div class="callout info" role="note"><div class="callout-icon">PID</div><div><div class="callout-title">Velocity-mode output</div><p>In this exercise the PID output is how many degrees to move this frame, not a motor PWM command.</p></div></div></div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projE-config">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons"><a class="lesson-nav-btn" href="?lesson=projE-protocol" data-lesson-link="projE-protocol"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PE.5 SERVO Protocol</span></a><a class="lesson-nav-btn next" href="?lesson=projE-velocity-pid" data-lesson-link="projE-velocity-pid"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PE.7 Velocity PID &rarr;</span></a></nav>
+</article>
+<article class="lesson-content" data-lesson="projE-velocity-pid" data-chapter="projE" data-chapter-title="* Exercise E: Pan-Tilt Ball Tracker" style="--chapter-accent:#06b6d4;--chapter-color:#06b6d4">
+<div class="lesson-kicker">* Exercise E: Pan-Tilt Ball Tracker <span>&rsaquo;</span> PE.7 Velocity-Mode PID</div>
+<h1>PE.7 Velocity-Mode PID</h1>
+<div class="lesson-meta"><span>PID</span><span>Browser demo</span><span>16 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p class="lead">Project 1 used PID output as a direct motor speed. Exercise E uses velocity mode: the PID output is a change in angle.</p>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Mode</th><th>Output</th><th>Accumulated by</th><th>Used in</th></tr></thead><tbody>
+<tr><td>Position-like motor command</td><td>Wheel speed</td><td>Nothing</td><td>Project 1</td></tr>
+<tr><td>Velocity-mode servo command</td><td>Degrees per frame</td><td>Adding to current angle</td><td>Exercise E</td></tr>
+</tbody></table></div>
+<p>Velocity mode works well for servos because every frame is a small nudge. The accumulated angle is clamped to the safe physical range after each update.</p>
+<figure class="code-card" data-runnable="false" data-chapter="projE" data-filename="pan_and_tilt.py" data-lang="python"><figcaption><span>Velocity-mode update</span><span class="local-run-badge">VS Code</span></figcaption><script type="text/plain" class="code-source"># PID outputs angular velocity in degrees per frame.
+delta_pan = self.pid_pan.update(err_pan) * self.speed_limit * pan_sign
+delta_tilt = self.pid_tilt.update(err_tilt) * self.speed_limit * tilt_sign
+
+# Integrate: add the delta to the current angle.
+self.pan_angle = float(np.clip(self.pan_angle + delta_pan, PAN_MIN, PAN_MAX))
+self.tilt_angle = float(np.clip(self.tilt_angle + delta_tilt, TILT_MIN, TILT_MAX))</script></figure>
+<h3>Try It In The Browser</h3>
+<p>Run this simulation and change <code>kp</code> to see the angle converge faster or slower.</p>
+<figure class="code-card" data-runnable="true" data-chapter="projE" data-session="projE-velocity" data-filename="velocity_mode_demo.py" data-lang="python"><figcaption><span>Velocity-mode PID simulation</span><span class="local-run-badge">Run in browser</span></figcaption><script type="text/plain" class="code-source">import numpy as np
+
+pan_angle = 90.0
+kp = 8.0
+speed_limit = 0.4
+ball_positions = [0.2] * 20
+
+print(f"{'Frame':>5}  {'err_pan':>8}  {'delta':>7}  {'angle':>7}")
+print("-" * 35)
+
+for frame, ball_x in enumerate(ball_positions):
+    err_pan = ball_x
+    delta = kp * err_pan * speed_limit
+    pan_angle = np.clip(pan_angle + delta, 10, 170)
+    print(f"{frame:>5}  {err_pan:>8.3f}  {delta:>7.3f}  {pan_angle:>7.1f}")</script></figure></div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projE-velocity-pid">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons"><a class="lesson-nav-btn" href="?lesson=projE-config" data-lesson-link="projE-config"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PE.6 Configuration</span></a><a class="lesson-nav-btn next" href="?lesson=projE-tracker-class" data-lesson-link="projE-tracker-class"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PE.8 PanTiltTracker &rarr;</span></a></nav>
+</article>
+<article class="lesson-content" data-lesson="projE-tracker-class" data-chapter="projE" data-chapter-title="* Exercise E: Pan-Tilt Ball Tracker" style="--chapter-accent:#06b6d4;--chapter-color:#06b6d4">
+<div class="lesson-kicker">* Exercise E: Pan-Tilt Ball Tracker <span>&rsaquo;</span> PE.8 The PanTiltTracker Class</div>
+<h1>PE.8 The PanTiltTracker Class</h1>
+<div class="lesson-meta"><span>Python class</span><span>YOLO control</span><span>20 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p class="lead"><code>PanTiltTracker</code> has the same structure as the Project 1 tracker: initialize, detect, update state, control.</p>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Method</th><th>Project 1 equivalent</th><th>What changed</th></tr></thead><tbody>
+<tr><td><code>__init__</code></td><td><code>Tracker.__init__</code></td><td>Two angle PIDs and home angles.</td></tr>
+<tr><td><code>_detect</code></td><td><code>Tracker._detect</code></td><td>Same YOLO pattern.</td></tr>
+<tr><td><code>_update_state</code></td><td><code>Tracker._update_state</code></td><td>Same four states.</td></tr>
+<tr><td><code>control</code></td><td><code>Tracker.control</code></td><td>Pan and tilt errors become servo angle changes.</td></tr>
+</tbody></table></div>
+<figure class="code-card" data-runnable="false" data-chapter="projE" data-filename="pan_and_tilt.py" data-lang="python"><figcaption><span>Error calculation and dead zones</span><span class="local-run-badge">VS Code</span></figcaption><script type="text/plain" class="code-source">err_pan = (cx - w / 2) / w
+err_tilt = (cy - h / 2) / h
+
+if abs(err_pan) < ANGLE_DEAD_ZONE_H:
+    err_pan = 0.0
+if abs(err_tilt) < ANGLE_DEAD_ZONE_V:
+    err_tilt = 0.0</script></figure>
+<p><code>err_pan = 0</code> means the ball is horizontally centered. <code>err_tilt = 0</code> means the ball is vertically centered. Dead zones prevent constant one-pixel corrections.</p>
+<details class="solution"><summary>Open the complete Python file again</summary><figure class="code-card" data-runnable="false" data-chapter="projE" data-filename="pan_and_tilt.py" data-download-filename="pan_and_tilt.py" data-lang="python"><figcaption><span>Complete pan_and_tilt.py</span><span class="local-run-badge">VS Code</span></figcaption><script type="text/plain" class="code-source">"""
+pan_and_tilt.py
+
+YOLO ball tracker for a fixed pan-tilt camera rig.
+
+Architecture:
+  - A phone streams camera frames over WiFi.
+  - YOLO detects the target object in each frame.
+  - One PID controls pan from horizontal image error.
+  - One PID controls tilt from vertical image error.
+  - Each PID outputs degrees per frame, which are added to the current angle.
+  - Python sends UDP packets as SERVO,<pan>,<tilt> to the Arduino.
+  - The Arduino replies with SERVO_ACK,<pan>,<tilt> for the HUD.
+
+Place this file in the same folder as shared.py and best.pt.
+"""
+
+import socket
+import threading
+import time
+
+import cv2
+import numpy as np
+
+from shared import PID, MobileVideoStream, RobotState
+
+
+# -----------------------------------------------------------------------------
+# CONFIGURATION - fill these in for your setup
+# -----------------------------------------------------------------------------
+
+# Network
+ESP_IP = "192.168.x.x"       # Arduino IP from Serial Monitor
+MOBILE_IP = "192.168.x.x"    # Phone IP from IP Webcam or Simple IP Camera
+UDP_CMD_PORT = 5001
+UDP_TELEM_PORT = 5002
+
+# Vision
+TARGET_OBJECT = "ball"
+
+# Servo physical limits in degrees
+PAN_MIN, PAN_MAX = 10, 170
+TILT_MIN, TILT_MAX = 30, 150
+PAN_HOME = 90
+TILT_HOME = 40
+
+# Flip these if the camera moves the wrong direction on that axis.
+PAN_INVERT = False
+TILT_INVERT = False
+
+# Ignore tiny image errors near center to prevent buzzing.
+ANGLE_DEAD_ZONE_H = 0.03
+ANGLE_DEAD_ZONE_V = 0.01
+
+# PID gains for velocity-mode output in degrees per frame.
+PAN_KP = 8.0
+PAN_KI = 0.0
+PAN_KD = 2.0
+MAX_PAN_SPEED = 3.0
+MAX_PAN_INTEGRAL = 0.3
+
+TILT_KP = 6.0
+TILT_KI = 0.0
+TILT_KD = 1.5
+MAX_TILT_SPEED = 3.0
+MAX_TILT_INTEGRAL = 0.3
+
+# State machine
+ACQUIRE_FRAMES = 5
+LOST_TIMEOUT = 1.2
+SEARCH_PAN_SPEED = 1.5
+SEARCH_TILT_SPEED = 0.0
+CMD_INTERVAL = 0.03
+
+
+# -----------------------------------------------------------------------------
+# COMMANDER - sends SERVO commands to the Arduino
+# -----------------------------------------------------------------------------
+
+class ServoCommander:
+    """Sends UDP servo commands to the Arduino."""
+
+    def __init__(self, ip, port):
+        self._ip = ip
+        self._port = port
+        self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+    def _send(self, message):
+        self._sock.sendto(message.encode("utf-8"), (self._ip, self._port))
+
+    def servos(self, pan, tilt):
+        """Send absolute servo angles in integer degrees."""
+        self._send(f"SERVO,{int(pan)},{int(tilt)}")
+
+    def home(self):
+        """Ask the Arduino to return both servos to their home angles."""
+        self._send("HOME")
+
+    def stop(self):
+        """Ask the Arduino to home the rig before the Python script exits."""
+        self._send("STOP")
+        self._sock.close()
+
+
+# -----------------------------------------------------------------------------
+# TELEMETRY - receives optional SERVO_ACK packets from the Arduino
+# -----------------------------------------------------------------------------
+
+class ServoTelemetry:
+    """
+    Receives SERVO_ACK,pan,tilt packets from the Arduino.
+
+    Servos do not provide encoder feedback in this project. The ACK contains the
+    Arduino's current commanded angle after its smoothing step.
+    """
+
+    def __init__(self, port):
+        self.pan = PAN_HOME
+        self.tilt = TILT_HOME
+        self.running = True
+        self._lock = threading.Lock()
+        self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self._sock.bind(("", port))
+        self._sock.settimeout(1.0)
+        threading.Thread(target=self._run, daemon=True).start()
+
+    def _run(self):
+        while self.running:
+            try:
+                data, _ = self._sock.recvfrom(64)
+                parts = data.decode("utf-8").strip().split(",")
+                if parts[0] == "SERVO_ACK" and len(parts) == 3:
+                    with self._lock:
+                        self.pan = int(parts[1])
+                        self.tilt = int(parts[2])
+            except (OSError, socket.timeout, UnicodeDecodeError, ValueError):
+                pass
+
+    def read(self):
+        with self._lock:
+            return {"pan": self.pan, "tilt": self.tilt}
+
+    def stop(self):
+        self.running = False
+        self._sock.close()
+
+
+# -----------------------------------------------------------------------------
+# PAN-TILT TRACKER
+# -----------------------------------------------------------------------------
+
+class PanTiltTracker:
+    """YOLO-based target tracker that drives two independent servo axes."""
+
+    STATE_COLORS = {
+        RobotState.STOPPED: (100, 100, 100),
+        RobotState.SEARCHING: (255, 165, 0),
+        RobotState.ACQUIRING: (255, 255, 0),
+        RobotState.TRACKING: (0, 255, 0),
+    }
+
+    def __init__(self, model_path, target):
+        print("Loading YOLO model...")
+        from ultralytics import YOLO
+
+        self.model = YOLO(model_path)
+        self.target = target
+
+        try:
+            self.model.to("cuda")
+            print("  Using CUDA")
+        except Exception:
+            print("  Using CPU")
+        self.model.fuse()
+
+        self.pid_pan = PID(
+            PAN_KP,
+            PAN_KI,
+            PAN_KD,
+            max_integral=MAX_PAN_INTEGRAL,
+            output_limits=(-MAX_PAN_SPEED, MAX_PAN_SPEED),
+        )
+        self.pid_tilt = PID(
+            TILT_KP,
+            TILT_KI,
+            TILT_KD,
+            max_integral=MAX_TILT_INTEGRAL,
+            output_limits=(-MAX_TILT_SPEED, MAX_TILT_SPEED),
+        )
+
+        self.pan_angle = float(PAN_HOME)
+        self.tilt_angle = float(TILT_HOME)
+
+        self.state = RobotState.STOPPED
+        self.acquire_count = 0
+        self.last_seen_t = 0.0
+        self.last_turn_dir = 1.0
+        self.speed_limit = 1.0
+
+    def _detect(self, frame):
+        """Return the largest target bounding box as (x1, y1, x2, y2), or None."""
+        results = self.model(frame, imgsz=320, verbose=False, conf=0.60)
+        best = None
+        best_area = 0
+
+        for result in results:
+            for box in result.boxes:
+                class_name = self.model.names[int(box.cls[0])]
+                if class_name != self.target:
+                    continue
+
+                x1, y1, x2, y2 = map(int, box.xyxy[0].cpu().numpy())
+                area = (x2 - x1) * (y2 - y1)
+                if area > best_area:
+                    best_area = area
+                    best = (x1, y1, x2, y2)
+
+        return best
+
+    def _update_state(self, found):
+        if found:
+            self.last_seen_t = time.time()
+            if self.state in (RobotState.STOPPED, RobotState.SEARCHING):
+                self.state = RobotState.ACQUIRING
+                self.acquire_count = 0
+                self.speed_limit = 0.4
+            elif self.state == RobotState.ACQUIRING:
+                self.acquire_count += 1
+                self.speed_limit = 0.4 + 0.6 * self.acquire_count / ACQUIRE_FRAMES
+                if self.acquire_count >= ACQUIRE_FRAMES:
+                    self.state = RobotState.TRACKING
+                    self.speed_limit = 1.0
+            else:
+                self.speed_limit = 1.0
+            return
+
+        elapsed = time.time() - self.last_seen_t
+        if elapsed < LOST_TIMEOUT:
+            self.state = RobotState.SEARCHING
+            self.speed_limit = 0.4
+        else:
+            self.state = RobotState.STOPPED
+            self.speed_limit = 0.0
+            self.pid_pan.reset()
+            self.pid_tilt.reset()
+
+    def control(self, frame):
+        """
+        Run one detection and control cycle.
+
+        Returns:
+            pan_angle, tilt_angle, debug_dict
+        """
+        h, w = frame.shape[:2]
+        bbox = self._detect(frame)
+        self._update_state(bbox is not None)
+
+        if bbox is not None:
+            x1, y1, x2, y2 = bbox
+            cx = (x1 + x2) / 2
+            cy = (y1 + y2) / 2
+
+            err_pan = (cx - w / 2) / w
+            err_tilt = (cy - h / 2) / h
+
+            if abs(err_pan) < ANGLE_DEAD_ZONE_H:
+                err_pan = 0.0
+            if abs(err_tilt) < ANGLE_DEAD_ZONE_V:
+                err_tilt = 0.0
+
+            if err_pan != 0.0:
+                self.last_turn_dir = float(np.sign(err_pan))
+
+            pan_sign = -1.0 if PAN_INVERT else 1.0
+            tilt_sign = -1.0 if TILT_INVERT else 1.0
+
+            # PID outputs angular velocity in degrees per frame.
+            delta_pan = self.pid_pan.update(err_pan) * self.speed_limit * pan_sign
+            delta_tilt = self.pid_tilt.update(err_tilt) * self.speed_limit * tilt_sign
+            debug_cx, debug_cy = int(cx), int(cy)
+
+        elif self.state == RobotState.SEARCHING:
+            if self.pan_angle <= PAN_MIN + 1:
+                self.last_turn_dir = 1.0
+            elif self.pan_angle >= PAN_MAX - 1:
+                self.last_turn_dir = -1.0
+
+            delta_pan = SEARCH_PAN_SPEED * self.last_turn_dir * self.speed_limit
+            delta_tilt = SEARCH_TILT_SPEED
+            err_pan = 0.0
+            err_tilt = 0.0
+            debug_cx, debug_cy = w // 2, h // 2
+
+        else:
+            delta_pan = 0.0
+            delta_tilt = 0.0
+            err_pan = 0.0
+            err_tilt = 0.0
+            debug_cx, debug_cy = w // 2, h // 2
+
+        self.pan_angle = float(np.clip(self.pan_angle + delta_pan, PAN_MIN, PAN_MAX))
+        self.tilt_angle = float(np.clip(self.tilt_angle + delta_tilt, TILT_MIN, TILT_MAX))
+
+        debug = {
+            "state": self.state,
+            "bbox": bbox,
+            "err_pan": err_pan,
+            "err_tilt": err_tilt,
+            "delta_pan": delta_pan,
+            "delta_tilt": delta_tilt,
+            "pan_angle": self.pan_angle,
+            "tilt_angle": self.tilt_angle,
+            "speed_limit": self.speed_limit,
+            "cx": debug_cx,
+            "cy": debug_cy,
+        }
+        return round(self.pan_angle), round(self.tilt_angle), debug
+
+    def home(self):
+        self.pan_angle = float(PAN_HOME)
+        self.tilt_angle = float(TILT_HOME)
+        self.pid_pan.reset()
+        self.pid_tilt.reset()
+
+
+# -----------------------------------------------------------------------------
+# VISUALIZATION
+# -----------------------------------------------------------------------------
+
+def draw_overlay(frame, debug, pan, tilt, telem, scale_x=1.0, scale_y=1.0):
+    h, w = frame.shape[:2]
+    state_color = PanTiltTracker.STATE_COLORS.get(debug["state"], (255, 255, 255))
+
+    cx_frame, cy_frame = w // 2, h // 2
+    cv2.line(frame, (cx_frame, 0), (cx_frame, h), (0, 255, 0), 1)
+    cv2.line(frame, (0, cy_frame), (w, cy_frame), (0, 255, 0), 1)
+
+    if debug["bbox"] is not None:
+        x1, y1, x2, y2 = debug["bbox"]
+        x1 = int(x1 * scale_x)
+        y1 = int(y1 * scale_y)
+        x2 = int(x2 * scale_x)
+        y2 = int(y2 * scale_y)
+        cx_scaled = int(debug["cx"] * scale_x)
+        cy_scaled = int(debug["cy"] * scale_y)
+
+        centered = (
+            abs(debug["err_pan"]) < ANGLE_DEAD_ZONE_H
+            and abs(debug["err_tilt"]) < ANGLE_DEAD_ZONE_V
+        )
+        box_color = (0, 255, 0) if centered else (0, 165, 255)
+        cv2.rectangle(frame, (x1, y1), (x2, y2), box_color, 2)
+        cv2.circle(frame, (cx_scaled, cy_scaled), 6, (0, 0, 255), -1)
+        cv2.line(frame, (cx_frame, cy_frame), (cx_scaled, cy_scaled), (0, 200, 255), 1)
+
+    lines = [
+        (f"STATE:  {debug['state']}", state_color),
+        (f"PAN:    {pan:3d} deg  err:{debug['err_pan']:+.3f}", (0, 255, 255)),
+        (f"TILT:   {tilt:3d} deg  err:{debug['err_tilt']:+.3f}", (255, 200, 0)),
+        (
+            f"dPAN:  {debug['delta_pan']:+.2f} deg/f  "
+            f"dTILT:{debug['delta_tilt']:+.2f} deg/f",
+            (200, 200, 200),
+        ),
+        (f"SPD LIM: {debug['speed_limit']:.0%}", (255, 255, 255)),
+        (f"TELEM pan:{telem['pan']} deg  tilt:{telem['tilt']} deg", (255, 165, 0)),
+    ]
+
+    for i, (text, color) in enumerate(lines):
+        bold = i in (0, 1, 2)
+        cv2.putText(
+            frame,
+            text,
+            (10, 25 + i * 25),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.60 if bold else 0.50,
+            color,
+            2 if bold else 1,
+        )
+
+
+# -----------------------------------------------------------------------------
+# MAIN LOOP
+# -----------------------------------------------------------------------------
+
+def main():
+    stream_url = f"http://{MOBILE_IP}:8080/video"
+    print(f"Video stream : {stream_url}")
+    print(f"ESP target   : {ESP_IP}:{UDP_CMD_PORT}")
+
+    video = MobileVideoStream(stream_url)
+    commander = ServoCommander(ESP_IP, UDP_CMD_PORT)
+    telemetry = ServoTelemetry(UDP_TELEM_PORT)
+
+    print("Waiting for camera", end="", flush=True)
+    for _ in range(30):
+        if video.connected:
+            break
+        time.sleep(0.5)
+        print(".", end="", flush=True)
+    print()
+
+    if not video.connected:
+        print("Could not connect to camera. Check MOBILE_IP and the camera app.")
+        video.stop()
+        telemetry.stop()
+        return
+
+    tracker = PanTiltTracker("best.pt", TARGET_OBJECT)
+    commander.home()
+    time.sleep(0.5)
+
+    print(f"\nTracking: {TARGET_OBJECT}")
+    print("Q = quit   H = home servos   R = reset PIDs")
+    print("=" * 60)
+
+    last_fid = -1
+    last_cmd_time = 0.0
+    fps_count = 0
+    fps_timer = time.time()
+
+    try:
+        while True:
+            frame, fid = video.read()
+            if frame is None or fid == last_fid:
+                time.sleep(0.005)
+                continue
+
+            last_fid = fid
+            frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
+
+            fps_count += 1
+            if fps_count >= 30:
+                elapsed = time.time() - fps_timer
+                fps = fps_count / elapsed
+                print(
+                    f"FPS:{fps:.1f}  pan:{tracker.pan_angle:.1f}  "
+                    f"tilt:{tracker.tilt_angle:.1f}  state:{tracker.state}"
+                )
+                fps_count = 0
+                fps_timer = time.time()
+
+            pan_cmd, tilt_cmd, debug = tracker.control(frame)
+
+            now = time.time()
+            if now - last_cmd_time >= CMD_INTERVAL:
+                commander.servos(pan_cmd, tilt_cmd)
+                last_cmd_time = now
+
+            orig_h, orig_w = frame.shape[:2]
+            disp = cv2.resize(frame, (640, 480))
+            draw_overlay(
+                disp,
+                debug,
+                pan_cmd,
+                tilt_cmd,
+                telemetry.read(),
+                640 / orig_w,
+                480 / orig_h,
+            )
+
+            cv2.imshow(f"Pan-Tilt Tracker - {TARGET_OBJECT}", disp)
+
+            key = cv2.waitKey(1) & 0xFF
+            if key == ord("q"):
+                break
+            if key == ord("h"):
+                tracker.home()
+                commander.home()
+                print(f"Servos homed to {PAN_HOME}/{TILT_HOME}")
+            elif key == ord("r"):
+                tracker.pid_pan.reset()
+                tracker.pid_tilt.reset()
+                print("PIDs reset")
+
+    finally:
+        print("\nShutting down...")
+        try:
+            commander.stop()
+        finally:
+            video.stop()
+            telemetry.stop()
+            cv2.destroyAllWindows()
+        print("Done.")
+
+
+if __name__ == "__main__":
+    main()
+</script></figure></details></div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projE-tracker-class">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons"><a class="lesson-nav-btn" href="?lesson=projE-velocity-pid" data-lesson-link="projE-velocity-pid"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PE.7 Velocity PID</span></a><a class="lesson-nav-btn next" href="?lesson=projE-dual-pid" data-lesson-link="projE-dual-pid"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PE.9 Two PIDs &rarr;</span></a></nav>
+</article>
+<article class="lesson-content" data-lesson="projE-dual-pid" data-chapter="projE" data-chapter-title="* Exercise E: Pan-Tilt Ball Tracker" style="--chapter-accent:#06b6d4;--chapter-color:#06b6d4">
+<div class="lesson-kicker">* Exercise E: Pan-Tilt Ball Tracker <span>&rsaquo;</span> PE.9 Two PIDs at Once</div>
+<h1>PE.9 Two PIDs at Once</h1>
+<div class="lesson-meta"><span>Control</span><span>Dual PID</span><span>12 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p class="lead">The pan and tilt controllers run independently. The pan PID only sees horizontal error. The tilt PID only sees vertical error.</p>
+<p>This works because the problem is separable: moving left-right does not directly solve up-down error, and moving up-down does not directly solve left-right error.</p>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Ball position</th><th>err_pan</th><th>err_tilt</th><th>Pan moves</th><th>Tilt moves</th></tr></thead><tbody>
+<tr><td>Right of center</td><td>positive</td><td>zero</td><td>right</td><td>stays</td></tr>
+<tr><td>Below center</td><td>zero</td><td>positive</td><td>stays</td><td>down</td></tr>
+<tr><td>Upper-left</td><td>negative</td><td>negative</td><td>left</td><td>up</td></tr>
+<tr><td>Dead center</td><td>zero</td><td>zero</td><td>stays</td><td>stays</td></tr>
+</tbody></table></div>
+<div class="callout tip" role="note"><div class="callout-icon">Tune</div><div><div class="callout-title">Tune axes separately</div><p>If pan oscillates, reduce <code>PAN_KP</code>. If tilt is sluggish, increase <code>TILT_KP</code>. Do not change both axes when only one is misbehaving.</p></div></div></div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projE-dual-pid">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons"><a class="lesson-nav-btn" href="?lesson=projE-tracker-class" data-lesson-link="projE-tracker-class"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PE.8 PanTiltTracker</span></a><a class="lesson-nav-btn next" href="?lesson=projE-main-loop" data-lesson-link="projE-main-loop"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PE.10 Main Loop &rarr;</span></a></nav>
+</article>
+<article class="lesson-content" data-lesson="projE-main-loop" data-chapter="projE" data-chapter-title="* Exercise E: Pan-Tilt Ball Tracker" style="--chapter-accent:#06b6d4;--chapter-color:#06b6d4">
+<div class="lesson-kicker">* Exercise E: Pan-Tilt Ball Tracker <span>&rsaquo;</span> PE.10 The Main Loop</div>
+<h1>PE.10 The Main Loop</h1>
+<div class="lesson-meta"><span>Main loop</span><span>OpenCV</span><span>14 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p class="lead">The main loop reads a phone frame, runs the tracker, sends the servo command at a fixed interval, draws the HUD, and handles keyboard commands.</p>
+<figure class="code-card" data-runnable="false" data-chapter="projE" data-filename="pan_and_tilt.py" data-lang="python"><figcaption><span>Main loop core</span><span class="local-run-badge">VS Code</span></figcaption><script type="text/plain" class="code-source">frame, fid = video.read()
+if frame is None or fid == last_fid:
+    time.sleep(0.005)
+    continue
+
+last_fid = fid
+frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
+
+pan_cmd, tilt_cmd, debug = tracker.control(frame)
+
+now = time.time()
+if now - last_cmd_time >= CMD_INTERVAL:
+    commander.servos(pan_cmd, tilt_cmd)
+    last_cmd_time = now</script></figure>
+<h3>What Differs From Project 1</h3>
+<div class="grid-3">
+<article class="card"><h3>Rotation</h3><p><code>cv2.rotate</code> handles a sideways-mounted phone. Remove it if your mount is upright.</p></article>
+<article class="card"><h3>Servo command</h3><p><code>commander.servos()</code> replaces motor commands.</p></article>
+<article class="card"><h3>Shutdown</h3><p><code>commander.stop()</code> sends <code>STOP</code>, which homes both servos.</p></article>
+</div>
+<h3>Keyboard Commands</h3>
+<div class="table-wrap"><table class="data-table"><tbody><tr><td><code>Q</code></td><td>Quit and home servos.</td></tr><tr><td><code>H</code></td><td>Home servos immediately.</td></tr><tr><td><code>R</code></td><td>Reset both PID integrators.</td></tr></tbody></table></div></div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projE-main-loop">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons"><a class="lesson-nav-btn" href="?lesson=projE-dual-pid" data-lesson-link="projE-dual-pid"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PE.9 Two PIDs</span></a><a class="lesson-nav-btn next" href="?lesson=projE-running" data-lesson-link="projE-running"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PE.11 Running &rarr;</span></a></nav>
+</article>
+<article class="lesson-content" data-lesson="projE-running" data-chapter="projE" data-chapter-title="* Exercise E: Pan-Tilt Ball Tracker" style="--chapter-accent:#06b6d4;--chapter-color:#06b6d4">
+<div class="lesson-kicker">* Exercise E: Pan-Tilt Ball Tracker <span>&rsaquo;</span> PE.11 Running and Testing</div>
+<h1>PE.11 Running and Testing</h1>
+<div class="lesson-meta"><span>Run locally</span><span>Testing</span><span>18 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p class="lead">Test the hardware in layers. Do not start with YOLO tracking if the servos have never responded to a simple UDP packet.</p>
+<h3>Step 0: Pre-flight</h3>
+<div class="steps project-checklist">
+<div class="step"><label><input type="checkbox" data-checklist-key="projE-shared" /> <code>shared.py</code>, <code>best.pt</code>, and <code>pan_and_tilt.py</code> are in the same folder.</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="projE-wifi-creds" /> <code>SSID</code> and <code>PASSWORD</code> are set in the Arduino sketch.</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="projE-arduino-ip" /> Serial Monitor shows the Arduino IP address.</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="projE-phone-ip" /> The phone stream opens in a browser.</label></div>
+<div class="step"><label><input type="checkbox" data-checklist-key="projE-python-config" /> <code>ESP_IP</code>, <code>MOBILE_IP</code>, and <code>TARGET_OBJECT</code> are filled in.</label></div>
+</div>
+<h3>Step 1: Test Servos</h3>
+<figure class="code-card" data-runnable="false" data-chapter="projE" data-filename="test_servos.py" data-download-filename="test_servos.py" data-lang="python"><figcaption><span>Standalone servo test</span><span class="local-run-badge">VS Code</span></figcaption><script type="text/plain" class="code-source">import socket, time
+
+ESP_IP = "YOUR_ARDUINO_IP"
+CMD_PORT = 5001
+
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+def send(msg):
+    sock.sendto(msg.encode(), (ESP_IP, CMD_PORT))
+    print(f"Sent: {msg}")
+    time.sleep(1.0)
+
+send("HOME")
+send("SERVO,45,40")
+send("SERVO,135,40")
+send("SERVO,90,80")
+send("SERVO,90,40")
+send("HOME")
+
+sock.close()</script></figure>
+<h3>Step 2: Run The Tracker</h3>
+<figure class="code-card" data-runnable="false" data-chapter="projE" data-filename="terminal" data-lang="text"><figcaption><span>Run Exercise E</span><span class="local-run-badge">Terminal</span></figcaption><script type="text/plain" class="code-source">python pan_and_tilt.py</script></figure>
+<h3>Common Issues</h3>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Problem</th><th>Likely cause</th><th>Fix</th></tr></thead><tbody>
+<tr><td>Servos do not move</td><td>Wrong <code>ESP_IP</code> or port</td><td>Check Serial Monitor and port <code>5001</code>.</td></tr>
+<tr><td>Servo moves wrong direction</td><td>Invert flag wrong</td><td>Toggle <code>PAN_INVERT</code> or <code>TILT_INVERT</code>.</td></tr>
+<tr><td>Centered target jitters</td><td>Dead zone too small</td><td>Increase the matching dead zone.</td></tr>
+<tr><td>Camera shakes</td><td>Speed or KP too high</td><td>Reduce <code>MAX_*_SPEED</code> or <code>*_KP</code>.</td></tr>
+<tr><td>Tracker loses fast targets</td><td>Speed too low</td><td>Increase <code>MAX_PAN_SPEED</code> gradually.</td></tr>
+</tbody></table></div></div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projE-running">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons"><a class="lesson-nav-btn" href="?lesson=projE-main-loop" data-lesson-link="projE-main-loop"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PE.10 Main Loop</span></a><a class="lesson-nav-btn next" href="?lesson=projE-dots" data-lesson-link="projE-dots"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PE.12 Connecting Dots &rarr;</span></a></nav>
+</article>
+<article class="lesson-content" data-lesson="projE-dots" data-chapter="projE" data-chapter-title="* Exercise E: Pan-Tilt Ball Tracker" style="--chapter-accent:#06b6d4;--chapter-color:#06b6d4">
+<div class="lesson-kicker">* Exercise E: Pan-Tilt Ball Tracker <span>&rsaquo;</span> PE.12 Connecting the Dots</div>
+<h1>PE.12 Connecting the Dots</h1>
+<div class="lesson-meta"><span>Summary</span><span>Architecture</span><span>10 min</span></div>
+<hr class="lesson-divider" />
+<div class="lesson-body">
+<p class="lead">Exercise E adds servo control and dual-axis PID to the ladder you have already built.</p>
+<div class="table-wrap"><table class="data-table"><thead><tr><th>Unit</th><th>What you built</th><th>New concept</th></tr></thead><tbody>
+<tr><td>A</td><td>Custom YOLO detector</td><td>Training and labels.</td></tr>
+<tr><td>B</td><td>Phone stream</td><td>MJPEG and threaded frame reading.</td></tr>
+<tr><td>C</td><td>Encoder motor control</td><td>Ticks, calibration, closed-loop movement.</td></tr>
+<tr><td>D</td><td>WiFi UDP robot control</td><td>Command packets and telemetry.</td></tr>
+<tr><td>E</td><td>Pan-tilt camera tracker</td><td>Servo control, velocity-mode PID, two independent PIDs.</td></tr>
+<tr><td>1</td><td>Full autonomous ball tracker</td><td>State machine plus all previous infrastructure.</td></tr>
+</tbody></table></div>
+<div class="grid-3">
+<article class="card"><h3>Velocity-mode PID</h3><p>The output is a small change, and the angle accumulates over frames.</p></article>
+<article class="card"><h3>Separable axes</h3><p>Pan and tilt are independent enough to control with two separate PIDs.</p></article>
+<article class="card"><h3>Reusable protocol design</h3><p>Changing from <code>MOTOR</code> to <code>SERVO</code> reuses the same UDP infrastructure.</p></article>
+</div>
+<div class="callout robotics" role="note"><div class="callout-icon">BOT</div><div><div class="callout-title">Robotics connection</div><p>The same architecture appears in security cameras, telescope mounts, drone gimbals, and target-tracking camera systems: detect the target, compute image error, update angles, repeat.</p></div></div></div>
+<div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projE-dots">Mark as Complete</button></div>
+<nav class="lesson-nav" aria-label="Previous and next lessons"><a class="lesson-nav-btn" href="?lesson=projE-running" data-lesson-link="projE-running"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PE.11 Running</span></a><a class="lesson-nav-btn next" href="?lesson=proj1-overview" data-lesson-link="proj1-overview"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">Project 1 &rarr;</span></a></nav>
 </article>
 
 <article class="lesson-content exercise-lesson" data-lesson="proj1-overview" data-chapter="proj1" data-chapter-title="★ Project 1: Object Tracker" style="--chapter-accent:#f97316">
@@ -8057,7 +9595,7 @@ if __name__ == "__main__":
 </code></pre></figure><p class="muted">Download this file and place it in your <code>my-detector</code> project folder. You will not run it until the final lesson.</p></div>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="proj1-overview">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
-<a class="lesson-nav-btn" href="?lesson=projD-project1" data-lesson-link="projD-project1"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PD.7 Project 1 Bridge</span></a>
+<a class="lesson-nav-btn" href="?lesson=projE-dots" data-lesson-link="projE-dots"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PE.12 Connecting Dots</span></a>
 <a class="lesson-nav-btn next" href="?lesson=proj1-get-code" data-lesson-link="proj1-get-code"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">P1.0b Get the Code &rarr;</span></a>
 </nav>
 </article>
@@ -11976,6 +13514,13 @@ RIGHT    | L:+11  R:  0</script></figure>
                 </div>
                 <strong>Open Exercise D lessons &rarr;</strong>
               </a>
+              <a class="card" href="index.html?lesson=projE-overview" data-lesson-link="projE-overview" style="display:block;text-decoration:none;border-color:#06b6d4;margin-bottom:1rem">
+<div class="project-label">Exercise E &mdash; Pan-Tilt Ball Tracker</div>
+<h3>Two Servos, One Camera, One Neural Network</h3>
+<p class="muted">A fixed camera rig that tracks a ball with YOLO, UDP servo commands, velocity-mode PID, and two independent pan/tilt control loops.</p>
+<div class="chip-row" style="--chapter-color:#06b6d4"><span class="chip">YOLO</span><span class="chip">Servo Motors</span><span class="chip">Pan-Tilt</span><span class="chip">Velocity PID</span><span class="chip">UNO R4 WiFi</span></div>
+<strong>Open Exercise E lessons &rarr;</strong>
+</a>
               <a class="card" href="index.html?lesson=proj2-classical-cv" data-lesson-link="proj2-classical-cv" style="display:block;text-decoration:none;border-color:#facc15;margin-bottom:1rem">
                 <div class="project-label">Project 2 &mdash; Classical Vision Lane Following</div>
                 <h3>Lane Follower with OpenCV</h3>
@@ -12020,8 +13565,9 @@ RIGHT    | L:+11  R:  0</script></figure>
     const project1Lessons = [{"id":"proj1-overview","label":"P1.0 What We Are Building","title":"P1.0 What We Are Building","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":true},{"id":"proj1-get-code","label":"P1.0b Get the Code","title":"P1.0b Get the Code","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-vscode","label":"P1.1 Setting Up VS Code","title":"P1.1 Setting Up VS Code","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-dependencies","label":"P1.2 Installing Dependencies","title":"P1.2 Installing Dependencies","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-config","label":"P1.3 Configuration","title":"P1.3 Configuration: Tuning Your Robot","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-shared","label":"P1.3b shared.py \u2014 The Foundation","title":"P1.3b The Shared Infrastructure","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-pid","label":"P1.4 PID Controller","title":"P1.4 The PID Controller","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-camera","label":"P1.5 Camera Stream","title":"P1.5 Reading the Camera Stream","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-udp-send","label":"P1.6 Sending Commands","title":"P1.6 Sending Commands (UDP)","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-telemetry","label":"P1.7 Receiving Telemetry","title":"P1.7 Receiving Telemetry","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-state-machine","label":"P1.8 State Machine","title":"P1.8 State Machine: How the Robot Thinks","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-tracker","label":"P1.9 The Tracker","title":"P1.9 The Tracker: Putting It Together","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-hud","label":"P1.10 Visualisation and HUD","title":"P1.10 Visualisation and the HUD","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-main-loop","label":"P1.11 Main Loop","title":"P1.11 The Main Loop","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false},{"id":"proj1-running","label":"P1.12 Running and Testing","title":"P1.12 Running and Testing","chapter":"proj1","chapterTitle":"\u2605 Project 1: Object Tracker","exercise":false}];
     const project2Lessons = [{"id":"proj2-classical-cv","label":"P2.0 Classical CV","title":"P2.0 What Is Classical Computer Vision?","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":true},{"id":"proj2-get-code","label":"P2.0b Get the Code","title":"P2.0b Get the Code","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-physical-setup","label":"P2.1 Physical Setup","title":"P2.1 Physical Setup: Your Track and Camera","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-opencv-notebook","label":"P2.2 OpenCV Notebook","title":"P2.2 The OpenCV Experiment Notebook","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-config","label":"P2.3 Configuration","title":"P2.3 Configuration: Fill In Your Values","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-detect-lane","label":"P2.4 The detect_lane Function","title":"P2.4 The detect_lane Function","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-lane-follower","label":"P2.5 LaneFollower Class","title":"P2.5 The LaneFollower Class","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-main-loop","label":"P2.6 Main Loop","title":"P2.6 The Main Loop","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-visualisation","label":"P2.7 Visualisation","title":"P2.7 Visualisation and the Binary Window","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-running","label":"P2.8 Running and Tuning","title":"P2.8 Running and Tuning","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false},{"id":"proj2-dots","label":"P2.9 Connecting the Dots","title":"P2.9 Connecting the Dots","chapter":"proj2","chapterTitle":"\u2605 Project 2: Lane Follower","exercise":false}];
     const project3Lessons = [{"id":"proj3-mediapipe","label":"P3.0 What Is MediaPipe?","title":"P3.0 What Is MediaPipe?","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":true},{"id":"proj3-landmark-detection","label":"P3.1 Hand Landmarks","title":"P3.1 How Hand Landmark Detection Works","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-mediapipe-colab","label":"P3.2 MediaPipe Colab","title":"P3.2 The MediaPipe Colab Notebook","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-understanding-landmarks","label":"P3.3 Understanding Landmarks","title":"P3.3 Understanding Landmarks","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-open-closed","label":"P3.4 Open vs Closed","title":"P3.4 Open vs Closed: Reading Finger State","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-two-hand-logic","label":"P3.5 Two-Hand Logic","title":"P3.5 Two-Hand Gesture Logic","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-get-code","label":"P3.6 Get the Robot Code","title":"P3.6 Get the Robot Code","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-what-changes","label":"P3.7 What Changes","title":"P3.7 What Changes from Projects 1 and 2","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-detector-class","label":"P3.8 HandGestureDetector","title":"P3.8 The HandGestureDetector Class","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-main-loop","label":"P3.9 Main Loop","title":"P3.9 The Main Loop","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-running","label":"P3.10 Running and Testing","title":"P3.10 Running and Testing","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false},{"id":"proj3-dots","label":"P3.11 Connecting the Dots","title":"P3.11 Connecting the Dots","chapter":"proj3","chapterTitle":"* Project 3: Gesture Controlled Robot","exercise":false}];
+    const projectELessons = [{"id": "projE-overview", "label": "PE.0 What You Are Building", "title": "PE.0 What You Are Building", "exercise": true, "chapter": "projE", "chapterTitle": "* Exercise E: Pan-Tilt Ball Tracker"}, {"id": "projE-servo", "label": "PE.1 Servo Motors", "title": "PE.1 What Is a Servo Motor?", "exercise": false, "chapter": "projE", "chapterTitle": "* Exercise E: Pan-Tilt Ball Tracker"}, {"id": "projE-mechanism", "label": "PE.2 Pan-Tilt Mechanism", "title": "PE.2 The Pan-Tilt Mechanism", "exercise": false, "chapter": "projE", "chapterTitle": "* Exercise E: Pan-Tilt Ball Tracker"}, {"id": "projE-get-code", "label": "PE.3 Get the Code", "title": "PE.3 Get the Code", "exercise": false, "chapter": "projE", "chapterTitle": "* Exercise E: Pan-Tilt Ball Tracker"}, {"id": "projE-arduino", "label": "PE.4 Arduino Sketch", "title": "PE.4 The Arduino Sketch: Servos Over WiFi", "exercise": false, "chapter": "projE", "chapterTitle": "* Exercise E: Pan-Tilt Ball Tracker"}, {"id": "projE-protocol", "label": "PE.5 SERVO Protocol", "title": "PE.5 Understanding the SERVO Command Protocol", "exercise": false, "chapter": "projE", "chapterTitle": "* Exercise E: Pan-Tilt Ball Tracker"}, {"id": "projE-config", "label": "PE.6 Configuration", "title": "PE.6 Configuration: Your Variables", "exercise": false, "chapter": "projE", "chapterTitle": "* Exercise E: Pan-Tilt Ball Tracker"}, {"id": "projE-velocity-pid", "label": "PE.7 Velocity PID", "title": "PE.7 Velocity-Mode PID", "exercise": false, "chapter": "projE", "chapterTitle": "* Exercise E: Pan-Tilt Ball Tracker"}, {"id": "projE-tracker-class", "label": "PE.8 PanTiltTracker", "title": "PE.8 The PanTiltTracker Class", "exercise": false, "chapter": "projE", "chapterTitle": "* Exercise E: Pan-Tilt Ball Tracker"}, {"id": "projE-dual-pid", "label": "PE.9 Two PIDs", "title": "PE.9 Two PIDs at Once", "exercise": false, "chapter": "projE", "chapterTitle": "* Exercise E: Pan-Tilt Ball Tracker"}, {"id": "projE-main-loop", "label": "PE.10 Main Loop", "title": "PE.10 The Main Loop", "exercise": false, "chapter": "projE", "chapterTitle": "* Exercise E: Pan-Tilt Ball Tracker"}, {"id": "projE-running", "label": "PE.11 Running", "title": "PE.11 Running and Testing", "exercise": false, "chapter": "projE", "chapterTitle": "* Exercise E: Pan-Tilt Ball Tracker"}, {"id": "projE-dots", "label": "PE.12 Connecting Dots", "title": "PE.12 Connecting the Dots", "exercise": false, "chapter": "projE", "chapterTitle": "* Exercise E: Pan-Tilt Ball Tracker"}];
     const archiveLessonIndex = window.COURSE_LESSONS.findIndex((lesson) => lesson.id === "project-archive");
-    window.COURSE_LESSONS.splice(archiveLessonIndex, 0, ...projectALessons, ...projectBLessons, ...projectCLessons, ...projectDLessons, ...project1Lessons, ...project2Lessons, ...project3Lessons);
+    window.COURSE_LESSONS.splice(archiveLessonIndex, 0, ...projectALessons, ...projectBLessons, ...projectCLessons, ...projectDLessons, ...projectELessons, ...project1Lessons, ...project2Lessons, ...project3Lessons);
     window.COURSE_CHAPTERS.splice(
       window.COURSE_CHAPTERS.findIndex((chapter) => chapter.key === "projects"),
       0,
@@ -12029,13 +13575,13 @@ RIGHT    | L:+11  R:  0</script></figure>
       {"key":"projB","title":"* Exercise B: Your Phone as a Robot Camera","lessonIds":["projB-overview","projB-android","projB-iphone","projB-phone-ip","projB-browser-test","projB-detect-stream","projB-code","projB-project1"],"firstLesson":"projB-overview"},
       {"key":"projC","title":"* Exercise C: Precise Movement with Encoders","lessonIds":["projC-overview","projC-hardware","projC-encoders","projC-wiring","projC-arduino-basics","projC-first-sketch","projC-reading-pulses","projC-distance","projC-drive-distance","projC-turning","projC-path","projC-troubleshooting"],"firstLesson":"projC-overview"},
       {"key":"projD","title":"* Exercise D: Talk to Your Robot Over WiFi","lessonIds":["projD-udp","projD-wifi","projD-arduino","projD-python","projD-keyboard","projD-telemetry","projD-loop","projD-project1"],"firstLesson":"projD-udp"},
+      {"key": "projE", "title": "* Exercise E: Pan-Tilt Ball Tracker", "lessonIds": ["projE-overview", "projE-servo", "projE-mechanism", "projE-get-code", "projE-arduino", "projE-protocol", "projE-config", "projE-velocity-pid", "projE-tracker-class", "projE-dual-pid", "projE-main-loop", "projE-running", "projE-dots"], "firstLesson": "projE-overview"},
       {"key":"proj1","title":"★ Project 1: Object Tracker","lessonIds":["proj1-overview","proj1-get-code","proj1-vscode","proj1-dependencies","proj1-config","proj1-shared","proj1-pid","proj1-camera","proj1-udp-send","proj1-telemetry","proj1-state-machine","proj1-tracker","proj1-hud","proj1-main-loop","proj1-running"],"firstLesson":"proj1-overview"},
       {"key":"proj2","title":"★ Project 2: Lane Follower","lessonIds":["proj2-classical-cv","proj2-get-code","proj2-physical-setup","proj2-opencv-notebook","proj2-config","proj2-detect-lane","proj2-lane-follower","proj2-main-loop","proj2-visualisation","proj2-running","proj2-dots"],"firstLesson":"proj2-classical-cv"},
       {"key":"proj3","title":"* Project 3: Gesture Controlled Robot","lessonIds":["proj3-mediapipe","proj3-landmark-detection","proj3-mediapipe-colab","proj3-understanding-landmarks","proj3-open-closed","proj3-two-hand-logic","proj3-get-code","proj3-what-changes","proj3-detector-class","proj3-main-loop","proj3-running","proj3-dots"],"firstLesson":"proj3-mediapipe"}
     );
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-  <script src="project-e.js"></script>
   <script src="pyodide-runner.js"></script>
   <script src="nav.js"></script>
 </body>
