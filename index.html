@@ -6851,8 +6851,8 @@ void turnDegrees(float degrees, int speed) {
 
 <p>First create a second file in the same sketch folder called <code>arduino_secrets.h</code>. This keeps your WiFi name and password out of the main sketch. In the Arduino IDE, click the three dots ... on the right of the tab bar, choose <strong>New Tab</strong>, name it <code>arduino_secrets.h</code>, and paste this:</p>
 <figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="arduino_secrets.h"><figcaption><span>arduino_secrets.h</span><span class="local-run-badge">Arduino</span></figcaption><pre><code class="language-cpp">// arduino_secrets.h header file
-#define SECRET_SSID "yournetwork"
-#define SECRET_PASS "yourpassword"</code></pre></figure>
+#define SECRET_SSID "yournetwork" //replace yournetwork with your wifi name inside quotes
+#define SECRET_PASS "yourpassword"</code></pre></figure> //replace yourpassword with your wifi password inside quotes
 
 <figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="robot_udp.ino"><figcaption><span>robot_udp.ino</span><span class="local-run-badge">Arduino</span></figcaption><pre><code class="language-cpp">
 #include &lt;WiFiS3.h&gt;
