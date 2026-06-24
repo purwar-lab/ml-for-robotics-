@@ -8020,49 +8020,41 @@ finally:
 <p>This script sends a command about 33 times per second. The Arduino safety timeout will stop the robot if these commands stop arriving.</p>
 
 <h3>Install Keyboard Input Support</h3>
-<div class="code-card" data-runnable="false"><pre><code class="language-bash">pip install pynput</code></pre></div>
+<div class="code-card" data-runnable="false"><pre><code class="language-bash">pip install pygame</code></pre></div>
 
 <figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="robot_keyboard.py"><figcaption><span>robot_keyboard.py</span><span class="local-run-badge">Run locally</span></figcaption><pre><code class="language-python">import socket
+import socket
 import time
-
-from pynput import keyboard
+import pygame
 
 ARDUINO_IP = "192.168.x.x"
 CMD_PORT = 5001
 TELEM_PORT = 5002
 
+# UDP sockets
 cmd_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 telem_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 telem_sock.bind(("", TELEM_PORT))
 telem_sock.settimeout(0.05)
 
-keys_pressed = set()
 
 def send_command(left, right):
     msg = f"MOTOR,{int(left)},{int(right)}"
     cmd_sock.sendto(msg.encode(), (ARDUINO_IP, CMD_PORT))
 
+
 def send_stop():
     cmd_sock.sendto(b"STOP", (ARDUINO_IP, CMD_PORT))
 
-def on_press(key):
-    try:
-        keys_pressed.add(key.char)
-    except AttributeError:
-        pass
 
-def on_release(key):
-    try:
-        keys_pressed.discard(key.char)
-    except AttributeError:
-        pass
-    if key == keyboard.Key.esc:
-        return False
+# ---------------- PYGAME INIT ----------------
+pygame.init()
+screen = pygame.display.set_mode((300, 200))  # required to capture input
+pygame.display.set_caption("Robot Control")
 
-listener = keyboard.Listener(on_press=on_press, on_release=on_release)
-listener.start()
+clock = pygame.time.Clock()
 
-print("Robot keyboard control")
+print("Robot keyboard control (pygame)")
 print("  W = forward    S = backward")
 print("  A = turn left  D = turn right")
 print("  ESC = quit")
@@ -8071,47 +8063,68 @@ print()
 SPEED = 180
 TURN = 150
 
+running = True
+
 try:
-    while listener.running:
+    while running:
+        pygame.event.pump()
+        keys = pygame.key.get_pressed()
+
         left = 0
         right = 0
 
-        if "w" in keys_pressed:
+        # movement logic
+        if keys[pygame.K_w]:
             left, right = SPEED, SPEED
-        elif "s" in keys_pressed:
+        elif keys[pygame.K_s]:
             left, right = -SPEED, -SPEED
 
-        if "a" in keys_pressed:
+        if keys[pygame.K_a]:
             left -= TURN
             right += TURN
-        if "d" in keys_pressed:
+
+        if keys[pygame.K_d]:
             left += TURN
             right -= TURN
 
         send_command(left, right)
 
+        # handle quit
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        if keys[pygame.K_ESCAPE]:
+            running = False
+
+        # telemetry receive
         try:
             data, _ = telem_sock.recvfrom(128)
             parts = data.decode().strip().split(",")
+
             if parts[0] == "ENC" and len(parts) == 3:
                 l, r = int(parts[1]), int(parts[2])
                 print(
-                    f"Keys: {keys_pressed} | L: {left:+4d} R: {right:+4d} "
-                    f"| Ticks L: {l:+6d} R: {r:+6d}",
+                    f"Keys: W:{keys[pygame.K_w]} A:{keys[pygame.K_a]} "
+                    f"S:{keys[pygame.K_s]} D:{keys[pygame.K_d]} | "
+                    f"L: {left:+4d} R: {right:+4d} | "
+                    f"Ticks L: {l:+6d} R: {r:+6d}",
                     end="\r",
                 )
+
         except socket.timeout:
             pass
 
         time.sleep(0.03)
+        clock.tick(60)
 
-except KeyboardInterrupt:
-    pass
 finally:
     send_stop()
     cmd_sock.close()
     telem_sock.close()
-    print("\nStopped.")</code></pre></figure>
+    pygame.quit()
+    print("\nStopped.")
+</code></pre></figure>
 
 <h3>Run It</h3>
 <div class="code-card" data-runnable="false"><pre><code class="language-bash">python robot_keyboard.py</code></pre></div>
