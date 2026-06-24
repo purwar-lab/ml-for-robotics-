@@ -4595,6 +4595,9 @@ html[data-theme="light"] body.lesson-app .p3-finger-state figcaption {
     transform: translateX(-280px);
     transition: transform 0.24s ease;
     box-shadow: 20px 0 40px rgba(0, 0, 0, 0.28);
+    /* Sit above the drawer scrim (z-index 850) so the open drawer is not
+       dimmed and its links remain tappable; stays below the topbar (1000). */
+    z-index: 950;
   }
   body.lesson-app.sidebar-open .lesson-sidebar {
     transform: translateX(0);
