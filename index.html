@@ -6293,36 +6293,37 @@ void loop() {
 <p class="lead">This sketch does not move the motors. It only reads and prints encoder counts while you rotate the wheels by hand. That isolates encoder wiring before motor control adds more variables.</p>
 
 <figure class="code-card" data-runnable="false" data-chapter="project-c" data-filename="encoder_test.ino"><figcaption><span>encoder_test.ino</span></figcaption><pre><code class="language-cpp">// Encoder pin definitions
-#define ENC_LEFT_A   2   // hardware interrupt pin
+// Encoder pin definitions
+#define ENC_LEFT_A   2
 #define ENC_LEFT_B   A0
-#define ENC_RIGHT_A  3   // hardware interrupt pin
+#define ENC_RIGHT_A  3
 #define ENC_RIGHT_B  8
 
-// Tick counters are volatile because they are modified inside ISRs.
 volatile long ticksLeft  = 0;
 volatile long ticksRight = 0;
 
+// Change these if encoder direction is reversed
+const int LEFT_ENCODER_SIGN  = -1;
+const int RIGHT_ENCODER_SIGN = 1;
+
 void leftEncoderISR() {
-  // Read channel B at the moment channel A fires.
-  // If B is HIGH when A rises, wheel is spinning forward.
-  // If B is LOW when A rises, wheel is spinning backward.
   if (digitalRead(ENC_LEFT_B) == HIGH) {
-    ticksLeft++;
+    ticksLeft += LEFT_ENCODER_SIGN;
   } else {
-    ticksLeft--;
+    ticksLeft -= LEFT_ENCODER_SIGN;
   }
 }
 
 void rightEncoderISR() {
   if (digitalRead(ENC_RIGHT_B) == HIGH) {
-    ticksRight++;
+    ticksRight += RIGHT_ENCODER_SIGN;
   } else {
-    ticksRight--;
+    ticksRight -= RIGHT_ENCODER_SIGN;
   }
 }
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
 
   pinMode(ENC_LEFT_A,  INPUT_PULLUP);
   pinMode(ENC_LEFT_B,  INPUT_PULLUP);
@@ -6336,12 +6337,22 @@ void setup() {
 }
 
 void loop() {
+  long leftCopy;
+  long rightCopy;
+
+  noInterrupts();
+  leftCopy = ticksLeft;
+  rightCopy = ticksRight;
+  interrupts();
+
   Serial.print("Left: ");
-  Serial.print(ticksLeft);
-  Serial.print(ticksLeft &gt; 0 ? "  (forward)" : ticksLeft &lt; 0 ? "  (backward)" : "  (zero)");
+  Serial.print(leftCopy);
+  Serial.print(leftCopy > 0 ? "  (forward)" : leftCopy < 0 ? "  (backward)" : "  (zero)");
+
   Serial.print("    Right: ");
-  Serial.print(ticksRight);
-  Serial.println(ticksRight &gt; 0 ? "  (forward)" : ticksRight &lt; 0 ? "  (backward)" : "  (zero)");
+  Serial.print(rightCopy);
+  Serial.println(rightCopy > 0 ? "  (forward)" : rightCopy < 0 ? "  (backward)" : "  (zero)");
+
   delay(200);
 }</code></pre></figure>
 
