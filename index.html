@@ -6661,7 +6661,7 @@ void loop() {
 
 <h3>Add the Turn Function</h3>
 <p>Add this constant and function to your <code>drive_distance.ino</code> sketch. The function uses the same encoder counters and motor helpers you already wrote.</p>
-<figure class="code-card" data-runnable="false" data-chapter="project-c" data-filename="turn_degrees_addition.ino"><figcaption><span>turn_degrees_addition.ino</span></figcaption><pre><code class="language-cpp">const float WHEELBASE_CM = 14.0;  // measure your chassis
+<figure class="code-card" data-runnable="false" data-chapter="project-c" data-filename="turn_degrees_addition.ino"><figcaption><span>turn_degrees_addition.ino</span></figcaption><pre><code class="language-cpp">const float WHEELBASE_CM = 10.0;  // measure your chassis
 
 void turnDegrees(float degrees, int speed) {
   float arcCm = (WHEELBASE_CM * 3.14159 * fabs(degrees)) / 360.0;
