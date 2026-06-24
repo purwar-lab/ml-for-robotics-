@@ -5381,7 +5381,7 @@ cv2.destroyAllWindows()</code></pre></figure>
 <div class="step"><div>The <code>best.pt</code> file from Exercise A.</div></div>
 <div class="step"><div>Your phone and laptop on the same WiFi network.</div></div>
 <div class="step"><div>Android phone: IP Webcam app, free from the Play Store.</div></div>
-<div class="step"><div>iPhone: Simple IP Camera app, free from the App Store.</div></div>
+<div class="step"><div>iOS: Simple IP Camera app, free from the App Store.</div></div>
 <div class="step"><div>The <code>my-detector</code> VS Code folder from Exercise A with the virtual environment active.</div></div>
 </div>
 
@@ -5420,13 +5420,13 @@ http://10.0.0.3:8080</code></pre></figure>
 <div class="lesson-actions"><button class="mark-complete-btn" data-lesson="projB-android">Mark as Complete</button></div>
 <nav class="lesson-nav" aria-label="Previous and next lessons">
 <a class="lesson-nav-btn" href="?lesson=projB-overview" data-lesson-link="projB-overview"><span class="lesson-nav-label">Previous</span><span class="lesson-nav-title">&larr; PB.0 Phone Camera</span></a>
-<a class="lesson-nav-btn next" href="?lesson=projB-iphone" data-lesson-link="projB-iphone"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PB.2 iPhone Setup &rarr;</span></a>
+<a class="lesson-nav-btn next" href="?lesson=projB-iphone" data-lesson-link="projB-iphone"><span class="lesson-nav-label">Next</span><span class="lesson-nav-title">PB.2 iOS Setup &rarr;</span></a>
 </nav>
 </article>
 <article class="lesson-content" data-lesson="projB-iphone" data-chapter="projB" data-chapter-title="* Exercise B: Your Phone as a Robot Camera" style="--chapter-accent:#8b5cf6">
 <div class="lesson-kicker">* Exercise B: Your Phone as a Robot Camera <span>&rsaquo;</span> PB.2 iOS Setup: SimpleIPCamera</div>
 <h1>PB.2 iOS Setup: SimpleIPCamera</h1>
-<div class="lesson-meta"><span>iPhone</span><span>MJPEG</span><span>8 min</span></div>
+<div class="lesson-meta"><span>iOS</span><span>MJPEG</span><span>8 min</span></div>
 <hr class="lesson-divider" />
 <div class="lesson-body">
 
@@ -5438,9 +5438,9 @@ http://10.0.0.3:8080</code></pre></figure>
 <p>This is what you paste into Python.</p>
 <h3>Keep The App Open</h3>
 <p>Same requirement as Android: keep the app running in the foreground and plug your phone in to prevent the screen from locking.</p>
-<div class="callout info" role="note"><div class="callout-icon">ℹ</div><div><div class="callout-title">Simple IP Camera vs IP Webcam</div><p>Simple IP Camera uses the same MJPEG format as IP Webcam on Android. The stream URL path is slightly different, <code>/live</code> instead of <code>/video</code>, but the Python code handles it identically. The only change between Android and iPhone is the URL you paste into the script.</p></div></div>
-<h3>Stream URL Format For iPhone</h3>
-<figure class="code-card" data-runnable="false" data-chapter="project-b" data-filename="Terminal"><figcaption><span>iPhone / Simple IP Camera stream URL</span></figcaption><pre><code class="language-bash">http://PHONE_IP:8080/live</code></pre></figure>
+<div class="callout info" role="note"><div class="callout-icon">ℹ</div><div><div class="callout-title">Simple IP Camera vs IP Webcam</div><p>Simple IP Camera uses the same MJPEG format as IP Webcam on Android. The stream URL path is slightly different, <code>/live</code> instead of <code>/video</code>, but the Python code handles it identically. The only change between Android and iOS is the URL you paste into the script.</p></div></div>
+<h3>Stream URL Format For iOS</h3>
+<figure class="code-card" data-runnable="false" data-chapter="project-b" data-filename="Terminal"><figcaption><span>iOS / Simple IP Camera stream URL</span></figcaption><pre><code class="language-bash">http://PHONE_IP:8080/live</code></pre></figure>
 <h3>Confirm The Same Network</h3>
 <p>On your iPhone go to Settings, tap WiFi, and check that you are connected to the same network name as your laptop.</p>
 <p>If your laptop is on ethernet and your phone is on WiFi they are usually on the same network. This is fine.</p>
@@ -5488,7 +5488,7 @@ http://10.0.0.3:8080</code></pre></figure>
 <p class="lead">Before writing any Python code, confirm the stream works using your browser. This takes 30 seconds and immediately tells you if the network connection is working.</p>
 <div class="steps">
 <div class="step"><div><strong>Open your laptop browser.</strong><br />Open Chrome, Firefox, or Safari on your laptop.</div></div>
-<div class="step"><div><strong>Type the stream URL in the address bar.</strong><br />For Android use <code>http://PHONE_IP:8080/video</code>. For iPhone use <code>http://PHONE_IP:8080/live</code>. Replace <code>PHONE_IP</code> with the address shown in your app.</div></div>
+<div class="step"><div><strong>Type the stream URL in the address bar.</strong><br />For Android use <code>http://PHONE_IP:8080/video</code>. For iOS use <code>http://PHONE_IP:8080/live</code>. Replace <code>PHONE_IP</code> with the address shown in your app.</div></div>
 <div class="step"><div><strong>Press Enter.</strong><br />If the connection works, your browser will show a live video feed from your phone camera with a small delay of roughly half a second.</div></div>
 </div>
 <figure class="code-card" data-runnable="false" data-chapter="project-b" data-filename="Terminal"><figcaption><span>Browser test examples</span></figcaption><pre><code class="language-bash">http://192.168.1.47:8080/video
@@ -5522,7 +5522,7 @@ from ultralytics import YOLO
 # -- CONFIGURATION ----------------------------------------------------
 # Paste your phone stream URL here
 # Android (IP Webcam):      &quot;http://192.168.x.x:8080/video&quot;
-# iPhone (Simple IP Camera): &quot;http://192.168.x.x:8080/live&quot;
+# iOS (Simple IP Camera): &quot;http://192.168.x.x:8080/live&quot;
 STREAM_URL = &quot;http://YOUR_PHONE_IP:8080/video&quot;
 
 # Path to your trained model from Exercise A
@@ -5618,7 +5618,7 @@ if __name__ == &quot;__main__&quot;:
 <h3>Step 1 — Edit The STREAM_URL Line</h3>
 <p>Change <code>YOUR_PHONE_IP</code> to the IP address shown in your phone app.</p>
 <figure class="code-card" data-runnable="false" data-chapter="project-b" data-filename="Terminal"><figcaption><span>STREAM_URL examples</span></figcaption><pre><code class="language-bash">Android: STREAM_URL = &quot;http://192.168.1.47:8080/video&quot;
-iPhone:  STREAM_URL = &quot;http://192.168.1.52:8080/live&quot;</code></pre></figure>
+iOS:  STREAM_URL = &quot;http://192.168.1.52:8080/live&quot;</code></pre></figure>
 <h3>Step 2 — Make Sure best.pt Is In The Same Folder</h3>
 <p>Your trained model file from Exercise A must be in the <code>my-detector</code> folder alongside <code>detect_stream.py</code>. If you named it something else like <code>ball_detector.pt</code>, update the <code>MODEL_PATH</code> line accordingly.</p>
 <h3>Step 3 — Run The Script</h3>
