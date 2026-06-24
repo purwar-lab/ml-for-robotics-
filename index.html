@@ -6975,7 +6975,11 @@ void turnDegrees(float degrees, int speed) {
 <p>Blinking the LED is just two messages: <code>D 13 1</code> to turn it on and <code>D 13 0</code> to turn it off.</p>
 
 <h3>The Arduino Receiver</h3>
-<p>This sketch connects to WiFi, listens on UDP port <code>5005</code>, and runs a command every time a packet arrives. It uses the same <code>arduino_secrets.h</code> file for your WiFi name and password that the rest of Exercise D uses.</p>
+<p>This sketch connects to WiFi, listens on UDP port <code>5005</code>, and runs a command every time a packet arrives. Your WiFi name and password live in a separate file called <code>arduino_secrets.h</code> in the same sketch folder, which keeps your credentials out of the main code. Create it first:</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="arduino_secrets.h"><figcaption><span>arduino_secrets.h</span><span class="local-run-badge">Arduino</span></figcaption><pre><code class="language-cpp">// arduino_secrets.h header file
+#define SECRET_SSID "yournetwork"    // replace with your WiFi name, keep the quotes
+#define SECRET_PASS "yourpassword"   // replace with your WiFi password, keep the quotes</code></pre></figure>
+<p>In the Arduino IDE, click the small arrow (the three dots on the right of the tab bar), choose <strong>New Tab</strong>, name it <code>arduino_secrets.h</code>, and paste the two lines above with your own network name and password. The main sketch then pulls them in with <code>#include "arduino_secrets.h"</code>.</p>
 <figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="udp_command_receiver.ino"><figcaption><span>udp_command_receiver.ino</span><span class="local-run-badge">Arduino</span></figcaption><pre><code class="language-cpp">#include &lt;WiFiS3.h&gt;
 #include &lt;WiFiUdp.h&gt;
 #include &lt;Servo.h&gt;
@@ -7366,7 +7370,7 @@ root.mainloop()</code></pre></figure>
 
 <h3>Run It Yourself</h3>
 <div class="steps">
-<div class="step"><div><strong>Create <code>arduino_secrets.h</code>.</strong><br />In the same sketch folder, add a file with your WiFi name and password as <code>SECRET_SSID</code> and <code>SECRET_PASS</code> (the same pattern used throughout Exercise D).</div></div>
+<div class="step"><div><strong>Create <code>arduino_secrets.h</code>.</strong><br />Add the <code>arduino_secrets.h</code> file shown above to the sketch folder, filling in your own <code>SECRET_SSID</code> and <code>SECRET_PASS</code>.</div></div>
 <div class="step"><div><strong>Upload the sketch.</strong><br />Open <code>udp_command_receiver.ino</code> in the Arduino IDE and upload it to the UNO R4 WiFi.</div></div>
 <div class="step"><div><strong>Read the IP.</strong><br />Open the Serial Monitor at 9600 baud. Note the printed <strong>Arduino IP address</strong>.</div></div>
 <div class="step"><div><strong>Edit the Python file.</strong><br />Set <code>ARDUINO_IP</code> to that address. Make sure your laptop is on the same WiFi.</div></div>
@@ -7585,10 +7589,7 @@ root.mainloop()</code></pre></figure>
 <p class="lead">This sketch maintains a WiFi connection, listens for UDP motor command packets from the laptop, drives the motors through the SnappyXO shield, and sends encoder telemetry back every 50 ms.</p>
 <p>Upload this after you have confirmed Exercise C motor and encoder wiring. Leave the robot wheels lifted off the table for the first test.</p>
 
-<p>First create a second file in the same sketch folder called <code>arduino_secrets.h</code>. This keeps your WiFi name and password out of the main sketch. In the Arduino IDE, click the three dots ... on the right of the tab bar, choose <strong>New Tab</strong>, name it <code>arduino_secrets.h</code>, and paste this:</p>
-<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="arduino_secrets.h"><figcaption><span>arduino_secrets.h</span><span class="local-run-badge">Arduino</span></figcaption><pre><code class="language-cpp">// arduino_secrets.h header file
-#define SECRET_SSID "yournetwork" //replace yournetwork with your wifi name inside quotes
-#define SECRET_PASS "yourpassword"</code></pre></figure> //replace yourpassword with your wifi password inside quotes
+<p>This sketch uses the same <code>arduino_secrets.h</code> file you created in <a href="?lesson=projD-led" data-lesson-link="projD-led">PD.1b</a> for your WiFi name and password &mdash; keep it in this sketch&apos;s folder, no need to create it again.</p>
 
 <figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="robot_udp.ino"><figcaption><span>robot_udp.ino</span><span class="local-run-badge">Arduino</span></figcaption><pre><code class="language-cpp">
 #include &lt;WiFiS3.h&gt;
