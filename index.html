@@ -7883,9 +7883,9 @@ finally:
 <div class="code-card" data-runnable="false"><pre><code class="language-bash">pip install pygame</code></pre></div>
 
 <figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="robot_keyboard.py"><figcaption><span>robot_keyboard.py</span><span class="local-run-badge">Run locally</span></figcaption><pre><code class="language-python">import socket
-import socket
 import time
 import pygame
+import csv
 
 ARDUINO_IP = "192.168.x.x"
 CMD_PORT = 5001
@@ -7924,6 +7924,9 @@ SPEED = 180
 TURN = 150
 
 running = True
+
+log_rows = []
+start_time = time.time()
 
 try:
     while running:
@@ -7964,6 +7967,7 @@ try:
 
             if parts[0] == "ENC" and len(parts) == 3:
                 l, r = int(parts[1]), int(parts[2])
+                log_rows.append([f"{time.time() - start_time:.3f}", l, r])
                 print(
                     f"Keys: W:{keys[pygame.K_w]} A:{keys[pygame.K_a]} "
                     f"S:{keys[pygame.K_s]} D:{keys[pygame.K_d]} | "
@@ -7983,7 +7987,11 @@ finally:
     cmd_sock.close()
     telem_sock.close()
     pygame.quit()
-    print("\nStopped.")
+    with open("telemetry_log.csv", "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["time_s", "left_ticks", "right_ticks"])
+        writer.writerows(log_rows)
+    print(f"\nStopped. Saved {len(log_rows)} rows to telemetry_log.csv")
 </code></pre></figure>
 
 <h3>Run It</h3>
@@ -8025,54 +8033,31 @@ finally:
 <hr class="lesson-divider" />
 <div class="lesson-body">
 
-<p class="lead">The telemetry printed by <code>robot_keyboard.py</code> is real encoder tick data coming from the Arduino over UDP every 50 ms. Now you will log that data to a CSV file so you can inspect it after the robot moves.</p>
+<p class="lead">The telemetry printed by <code>robot_keyboard.py</code> is real encoder tick data coming from the Arduino over UDP every 50 ms. Now you will save it to a CSV file so you can plot it after the robot moves. Because only one program can receive the telemetry on port <code>5002</code>, the logging goes directly inside <code>robot_keyboard.py</code> &mdash; you do not run a second receiver.</p>
 <p>Run <code>robot_keyboard.py</code> and drive the robot forward in a straight line for about 50 cm. Both left and right tick counts should increase at roughly the same rate. If one grows much faster, your motors have different speeds at the same PWM value. That is normal hardware variation.</p>
 
-<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="log_telemetry.py"><figcaption><span>log_telemetry.py</span><span class="local-run-badge">Run locally</span></figcaption><pre><code class="language-python">import socket
-import csv
-import time
+<p>The driving script from PD.4 already receives the telemetry, so it just needs to remember each reading and write it out on exit. These are the only lines to add to <code>robot_keyboard.py</code>:</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="robot_keyboard.py"><figcaption><span>Logging additions for robot_keyboard.py</span><span class="local-run-badge">Run locally</span></figcaption><pre><code class="language-python">import csv                       # add to the imports at the top
 
-TELEM_PORT = 5002
-
-telem_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-telem_sock.bind(("", TELEM_PORT))
-telem_sock.settimeout(1.0)
-
-print("Logging telemetry. Press Ctrl+C to stop.")
-print("Make sure robot_keyboard.py is running in another terminal.")
-
-rows = []
+log_rows = []                    # add just before the main loop
 start_time = time.time()
 
-try:
-    while True:
-        try:
-            data, _ = telem_sock.recvfrom(128)
-            parts = data.decode().strip().split(",")
-            if parts[0] == "ENC" and len(parts) == 3:
-                t = time.time() - start_time
-                l, r = int(parts[1]), int(parts[2])
-                rows.append([f"{t:.3f}", l, r])
-                print(f"t={t:.2f}s  L={l:+6d}  R={r:+6d}", end="\r")
-        except socket.timeout:
-            pass
-except KeyboardInterrupt:
-    pass
+# inside the telemetry branch, right after:  l, r = int(parts[1]), int(parts[2])
+log_rows.append([f"{time.time() - start_time:.3f}", l, r])
 
+# in the finally block, after pygame.quit():
 with open("telemetry_log.csv", "w", newline="") as f:
     writer = csv.writer(f)
     writer.writerow(["time_s", "left_ticks", "right_ticks"])
-    writer.writerows(rows)
-
-print(f"\nSaved {len(rows)} rows to telemetry_log.csv")
-telem_sock.close()</code></pre></figure>
+    writer.writerows(log_rows)
+print(f"Saved {len(log_rows)} rows to telemetry_log.csv")</code></pre></figure>
+<div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">Only one telemetry receiver</div><p>The Arduino sends telemetry to a single port (<code>5002</code>), and only one program can bind it. Do not run a separate logger at the same time as <code>robot_keyboard.py</code> &mdash; on Windows the second one fails with <code>OSError: [WinError 10048]</code>. That is why the logging lives inside the driving script.</p></div></div>
 
 <h3>Logging Procedure</h3>
 <div class="steps">
-<div class="step"><div>Open one terminal and run <code>python robot_keyboard.py</code>.</div></div>
-<div class="step"><div>Open a second terminal in the same folder and run <code>python log_telemetry.py</code>.</div></div>
+<div class="step"><div>Run <code>python robot_keyboard.py</code> in one terminal.</div></div>
 <div class="step"><div>Drive the robot around for about 30 seconds.</div></div>
-<div class="step"><div>Stop both scripts with <code>Ctrl+C</code> or <code>Esc</code>.</div></div>
+<div class="step"><div>Press <code>Esc</code> to stop &mdash; the script saves <code>telemetry_log.csv</code> as it exits.</div></div>
 <div class="step"><div>Open <code>telemetry_log.csv</code> in Excel, Google Sheets, or another plotting tool.</div></div>
 <div class="step"><div>Plot <code>left_ticks</code> and <code>right_ticks</code> against <code>time_s</code>.</div></div>
 </div>
