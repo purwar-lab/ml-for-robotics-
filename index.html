@@ -6991,13 +6991,78 @@ void turnDegrees(float degrees, int speed) {
 #define SECRET_SSID "yournetwork" //replace yournetwork with your wifi name inside quotes
 #define SECRET_PASS "yourpassword" //replace yourpassword with your wifi password inside quotes</code></pre></figure>
 <p>In the Arduino IDE, click the small arrow (the three dots on the right of the tab bar), choose <strong>New Tab</strong>, name it <code>arduino_secrets.h</code>, and paste the lines above with your own network name and password. The main sketch then pulls them in with <code>#include "arduino_secrets.h"</code>.</p>
-<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="udp_command_receiver.ino"><figcaption><span>udp_command_receiver.ino</span><span class="local-run-badge">Arduino</span></figcaption><pre><code class="language-cpp">#include &lt;WiFiS3.h&gt;
-#include &lt;WiFiUdp.h&gt;
-#include &lt;Servo.h&gt;
+<p>The WiFi connection and info code lives in its own header, <code>wifi_helper.h</code>, so the Arduino sketches in this exercise stay short. Add it as another tab (the same way you added <code>arduino_secrets.h</code>):</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="wifi_helper.h"><figcaption><span>wifi_helper.h</span><span class="local-run-badge">Arduino</span></figcaption><pre><code class="language-cpp">#pragma once
+#include &lt;WiFiS3.h&gt;
 #include "arduino_secrets.h"
 
-const char* ssid = SECRET_SSID;
-const char* pass = SECRET_PASS;
+// True once the board has a real IP (not 0.0.0.0 yet).
+bool ipIsValid(IPAddress ip) {
+  return !(ip[0] == 0 &amp;&amp; ip[1] == 0 &amp;&amp; ip[2] == 0 &amp;&amp; ip[3] == 0);
+}
+
+// Connect to WiFi using the credentials in arduino_secrets.h.
+// Blocks until a valid IP is assigned; retries up to 5 times.
+void connectToWiFi() {
+  if (WiFi.status() == WL_NO_MODULE) {
+    Serial.println("Communication with WiFi module failed!");
+    while (true) delay(1000);
+  }
+
+  String fv = WiFi.firmwareVersion();
+  if (fv &lt; WIFI_FIRMWARE_LATEST_VERSION) {
+    Serial.println("Warning: WiFi firmware may need updating.");
+  }
+
+  Serial.print("Connecting to WiFi: ");
+  Serial.println(SECRET_SSID);
+
+  WiFi.disconnect();
+  delay(1000);
+
+  int attempts = 0;
+  while (true) {
+    WiFi.begin(SECRET_SSID, SECRET_PASS);
+
+    unsigned long start = millis();
+    while (millis() - start &lt; 20000) {
+      if (WiFi.status() == WL_CONNECTED &amp;&amp; ipIsValid(WiFi.localIP())) {
+        Serial.println("WiFi connected with valid IP.");
+        return;
+      }
+      delay(1000);
+    }
+
+    attempts++;
+    Serial.println("WiFi attempt failed (IP stayed 0.0.0.0). Retrying...");
+    WiFi.disconnect();
+    delay(2000);
+
+    if (attempts &gt;= 5) {
+      Serial.println("Could not get a valid IP after 5 attempts.");
+      Serial.println("Check SSID, password, router DHCP, and 2.4 GHz WiFi.");
+      while (true) delay(1000);
+    }
+  }
+}
+
+// Print the assigned IP (paste it into the Python script) and signal strength.
+void printWiFiInfo() {
+  Serial.println();
+  Serial.println("===== WiFi Info =====");
+  Serial.print("SSID: ");
+  Serial.println(WiFi.SSID());
+  Serial.print("Arduino IP address: ");
+  Serial.println(WiFi.localIP());
+  Serial.print("Signal strength RSSI: ");
+  Serial.print(WiFi.RSSI());
+  Serial.println(" dBm");
+  Serial.println("=====================");
+}</code></pre></figure>
+<p>The main sketch then includes <code>wifi_helper.h</code> and just calls <code>connectToWiFi()</code> and <code>printWiFiInfo()</code> in <code>setup()</code>:</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="udp_command_receiver.ino"><figcaption><span>udp_command_receiver.ino</span><span class="local-run-badge">Arduino</span></figcaption><pre><code class="language-cpp">#include &lt;WiFiUdp.h&gt;
+#include &lt;Servo.h&gt;
+#include "wifi_helper.h"   // WiFi connect/info + arduino_secrets.h credentials
 
 WiFiUDP udp;
 const unsigned int UDP_PORT = 5005;
@@ -7177,24 +7242,8 @@ void setup() {
   Serial.begin(9600);
   delay(1000);
 
-  if (WiFi.status() == WL_NO_MODULE) {
-    Serial.println("Communication with WiFi module failed!");
-
-    while (true) {
-      delay(1000);
-    }
-  }
-
-  String fv = WiFi.firmwareVersion();
-  Serial.print("WiFi firmware version: ");
-  Serial.println(fv);
-
-  if (fv &lt; WIFI_FIRMWARE_LATEST_VERSION) {
-    Serial.println("Warning: WiFi firmware may need to be updated.");
-  }
-
-  connectToWiFi();
-  printWiFiInfo();
+  connectToWiFi();   // from wifi_helper.h
+  printWiFiInfo();    // from wifi_helper.h
 
   udp.begin(UDP_PORT);
 
@@ -7218,84 +7267,6 @@ void loop() {
       handleCommand(packet);
     }
   }
-}
-
-
-bool ipIsValid(IPAddress ip) {
-  return !(ip[0] == 0 &amp;&amp; ip[1] == 0 &amp;&amp; ip[2] == 0 &amp;&amp; ip[3] == 0);
-}
-
-
-void connectToWiFi() {
-  Serial.print("Connecting to WiFi: ");
-  Serial.println(ssid);
-
-  WiFi.disconnect();
-  delay(1000);
-
-  int attempts = 0;
-
-  while (true) {
-    Serial.println("Starting WiFi connection...");
-    WiFi.begin(ssid, pass);
-
-    unsigned long startAttemptTime = millis();
-
-    while (millis() - startAttemptTime &lt; 20000) {
-      int status = WiFi.status();
-      IPAddress ip = WiFi.localIP();
-
-      Serial.print("WiFi status: ");
-      Serial.print(status);
-      Serial.print("    IP: ");
-      Serial.println(ip);
-
-      if (status == WL_CONNECTED &amp;&amp; ipIsValid(ip)) {
-        Serial.println();
-        Serial.println("WiFi connected with valid IP.");
-        return;
-      }
-
-      delay(1000);
-    }
-
-    attempts++;
-
-    Serial.println();
-    Serial.println("WiFi connection attempt failed or IP stayed 0.0.0.0.");
-    Serial.println("Retrying...");
-    Serial.println();
-
-    WiFi.disconnect();
-    delay(2000);
-
-    if (attempts &gt;= 5) {
-      Serial.println("Could not get a valid IP after 5 attempts.");
-      Serial.println("Check SSID, password, router DHCP, and 2.4 GHz WiFi.");
-
-      while (true) {
-        delay(1000);
-      }
-    }
-  }
-}
-
-
-void printWiFiInfo() {
-  IPAddress ip = WiFi.localIP();
-
-  Serial.println();
-  Serial.println("===== WiFi Info =====");
-
-  Serial.print("SSID: ");
-  Serial.println(WiFi.SSID());
-
-  Serial.print("Arduino IP address: ");
-  Serial.println(ip);
-
-  Serial.print("Signal strength RSSI: ");
-  Serial.print(WiFi.RSSI());
-  Serial.println(" dBm");
 }</code></pre></figure>
 <table class="code-anatomy">
   <thead><tr><th>Part</th><th>What it does</th></tr></thead>
@@ -7602,21 +7573,14 @@ root.mainloop()</code></pre></figure>
 
 <p>This sketch uses the same <code>arduino_secrets.h</code> file you created in <a href="?lesson=projD-led" data-lesson-link="projD-led">PD.1b</a> for your WiFi name and password &mdash; keep it in this sketch&apos;s folder, no need to create it again.</p> 
 
-<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="robot_udp.ino"><figcaption><span>robot_udp.ino</span><span class="local-run-badge">Arduino</span></figcaption><pre><code class="language-cpp">
-#include &lt;WiFiS3.h&gt;
-#include &lt;WiFiUDP.h&gt;
-#include "arduino_secrets.h"
+<p>This sketch uses the same <code>wifi_helper.h</code> header you created in <a href="?lesson=projD-led" data-lesson-link="projD-led">PD.1b</a> &mdash; it includes the header and calls <code>connectToWiFi()</code> / <code>printWiFiInfo()</code> in <code>setup()</code>. No need to recreate it.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="robot_udp.ino"><figcaption><span>robot_udp.ino</span><span class="local-run-badge">Arduino</span></figcaption><pre><code class="language-cpp">#include &lt;WiFiUDP.h&gt;
+#include "wifi_helper.h"   // WiFi connect/info + arduino_secrets.h credentials
 
-// WiFi credentials from arduino_secrets.h
-const char* WIFI_SSID     = SECRET_SSID;
-const char* WIFI_PASSWORD = SECRET_PASS;
-
-// IMPORTANT:
-// This must be your laptop's IP address on the SAME local WiFi
-// as the Arduino. Check it using ipconfig on Windows.
-const char* LAPTOP_IP     = "192.168.5.245";   // CHANGE THIS
-const int   CMD_PORT      = 5001;
-const int   TELEM_PORT    = 5002;
+// Your laptop's IP on the same WiFi (telemetry destination). Check with ipconfig.
+const char* LAPTOP_IP  = "192.168.5.245";   // CHANGE THIS
+const int   CMD_PORT   = 5001;
+const int   TELEM_PORT = 5002;
 
 // Motor pins
 #define LEFT_IN1_PIN    4
@@ -7658,109 +7622,22 @@ void setMotors(int leftSpeed, int rightSpeed) {
   leftSpeed  = constrain(leftSpeed, -255, 255);
   rightSpeed = constrain(rightSpeed, -255, 255);
 
-  digitalWrite(LEFT_IN1_PIN, leftSpeed >= 0 ? HIGH : LOW);
-  digitalWrite(LEFT_IN2_PIN, leftSpeed >= 0 ? LOW : HIGH);
+  digitalWrite(LEFT_IN1_PIN, leftSpeed &gt;= 0 ? HIGH : LOW);
+  digitalWrite(LEFT_IN2_PIN, leftSpeed &gt;= 0 ? LOW : HIGH);
   analogWrite(LEFT_EN_PIN, abs(leftSpeed));
 
-  digitalWrite(RIGHT_IN1_PIN, rightSpeed >= 0 ? HIGH : LOW);
-  digitalWrite(RIGHT_IN2_PIN, rightSpeed >= 0 ? LOW : HIGH);
+  digitalWrite(RIGHT_IN1_PIN, rightSpeed &gt;= 0 ? HIGH : LOW);
+  digitalWrite(RIGHT_IN2_PIN, rightSpeed &gt;= 0 ? LOW : HIGH);
   analogWrite(RIGHT_EN_PIN, abs(rightSpeed));
 }
 
 void stopMotors() {
   analogWrite(LEFT_EN_PIN, 0);
   analogWrite(RIGHT_EN_PIN, 0);
-
   digitalWrite(LEFT_IN1_PIN, LOW);
   digitalWrite(LEFT_IN2_PIN, LOW);
   digitalWrite(RIGHT_IN1_PIN, LOW);
   digitalWrite(RIGHT_IN2_PIN, LOW);
-}
-
-bool ipIsValid(IPAddress ip) {
-  return !(ip[0] == 0 && ip[1] == 0 && ip[2] == 0 && ip[3] == 0);
-}
-
-void connectToWiFi() {
-  Serial.print("Connecting to WiFi: ");
-  Serial.println(WIFI_SSID);
-
-  // Disconnect from any previous mode/session
-  WiFi.disconnect();
-  delay(1000);
-
-  int attempts = 0;
-
-  while (true) {
-    Serial.println("Starting WiFi connection...");
-    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-
-    unsigned long startAttemptTime = millis();
-
-    // Wait up to 20 seconds for connection and valid IP
-    while (millis() - startAttemptTime < 20000) {
-      int status = WiFi.status();
-      IPAddress ip = WiFi.localIP();
-
-      Serial.print("WiFi status: ");
-      Serial.print(status);
-      Serial.print("    IP: ");
-      Serial.println(ip);
-
-      if (status == WL_CONNECTED && ipIsValid(ip)) {
-        Serial.println();
-        Serial.println("WiFi connected with valid IP.");
-        return;
-      }
-
-      delay(1000);
-    }
-
-    attempts++;
-
-    Serial.println();
-    Serial.println("WiFi connection attempt failed or IP stayed 0.0.0.0.");
-    Serial.println("Retrying...");
-    Serial.println();
-
-    WiFi.disconnect();
-    delay(2000);
-
-    if (attempts >= 5) {
-      Serial.println("Could not get a valid IP after 5 attempts.");
-      Serial.println("Check SSID, password, router DHCP, and 2.4 GHz WiFi.");
-      while (true) {
-        delay(1000);
-      }
-    }
-  }
-}
-
-void printWiFiInfo() {
-  IPAddress ip = WiFi.localIP();
-
-  Serial.println();
-  Serial.println("===== WiFi Info =====");
-  Serial.print("SSID: ");
-  Serial.println(WiFi.SSID());
-
-  Serial.print("Arduino IP address: ");
-  Serial.println(ip);
-
-  Serial.print("Signal strength RSSI: ");
-  Serial.print(WiFi.RSSI());
-  Serial.println(" dBm");
-
-  Serial.print("Command port: ");
-  Serial.println(CMD_PORT);
-
-  Serial.print("Telemetry destination laptop IP: ");
-  Serial.println(LAPTOP_IP);
-
-  Serial.print("Telemetry port: ");
-  Serial.println(TELEM_PORT);
-  Serial.println("=====================");
-  Serial.println();
 }
 
 void parseCommand(char* packet) {
@@ -7773,8 +7650,7 @@ void parseCommand(char* packet) {
   if (strncmp(packet, "MOTOR,", 6) == 0) {
     int leftSpeed = 0;
     int rightSpeed = 0;
-
-    int matched = sscanf(packet, "MOTOR,%d,%d", &leftSpeed, &rightSpeed);
+    int matched = sscanf(packet, "MOTOR,%d,%d", &amp;leftSpeed, &amp;rightSpeed);
 
     if (matched == 2) {
       setMotors(leftSpeed, rightSpeed);
@@ -7806,65 +7682,38 @@ void sendTelemetry() {
 void setup() {
   Serial.begin(115200);
   delay(2000);
-
-  Serial.println();
   Serial.println("Arduino UNO R4 WiFi UDP Robot Controller");
 
   pinMode(LEFT_IN1_PIN, OUTPUT);
   pinMode(LEFT_IN2_PIN, OUTPUT);
   pinMode(LEFT_EN_PIN, OUTPUT);
-
   pinMode(RIGHT_IN1_PIN, OUTPUT);
   pinMode(RIGHT_IN2_PIN, OUTPUT);
   pinMode(RIGHT_EN_PIN, OUTPUT);
-
   stopMotors();
 
   pinMode(ENC_LEFT_A, INPUT_PULLUP);
   pinMode(ENC_LEFT_B, INPUT_PULLUP);
   pinMode(ENC_RIGHT_A, INPUT_PULLUP);
   pinMode(ENC_RIGHT_B, INPUT_PULLUP);
-
   attachInterrupt(digitalPinToInterrupt(ENC_LEFT_A), leftEncoderISR, RISING);
   attachInterrupt(digitalPinToInterrupt(ENC_RIGHT_A), rightEncoderISR, RISING);
 
-  if (WiFi.status() == WL_NO_MODULE) {
-    Serial.println("Communication with WiFi module failed!");
-    while (true) {
-      delay(1000);
-    }
-  }
+  connectToWiFi();   // from wifi_helper.h
+  printWiFiInfo();   // from wifi_helper.h
 
-  String fv = WiFi.firmwareVersion();
-  Serial.print("WiFi firmware version: ");
-  Serial.println(fv);
-
-  if (fv < WIFI_FIRMWARE_LATEST_VERSION) {
-    Serial.println("Warning: WiFi firmware may need to be updated.");
-  }
-
-  connectToWiFi();
-  printWiFiInfo();
-
-  if (udp.begin(CMD_PORT)) {
-    Serial.print("UDP listening for commands on port ");
-    Serial.println(CMD_PORT);
-  } else {
-    Serial.println("UDP begin failed.");
-  }
-
+  udp.begin(CMD_PORT);
   lastCmdTime = millis();
-
   Serial.println("Ready.");
 }
 
 void loop() {
   int packetSize = udp.parsePacket();
 
-  if (packetSize > 0) {
+  if (packetSize &gt; 0) {
     int len = udp.read(packetBuffer, sizeof(packetBuffer) - 1);
 
-    if (len > 0) {
+    if (len &gt; 0) {
       packetBuffer[len] = '\0';
 
       Serial.print("Received UDP packet: ");
@@ -7874,11 +7723,11 @@ void loop() {
     }
   }
 
-  if (millis() - lastCmdTime > CMD_TIMEOUT_MS) {
+  if (millis() - lastCmdTime &gt; CMD_TIMEOUT_MS) {
     stopMotors();
   }
 
-  if (millis() - lastTelemTime >= TELEM_INTERVAL_MS) {
+  if (millis() - lastTelemTime &gt;= TELEM_INTERVAL_MS) {
     sendTelemetry();
     lastTelemTime = millis();
   }
@@ -7886,7 +7735,7 @@ void loop() {
 
 <h3>Upload Steps</h3>
 <div class="steps">
-<div class="step"><div>Fill in <code>WIFI_SSID</code> and <code>WIFI_PASSWORD</code> with your network credentials.</div></div>
+<div class="step"><div>Add <code>arduino_secrets.h</code> (from PD.1b) and <code>wifi_helper.h</code> as tabs in the sketch &mdash; your WiFi name and password come from there.</div></div>
 <div class="step"><div>Fill in <code>LAPTOP_IP</code> with your laptop IP address from PD.1.</div></div>
 <div class="step"><div>Upload the sketch to the UNO R4 WiFi.</div></div>
 <div class="step"><div>Open Serial Monitor at <code>115200</code> baud.</div></div>
@@ -7896,7 +7745,7 @@ void loop() {
 
 <h3>Anatomy Table</h3>
 <div class="pd-anatomy-list">
-<details class="solution" open><summary><code>WiFi.begin(WIFI_SSID, WIFI_PASSWORD)</code></summary><div><p>Starts the WiFi connection process. The loop below it polls <code>WiFi.status()</code> every 500 ms until the connection succeeds.</p></div></details>
+<details class="solution" open><summary><code>connectToWiFi()</code> &mdash; in <code>wifi_helper.h</code></summary><div><p>Calls <code>WiFi.begin(SECRET_SSID, SECRET_PASS)</code> and polls <code>WiFi.status()</code> until a valid IP is assigned. Moved into the header so the main sketch stays short.</p></div></details>
 <details class="solution"><summary><code>WiFi.localIP()</code></summary><div><p>Returns the IP address assigned by the router. Print this value to Serial Monitor and copy it into <code>ARDUINO_IP</code> in Python.</p></div></details>
 <details class="solution"><summary><code>udp.begin(CMD_PORT)</code></summary><div><p>Opens a UDP socket and tells the Arduino to listen for packets on port <code>5001</code>.</p></div></details>
 <details class="solution"><summary><code>udp.parsePacket()</code></summary><div><p>Checks whether a new packet arrived. It returns the packet size if one is waiting, or <code>0</code> if nothing has arrived. This is non-blocking, so the main loop keeps running.</p></div></details>
