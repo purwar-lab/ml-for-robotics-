@@ -7885,7 +7885,6 @@ finally:
 <figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="robot_keyboard.py"><figcaption><span>robot_keyboard.py</span><span class="local-run-badge">Run locally</span></figcaption><pre><code class="language-python">import socket
 import time
 import pygame
-import csv
 
 ARDUINO_IP = "192.168.x.x"
 CMD_PORT = 5001
@@ -7924,9 +7923,6 @@ SPEED = 180
 TURN = 150
 
 running = True
-
-log_rows = []
-start_time = time.time()
 
 try:
     while running:
@@ -7967,7 +7963,6 @@ try:
 
             if parts[0] == "ENC" and len(parts) == 3:
                 l, r = int(parts[1]), int(parts[2])
-                log_rows.append([f"{time.time() - start_time:.3f}", l, r])
                 print(
                     f"Keys: W:{keys[pygame.K_w]} A:{keys[pygame.K_a]} "
                     f"S:{keys[pygame.K_s]} D:{keys[pygame.K_d]} | "
@@ -7987,12 +7982,7 @@ finally:
     cmd_sock.close()
     telem_sock.close()
     pygame.quit()
-    with open("telemetry_log.csv", "w", newline="") as f:
-        writer = csv.writer(f)
-        writer.writerow(["time_s", "left_ticks", "right_ticks"])
-        writer.writerows(log_rows)
-    print(f"\nStopped. Saved {len(log_rows)} rows to telemetry_log.csv")
-</code></pre></figure>
+    print("\nStopped.")</code></pre></figure>
 
 <h3>Run It</h3>
 <div class="code-card" data-runnable="false"><pre><code class="language-bash">python robot_keyboard.py</code></pre></div>
@@ -8036,21 +8026,120 @@ finally:
 <p class="lead">The telemetry printed by <code>robot_keyboard.py</code> is real encoder tick data coming from the Arduino over UDP every 50 ms. Now you will save it to a CSV file so you can plot it after the robot moves. Because only one program can receive the telemetry on port <code>5002</code>, the logging goes directly inside <code>robot_keyboard.py</code> &mdash; you do not run a second receiver.</p>
 <p>Run <code>robot_keyboard.py</code> and drive the robot forward in a straight line for about 50 cm. Both left and right tick counts should increase at roughly the same rate. If one grows much faster, your motors have different speeds at the same PWM value. That is normal hardware variation.</p>
 
-<p>The driving script from PD.4 already receives the telemetry, so it just needs to remember each reading and write it out on exit. These are the only lines to add to <code>robot_keyboard.py</code>:</p>
-<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="robot_keyboard.py"><figcaption><span>Logging additions for robot_keyboard.py</span><span class="local-run-badge">Run locally</span></figcaption><pre><code class="language-python">import csv                       # add to the imports at the top
+<p>Here is the complete <code>robot_keyboard.py</code> &mdash; the PD.4 keyboard driver with CSV logging built in. Run this one script: it drives the robot, prints live ticks, and writes <code>telemetry_log.csv</code> when you press Esc.</p>
+<figure class="code-card" data-runnable="false" data-chapter="project-d" data-filename="robot_keyboard.py"><figcaption><span>robot_keyboard.py (complete: drive + log)</span><span class="local-run-badge">Run locally</span></figcaption><pre><code class="language-python">import socket
+import time
+import csv
+import pygame
 
-log_rows = []                    # add just before the main loop
+ARDUINO_IP = "192.168.x.x"
+CMD_PORT = 5001
+TELEM_PORT = 5002
+
+# UDP sockets
+cmd_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+telem_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+telem_sock.bind(("", TELEM_PORT))
+telem_sock.settimeout(0.05)
+
+
+def send_command(left, right):
+    msg = f"MOTOR,{int(left)},{int(right)}"
+    cmd_sock.sendto(msg.encode(), (ARDUINO_IP, CMD_PORT))
+
+
+def send_stop():
+    cmd_sock.sendto(b"STOP", (ARDUINO_IP, CMD_PORT))
+
+
+# ---------------- PYGAME INIT ----------------
+pygame.init()
+screen = pygame.display.set_mode((300, 200))  # required to capture input
+pygame.display.set_caption("Robot Control")
+
+clock = pygame.time.Clock()
+
+print("Robot keyboard control + telemetry logging (pygame)")
+print("  W = forward    S = backward")
+print("  A = turn left  D = turn right")
+print("  ESC = quit and save telemetry_log.csv")
+print()
+
+SPEED = 180
+TURN = 150
+
+# Telemetry log: every encoder reading is stored, then written to CSV on exit.
+log_rows = []
 start_time = time.time()
 
-# inside the telemetry branch, right after:  l, r = int(parts[1]), int(parts[2])
-log_rows.append([f"{time.time() - start_time:.3f}", l, r])
+running = True
 
-# in the finally block, after pygame.quit():
-with open("telemetry_log.csv", "w", newline="") as f:
-    writer = csv.writer(f)
-    writer.writerow(["time_s", "left_ticks", "right_ticks"])
-    writer.writerows(log_rows)
-print(f"Saved {len(log_rows)} rows to telemetry_log.csv")</code></pre></figure>
+try:
+    while running:
+        pygame.event.pump()
+        keys = pygame.key.get_pressed()
+
+        left = 0
+        right = 0
+
+        # movement logic
+        if keys[pygame.K_w]:
+            left, right = SPEED, SPEED
+        elif keys[pygame.K_s]:
+            left, right = -SPEED, -SPEED
+
+        if keys[pygame.K_a]:
+            left -= TURN
+            right += TURN
+
+        if keys[pygame.K_d]:
+            left += TURN
+            right -= TURN
+
+        send_command(left, right)
+
+        # handle quit
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        if keys[pygame.K_ESCAPE]:
+            running = False
+
+        # telemetry receive + log
+        try:
+            data, _ = telem_sock.recvfrom(128)
+            parts = data.decode().strip().split(",")
+
+            if parts[0] == "ENC" and len(parts) == 3:
+                l, r = int(parts[1]), int(parts[2])
+                log_rows.append([f"{time.time() - start_time:.3f}", l, r])
+                print(
+                    f"Keys: W:{keys[pygame.K_w]} A:{keys[pygame.K_a]} "
+                    f"S:{keys[pygame.K_s]} D:{keys[pygame.K_d]} | "
+                    f"L: {left:+4d} R: {right:+4d} | "
+                    f"Ticks L: {l:+6d} R: {r:+6d}",
+                    end="\r",
+                )
+
+        except socket.timeout:
+            pass
+
+        time.sleep(0.03)
+        clock.tick(60)
+
+finally:
+    send_stop()
+    cmd_sock.close()
+    telem_sock.close()
+    pygame.quit()
+
+    with open("telemetry_log.csv", "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["time_s", "left_ticks", "right_ticks"])
+        writer.writerows(log_rows)
+
+    print(f"\nStopped. Saved {len(log_rows)} rows to telemetry_log.csv")</code></pre></figure>
 <div class="callout warning" role="alert"><div class="callout-icon">!</div><div><div class="callout-title">Only one telemetry receiver</div><p>The Arduino sends telemetry to a single port (<code>5002</code>), and only one program can bind it. Do not run a separate logger at the same time as <code>robot_keyboard.py</code> &mdash; on Windows the second one fails with <code>OSError: [WinError 10048]</code>. That is why the logging lives inside the driving script.</p></div></div>
 
 <h3>Logging Procedure</h3>
