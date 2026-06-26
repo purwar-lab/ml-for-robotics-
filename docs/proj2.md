@@ -487,7 +487,7 @@ Mount the phone pointing forward and downward. It should see the floor about `15
 50-60 degree forward-down view Tape visible ahead of robot
 Forward-facing matters because the robot needs preview. A straight-down camera only sees the floor under the chassis; by the time a curve appears, the robot is already on it.
 lane_follower_adv.py: frame rotation in main loop
-Phone stream rotationVS Code
+Phone stream rotation
 ```python
 frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
 ```
@@ -580,7 +580,7 @@ I wrote down BINARY_THRESHOLD = _____ from Cell 4. I wrote down the kernel size 
 ---
 
 Before the lane follower can run, the configuration block at the top of `lane_follower_adv.py` must match your robot, your phone stream, and your Colab calibration result.
-CONFIGURATION blockVS Code
+CONFIGURATION block
 ```python
 # ==================== CONFIGURATION ====================
 ESP_IP         = "192.168.137.228"
@@ -651,7 +651,7 @@ Reminder: what is in shared.py
 `ramp()` --- acceleration limiter
 
 These are unchanged from Project 1. If anything in `lane_follower_adv.py` references one of these names, it is using the version from `shared.py`.
-Complete detect_lane() functionVS Code
+Complete detect_lane() function
 ```python
 def detect_lane(frame):
     h, w  = frame.shape[:2]
@@ -687,7 +687,7 @@ def detect_lane(frame):
 
 ### 1. ROI
 The first lines define the part of the frame that the detector is allowed to inspect. The phone sees floor, walls, furniture, shadows, and possibly the robot chassis; the lane detector should process only the floor area where the line can appear.
-ROI cropVS Code
+ROI crop
 ```python
 h, w  = frame.shape[:2]
 roi_y = int(h * (1 - ROI_HEIGHT_PERCENT))
@@ -698,7 +698,7 @@ IGNORED roi_y ROI - line detection happens here
 
 ### 2. Threshold Pipeline
 You already saw each of these steps in the Colab experiment notebook (P2.2). Here they are combined into the pipeline that runs on every frame.
-Blur, threshold, and morphologyVS Code
+Blur, threshold, and morphology
 ```python
 blur = cv2.GaussianBlur(cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY), (7, 7), 0)
 _, binary = cv2.threshold(blur, BINARY_THRESHOLD, 255, cv2.THRESH_BINARY_INV)
@@ -712,7 +712,7 @@ Before Line plus noise blobs. After OPEN Noise removed. After CLOSE Gaps filled.
 
 ### 3. Row Scanning
 After thresholding and cleaning, the binary image shows the line as a white region. Row scanning finds the horizontal center of that white region at several heights in the image.
-Row scanning loopVS Code
+Row scanning loop
 ```python
 points = []
 for frac in ROW_FRACS:
@@ -730,7 +730,7 @@ Line Meaning ROW_FRACS The five scan rows inside the ROI. 0.90 is near the botto
 
 ### 4. Two-Point Steering Error
 Once `detect_lane()` has returned at least two points, `LaneFollower.control()` computes the same steering error you saw in Colab Cell 7. A line has direction, so one point is not enough: the robot uses a near point and a far point.
-Two-point error calculationVS Code
+Two-point error calculation
 ```python
 position_error  = (near_cx - w / 2) / w
 direction_error = (far_cx  - near_cx) / w
@@ -741,7 +741,7 @@ Straight Near and far aligned. Direction error is near zero. Gentle curve Far po
 
 ### 5. Exponential Smoothing
 Row scanning can jitter because a slightly different set of pixels may pass the threshold each frame. Immediately after the raw angle calculation, `LaneFollower.control()` smooths the error before it reaches the PID. This is the same idea as the browser interpreter demo from the old smoothing lesson.
-Smoothed steering errorVS Code
+Smoothed steering error
 ```python
 self.smoothed_angle = (
     SMOOTH_RATE * self.smoothed_angle
@@ -749,7 +749,7 @@ self.smoothed_angle = (
 )
 ```
 With `SMOOTH_RATE = 0.04`, the old smoothed value has 4 percent influence and the new raw measurement has 96 percent influence. Lower values react faster but can twitch on noisy detections; higher values react more slowly but can help on unstable lighting.
-Exponential smoothing demoRun in browser
+Exponential smoothing demo
 ```python
 smoothed = 0.0
 raw_values = [0.1, 0.15, 0.12, 0.3, 0.28, 0.25, 0.05, 0.02]
@@ -762,7 +762,7 @@ for raw in raw_values:
 
 ### 6. What detect_lane Returns
 The return values are the contract between the vision function, `LaneFollower.control()`, and `draw_debug()`.
-Return valuesVS Code
+Return values
 ```python
 if len(points) < 2:
     return None, None, None, area, roi_y, binary, points
@@ -782,7 +782,7 @@ Returned value Where it is used points[0] / near_pt The near line center used by
 
 `LaneFollower.control()` mirrors Project 1's `Tracker.control()`. The method gets a frame, detects the target, updates the state machine, computes motor targets, ramps the output, and returns debug data.
 lane_follower_adv.py:300-368
-LaneFollower.control()VS Code
+LaneFollower.control()
 ```python
 def control(self, frame):
     h, w = frame.shape[:2]
@@ -857,7 +857,7 @@ def control(self, frame):
 ### Compared to Project 1
 detect_lane(frame) replaces _detect(frame) Project 1 returned one bounding box. Project 2 returns near_pt , far_pt , area , roi_y , binary , and scan points . line_found = near_pt is not None and far_pt is not None One lane point is not enough because steering needs direction. The controller requires both near and far points. self._update_state(line_found) The state machine is the same as Project 1. Only the input changed from "bounding box found" to "line found." dist_error = (TARGET_AREA - area) / TARGET_AREA The sign is intentionally different from Project 1. In Project 1, large object area meant the robot was too close. In Project 2, large binary lane area means more line coverage. DIST_KP is 0 by default, so this speed-control path is disabled until you choose to tune it. scale_motors() Project 1 performed motor scaling inline. Project 2 extracts the same idea into a helper so neither side exceeds MAX_SPEED .
 lane_follower_adv.py:212-218
-scale_motors()VS Code
+scale_motors()
 ```python
 def scale_motors(left, right):
     peak = max(abs(left), abs(right))
@@ -875,11 +875,11 @@ def scale_motors(left, right):
 ---
 
 `main()` connects the phone stream, lane follower, UDP motor sender, telemetry receiver, keyboard controls, and OpenCV windows into one live robot loop.
-Shared import lineVS Code
+Shared import line
 ```python
 from shared import PID, MobileVideoStream, Commander, Telemetry, RobotState, ramp
 ```
-Complete main() functionVS Code
+Complete main() function
 ```python
 def main():
     global BINARY_THRESHOLD
@@ -978,14 +978,14 @@ def main():
 ```
 
 ### Frame Rotation
-Project 2-only frame rotationVS Code
+Project 2-only frame rotation
 ```python
 frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
 ```
 This line does not exist in Project 1. The phone camera outputs frames with the wrong orientation when mounted sideways on the robot. This rotation corrects it before any processing. Adjust the constant if your image appears rotated in the wrong direction.
 
 ### Scaled Motor Command
-Motor send lineVS Code
+Motor send line
 ```python
 commander.motors(
     -left_speed / MOTOR_OUTPUT_SCALE,
@@ -995,7 +995,7 @@ commander.motors(
 There are two differences from Project 1. First, `MOTOR_OUTPUT_SCALE` is `10` by default: `BODY_TURN_KP = 100` can produce outputs up to about +/-3000, so dividing by 10 maps that to about +/-300 before the driver clips to +/-255. If response feels weak, try `8`; if it oversteers, try `12`. Second, this line may still need a motor-sign adjustment depending on your chassis. Project 1 now sends `left_speed` as positive by default; if the robot spins instead of going forward, add or remove the negative sign for your wiring.
 
 ### Runtime Threshold Adjustment
-T/Y threshold keysVS Code
+T/Y threshold keys
 ```python
 elif key == ord('t'):
     BINARY_THRESHOLD = min(BINARY_THRESHOLD + 5, 255)
@@ -1029,7 +1029,7 @@ Element Meaning Orange horizontal line Start of the ROI. Everything above it is 
 ### How to Diagnose the Binary Window
 Too much white everywhere Threshold is too high Floor pixels are being detected as line. Press Y to decrease BINARY_THRESHOLD . No white at all Threshold is too low The line is being excluded. Press T to increase BINARY_THRESHOLD . White stripe exists but no magenta dots ROI or scan rows are wrong Adjust ROI_HEIGHT_PERCENT or ROW_FRACS so the scan rows cross the visible line. White stripe has gaps Morphology or threshold needs adjustment Increase the closing kernel or lower the threshold slightly so broken line segments reconnect.
 lane_follower_adv.py:371-421
-draw_debug() overviewVS Code
+draw_debug() overview
 ```python
 def draw_debug(frame, debug, left_speed, right_speed, telem):
     h, w = frame.shape[:2]
@@ -1065,7 +1065,7 @@ BINARY_THRESHOLD is filled in from the Colab notebook, not left at the default 7
 
 ### Stage 1: Run with Motors Disabled
 Temporarily disable motor output so you can inspect the binary window while moving the robot by hand.
-Disable motors for calibrationVS Code
+Disable motors for calibration
 ```python
 # Temporarily replace the live motor command with this:
 commander.motors(0, 0)  # motors disabled for calibration
@@ -1075,12 +1075,12 @@ What you see What to do White stripe present and dots appear. Threshold is corre
 
 ### Stage 2: Verify Steering Direction
 Restore the motor send line, set `BASE_SPEED = 30`, and place the robot on a straight section. It should drive forward while keeping the tape centered.
-Restore live motor outputVS Code
+Restore live motor output
 ```python
 commander.motors(-left_speed / MOTOR_OUTPUT_SCALE, right_speed / MOTOR_OUTPUT_SCALE)
 ```
 If the robot veers left when it should go right, invert the steering mix inside `LaneFollower.control()`.
-Invert steering if neededVS Code
+Invert steering if needed
 ```python
 # Default:
 tgt_left = (BASE_SPEED + turn_cmd) * self.speed_limit
@@ -1093,7 +1093,7 @@ tgt_right = (BASE_SPEED + turn_cmd) * self.speed_limit
 
 ### Command Scaling
 The motor driver accepts roughly `-255` to `255`. The turn PID uses `BODY_TURN_KP = 100`, so internal controller values can be much larger than a first-run motor command should be.
-Scaled motor sendVS Code
+Scaled motor send
 ```python
 MOTOR_OUTPUT_SCALE = 10
 commander.motors(-left_speed / MOTOR_OUTPUT_SCALE, right_speed / MOTOR_OUTPUT_SCALE)

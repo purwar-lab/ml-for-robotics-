@@ -83,7 +83,7 @@ Blinking the LED is just two messages: `D 13 1` to turn it on and `D 13 0` to tu
 
 ### The Arduino Receiver
 This sketch connects to WiFi, listens on UDP port `5005`, and runs a command every time a packet arrives. Your WiFi name and password live in a separate file called `arduino_secrets.h` in the same sketch folder, which keeps your credentials out of the main code. Create it first:
-arduino_secrets.hArduino
+arduino_secrets.h
 ```cpp
 // arduino_secrets.h header file
 #define SECRET_SSID "yournetwork" //replace yournetwork with your wifi name inside quotes
@@ -91,7 +91,7 @@ arduino_secrets.hArduino
 ```
 In the Arduino IDE, click the small arrow (the three dots on the right of the tab bar), choose **New Tab**, name it `arduino_secrets.h`, and paste the lines above with your own network name and password. The main sketch then pulls them in with `#include "arduino_secrets.h"`.
 The WiFi connection and info code lives in its own header, `wifi_helper.h`, so the Arduino sketches in this exercise stay short. Add it as another tab (the same way you added `arduino_secrets.h`):
-wifi_helper.hArduino
+wifi_helper.h
 ```cpp
 #pragma once
 #include <WiFiS3.h>
@@ -162,7 +162,7 @@ void printWiFiInfo() {
 }
 ```
 The main sketch then includes `wifi_helper.h` and just calls `connectToWiFi()` and `printWiFiInfo()` in `setup()`:
-udp_command_receiver.inoArduino
+udp_command_receiver.ino
 ```cpp
 #include <WiFiUdp.h>
 #include <Servo.h>
@@ -387,13 +387,13 @@ void loop() {
 
 ### The Python Sender (a tkinter GUI)
 On the laptop, a tiny program opens a window with two buttons. Each button sends one UDP command. There is no robot yet --- just you, a socket, and the Arduino.
-led_control.pyVS Code
+led_control.py
 ```python
 import socket
 import tkinter as tk
 
 
-ARDUINO_IP = "192.168.6.50" # replace this IP address with what you received in the Serial monitor window of Arduino
+ARDUINO_IP = "192.168.6.50" # replace this IP address with what you received in the Serial monitor window of
 ARDUINO_PORT = 5005
 LED_PIN = 13
 
@@ -475,7 +475,7 @@ Action Left motor Right motor Result Forward +speed +speed Both wheels push forw
 
 ### The Python Controller
 Each button or slider movement turns into one or two UDP commands. The servo slider sends an `S` command as you drag it; each motion button sends two `M` commands, one per wheel.
-drive_control.pyVS Code
+drive_control.py
 ```python
 import socket
 import tkinter as tk
@@ -640,7 +640,7 @@ This sketch maintains a WiFi connection, listens for UDP motor command packets f
 Upload this after you have confirmed Exercise C motor and encoder wiring. Leave the robot wheels lifted off the table for the first test.
 This sketch uses the same `arduino_secrets.h` file you created in [PD.1b](?lesson=projD-led) for your WiFi name and password --- keep it in this sketch's folder, no need to create it again.
 This sketch uses the same `wifi_helper.h` header you created in [PD.1b](?lesson=projD-led) --- it includes the header and calls `connectToWiFi()` / `printWiFiInfo()` in `setup()`. No need to recreate it.
-robot_udp.inoArduino
+robot_udp.ino
 ```cpp
 #include <WiFiUDP.h>
 #include "wifi_helper.h"   // WiFi connect/info + arduino_secrets.h credentials
@@ -819,7 +819,7 @@ connectToWiFi() — in wifi_helper.h Calls WiFi.begin(SECRET_SSID, SECRET_PASS) 
 
 The Arduino is now listening for UDP packets. This Python script sends a short forward command sequence, reads encoder telemetry, then reverses and stops.
 Create a new file called `robot_control.py` in your `my-detector` folder or the same folder where you keep the Project 1 files.
-robot_control.pyRun locally
+robot_control.py
 ```python
 import socket
 import time
@@ -919,7 +919,7 @@ This script sends a command about 33 times per second. The Arduino safety timeou
 ```bash
 pip install pygame
 ```
-robot_keyboard.pyRun locally
+robot_keyboard.py
 ```python
 import socket
 import time
@@ -1048,7 +1048,7 @@ Key state Left command Right command Robot behavior W +180 +180 Drive forward. S
 The telemetry printed by `robot_keyboard.py` is real encoder tick data coming from the Arduino over UDP every 50 ms. Now you will save it to a CSV file so you can plot it after the robot moves. Because only one program can receive the telemetry on port `5002`, the logging goes directly inside `robot_keyboard.py` --- you do not run a second receiver.
 Run `robot_keyboard.py` and drive the robot forward in a straight line for about 50 cm. Both left and right tick counts should increase at roughly the same rate. If one grows much faster, your motors have different speeds at the same PWM value. That is normal hardware variation.
 Here is the complete `robot_keyboard.py` --- the PD.4 keyboard driver with CSV logging built in. Run this one script: it drives the robot, prints live ticks, and writes `telemetry_log.csv` when you press Esc.
-robot_keyboard.py (complete: drive + log)Run locally
+robot_keyboard.py (complete: drive + log)
 ```python
 import socket
 import time

@@ -144,7 +144,7 @@ CMD_INTERVAL = 0.03
 
 
 # -----------------------------------------------------------------------------
-# COMMANDER - sends SERVO commands to the Arduino
+# COMMANDER - sends SERVO commands to the
 # -----------------------------------------------------------------------------
 
 class ServoCommander:
@@ -173,7 +173,7 @@ class ServoCommander:
 
 
 # -----------------------------------------------------------------------------
-# TELEMETRY - receives optional SERVO_ACK packets from the Arduino
+# TELEMETRY - receives optional SERVO_ACK packets from the
 # -----------------------------------------------------------------------------
 
 class ServoTelemetry:
@@ -715,33 +715,33 @@ void loop() {
 The Arduino sketch is the servo version of Exercise D's UDP firmware. The WiFi and UDP pattern is the same; the output hardware changes from motors to servos.
 
 ### Includes and Constants
-Includes, WiFi, and servo pinsArduino
+Includes, WiFi, and servo pins
 ```
 
 ```
 `Servo.h` handles PWM timing. `WiFiS3.h` and `WiFiUDP.h` are the same UNO R4 WiFi libraries used in Exercise D.
 
 ### Servo State
-Current angles and target anglesArduino
+Current angles and target angles
 ```
 
 ```
 The current angle moves toward the target angle by a small step each loop. That keeps the camera from snapping violently to a new direction.
 
 ### stepToward()
-Smoothing helperArduino
+Smoothing helper
 ```
 
 ```
 
 ### Parsing Commands
-SERVO, HOME, and STOP parserArduino
+SERVO, HOME, and STOP parser
 ```
 
 ```
 
 ### Acknowledgment
-Telemetry replyArduino
+Telemetry reply
 ```
 
 ```
@@ -770,7 +770,7 @@ The protocol is simpler because hobby servos do not report measured position. Th
 ---
 
 Most setup problems come from configuration values. Start by editing only the configuration block at the top of `pan_and_tilt.py`.
-Configuration blockVS Code
+Configuration block
 ```
 
 ```
@@ -793,14 +793,14 @@ PID gains`KP` sets response strength, `KD` damps motion, and `MAX_*_SPEED` limit
 Project 1 used PID output as a direct motor speed. Project 4 uses velocity mode: the PID output is a change in angle.
 Mode Output Accumulated by Used in Position-like motor command Wheel speed Nothing Project 1 Velocity-mode servo command Degrees per frame Adding to current angle Project 4
 Velocity mode works well for servos because every frame is a small nudge. The accumulated angle is clamped to the safe physical range after each update.
-Velocity-mode updateVS Code
+Velocity-mode update
 ```
 
 ```
 
 ### Try It In The Browser
 Run this simulation and change `kp` to see the angle converge faster or slower.
-Velocity-mode PID simulationRun in browser
+Velocity-mode PID simulation
 ```
 
 ```
@@ -814,7 +814,7 @@ Velocity-mode PID simulationRun in browser
 
 `PanTiltTracker` has the same structure as the Project 1 tracker: initialize, detect, update state, control.
 Method Project 1 equivalent What changed __init__ Tracker.__init__ Two angle PIDs and home angles. _detect Tracker._detect Same YOLO pattern. _update_state Tracker._update_state Same four states. control Tracker.control Pan and tilt errors become servo angle changes.
-Error calculation and dead zonesVS Code
+Error calculation and dead zones
 ```
 
 ```
@@ -895,7 +895,7 @@ CMD_INTERVAL = 0.03
 
 
 # -----------------------------------------------------------------------------
-# COMMANDER - sends SERVO commands to the Arduino
+# COMMANDER - sends SERVO commands to the
 # -----------------------------------------------------------------------------
 
 class ServoCommander:
@@ -924,7 +924,7 @@ class ServoCommander:
 
 
 # -----------------------------------------------------------------------------
-# TELEMETRY - receives optional SERVO_ACK packets from the Arduino
+# TELEMETRY - receives optional SERVO_ACK packets from the
 # -----------------------------------------------------------------------------
 
 class ServoTelemetry:
@@ -1329,7 +1329,7 @@ Ball position err_pan err_tilt Pan moves Tilt moves Right of center positive zer
 ---
 
 The main loop reads a phone frame, runs the tracker, sends the servo command at a fixed interval, draws the HUD, and handles keyboard commands.
-Main loop coreVS Code
+Main loop core
 ```
 
 ```
@@ -1355,13 +1355,13 @@ Test the hardware in layers. Do not start with YOLO tracking if the servos have 
 shared.py , best.pt , and pan_and_tilt.py are in the same folder. SSID and PASSWORD are set in the Arduino sketch. Serial Monitor shows the Arduino IP address. The phone stream opens in a browser. ESP_IP , MOBILE_IP , and TARGET_OBJECT are filled in.
 
 ### Step 1: Test Servos
-Standalone servo testVS Code
+Standalone servo test
 ```
 
 ```
 
 ### Step 2: Run The Tracker
-Run Project 4Terminal
+Run Project 4
 ```
 
 ```

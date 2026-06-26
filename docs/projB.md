@@ -121,7 +121,7 @@ What you see What to try Page times out immediately Phone and laptop are on diff
 
 The stream works in your browser. Now open VS Code, activate your virtual environment from Exercise A, and create a new file called `detect_stream.py` in your `my-detector` folder.
 Paste the following code:
-detect_stream.pyRun locally
+detect_stream.py
 ```python
 import cv2
 import numpy as np
@@ -263,7 +263,7 @@ This lesson explains every meaningful section of `detect_stream.py` so there are
 `STREAM_URL`, `MODEL_PATH`, and `CONFIDENCE` are defined at the top of the file as constants rather than buried inside functions. This is deliberate. Any value you might want to change when testing or deploying belongs at the top of the file where it is easy to find. This pattern appears throughout Project 1's code.
 
 ### The open_stream Function
-requests.get with streamingRun locally
+requests.get with streaming
 ```python
 requests.get(url, stream=True, timeout=10)
 ```
@@ -275,7 +275,7 @@ MJPEG is not a video format. It is a stream of individual JPEG images sent back 
 Every JPEG file starts with `0xFF 0xD8`.
 Every JPEG file ends with `0xFF 0xD9`.
 Read a chunk of bytes from the stream into a buffer. Search the buffer for the start marker 0xFF 0xD8 . Search the buffer for the end marker 0xFF 0xD9 , but only after the start marker. When both are found, everything between them is one complete JPEG. Decode that JPEG into an image array using OpenCV. Return the image and clear the processed bytes from the buffer.
-JPEG marker extractionRun locally
+JPEG marker extraction
 ```python
 start = buf.find(b"\\xff\\xd8")          # find the JPEG start marker
 end = buf.find(b"\\xff\\xd9", start + 2) # find the next end marker
@@ -290,7 +290,7 @@ This exact pattern is used in the `MobileVideoStream` class in `shared.py`. Now 
 In Exercise A you used `cv2.VideoCapture(0)` to open a webcam. `VideoCapture` handles USB and some network cameras using built-in drivers. However it does not reliably handle MJPEG streams from phone apps. `imdecode` works on raw bytes directly, which gives us full control over how frames are read and handles connection drops and reconnects cleanly.
 
 ### The Detection Line
-YOLO inference lineRun locally
+YOLO inference line
 ```python
 results = model(frame, imgsz=416, conf=CONFIDENCE, verbose=False)
 ```

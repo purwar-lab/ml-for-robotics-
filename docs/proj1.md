@@ -433,7 +433,7 @@ Both files must be in the same folder. `shared.py` is imported by `obj_track_adv
 
 ---
 
-## Setting Up VS Code
+## Setting Up
 
 
 ---
@@ -459,19 +459,19 @@ Package Where you used it What Project 1 uses it for ultralytics Exercise A Load
 
 ### The Only New Package
 `numpy` may already be installed because `ultralytics` depends on it. Verify first:
-Check NumPyRun locally
+Check NumPy
 ```bash
 python -c "import numpy; print(numpy.__version__)"
 ```
 If that prints a version number, you are done. If it throws an import error, install NumPy:
-Install NumPy only if neededRun locally
+Install NumPy only if needed
 ```bash
 pip install numpy
 ```
 
 ### Full Dependency Check
 Create `check_deps.py` in the same folder as `obj_track_adv.py` and run it.
-check_deps.pyRun locally
+check_deps.py
 ```python
 import cv2
 import numpy as np
@@ -482,7 +482,7 @@ from ultralytics import YOLO
 
 print("All dependencies present.")
 ```
-Run the checkRun locally
+Run the check
 ```bash
 python check_deps.py
 ```
@@ -500,7 +500,7 @@ Constant Source What to enter ESP_IP Exercise D, PD.2 The IP printed by the Ardu
 
 ### Calibrate TARGET_AREA
 Run detect_stream.py from Exercise B. Hold your target object at the distance you want the robot to maintain, usually 40 to 60 cm in front of the phone. Read the area value from your PA.9 debug output. If your script does not print area yet, temporarily add the snippet below. Set TARGET_AREA to the area value at that distance.
-Temporary area printRun locally
+Temporary area print
 ```python
 for box in results[0].boxes:
     x1, y1, x2, y2 = box.xyxy[0].cpu().numpy()
@@ -521,7 +521,7 @@ Value Your entry Source ESP_IP "____________" Exercise D Serial Monitor TARGET_O
 ---
 
 Before looking at the Project 1 specific code, it helps to understand what is in `shared.py`. This file is the foundation both projects 1 and 2 are built on. You will study it once here and never need to re-read it in Project 2 --- it will already be familiar.
-Complete shared.pyVS Code
+Complete shared.py
 ```python
 # shared.py
 # Reusable infrastructure used by both obj_track_adv.py
@@ -695,7 +695,7 @@ def ramp(current, target, max_step):
 ```
 
 ### PID
-PID controllerVS Code
+PID controller
 ```python
 class PID:
     """Proportional-Integral-Derivative controller with optional output clamping."""
@@ -733,7 +733,7 @@ class PID:
 The PID controller. Takes an error value, returns a correction. Two instances run simultaneously in Project 1 --- one for steering, one for distance. Explained in full in lesson P1.4.
 
 ### MobileVideoStream
-MobileVideoStreamVS Code
+MobileVideoStream
 ```python
 class MobileVideoStream:
     """Continuously pulls MJPEG frames from a phone camera in a background thread."""
@@ -791,7 +791,7 @@ class MobileVideoStream:
 Connects to the phone camera over WiFi and delivers frames continuously in a background thread. You built the non-threaded version of this in Exercise B. Explained in full in lesson P1.5.
 
 ### Commander and Telemetry
-CommanderVS Code
+Commander
 ```python
 class Commander:
     """Sends UDP motor commands to the ESP."""
@@ -808,7 +808,7 @@ class Commander:
     def stop(self):
         self._sock.sendto(b"STOP,OFF", (self.ip, self.port))
 ```
-TelemetryVS Code
+Telemetry
 ```python
 class Telemetry:
     """Receives encoder telemetry from the ESP over UDP."""
@@ -855,7 +855,7 @@ class Telemetry:
 Commander sends motor commands to the Arduino over UDP. Telemetry receives encoder tick data back. You built both of these in Exercise D. Explained in P1.6 and P1.7.
 
 ### RobotState and ramp()
-RobotState constantsVS Code
+RobotState constants
 ```python
 class RobotState:
     STOPPED   = "STOPPED"
@@ -863,7 +863,7 @@ class RobotState:
     ACQUIRING = "ACQUIRING"
     TRACKING  = "TRACKING"
 ```
-ramp()VS Code
+ramp()
 ```python
 def ramp(current, target, max_step):
     """Limit how fast a value can change per step."""
@@ -1163,7 +1163,7 @@ void parseCommand(char* packet) {
   }
 }
 ```
-LED and parseCommand updateArduino
+LED and parseCommand update
 ```cpp
 #include <FastLED.h>
 
@@ -1309,19 +1309,19 @@ void sendTelemetry() {
 }
 ```
 Add these globals near the other motor and encoder globals:
-Track last commanded speedsArduino
+Track last commanded speeds
 ```cpp
 int lastCmdLeft = 0;
 int lastCmdRight = 0;
 ```
 Inside the `MOTOR` branch of `parseCommand()`, after `setMotors(leftSpeed, rightSpeed);`, store the values:
-Store command valuesArduino
+Store command values
 ```cpp
 lastCmdLeft = leftSpeed;
 lastCmdRight = rightSpeed;
 ```
 Then replace `sendTelemetry()` with the five-field version:
-Updated sendTelemetry()Arduino
+Updated sendTelemetry()
 ```cpp
 void sendTelemetry() {
   char buf[64];

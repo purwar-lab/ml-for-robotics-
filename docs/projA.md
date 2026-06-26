@@ -74,7 +74,7 @@ Package Role in this exercise ultralytics Loads YOLO26, runs training, runs infe
 
 ### Verify Installation
 Create `test_setup.py`, type this code, and run `python test_setup.py`. If **All good!** prints, the environment is ready.
-test_setup.pyRun locally
+test_setup.py
 ```python
 from ultralytics import YOLO
 import cv2
@@ -85,7 +85,7 @@ print("All good!")
 
 ### Download YOLO26n Weights
 Create `download_model.py` and run it once. Ultralytics downloads `yolo26n.pt` automatically on the first run.
-download_model.pyRun locally
+download_model.py
 ```python
 from ultralytics import YOLO
 
@@ -463,7 +463,7 @@ Now move `best.pt` from Colab to your local VS Code project and run it on a live
 In Colab, open the Files panel on the left. Navigate to runs/detect/my_detector/weights/ . Right-click best.pt and download it. Move best.pt into your local my-detector folder.
 
 ### Create `detect_webcam.py`
-detect_webcam.pyRun locally
+detect_webcam.py
 ```python
 import cv2
 from ultralytics import YOLO
@@ -525,7 +525,7 @@ python detect_webcam.py
 ---
 
 Project 1 does not use `.plot()`. It reads raw YOLO outputs directly so it can compute object center, object area, and motor commands. This lesson shows the exact data you will use.
-raw_output_debug.pyRun locally
+raw_output_debug.py
 ```python
 import cv2
 from ultralytics import YOLO
@@ -591,7 +591,7 @@ A trained best.pt file specific to your target object. Understanding of what YOL
 
 ### Rename The Weights
 Rename `best.pt` to something descriptive, such as `ball_detector.pt` or `mug_detector.pt`. In Project 1, update the Tracker initialization so the first argument is your model file and the second argument exactly matches the class name you used in Roboflow.
-Tracker initialization for Project 1Run locally
+Tracker initialization for Project 1
 ```python
 tracker = Tracker("ball_detector.pt", "ball")
 ```

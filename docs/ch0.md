@@ -57,7 +57,7 @@ For the Python fundamentals chapters you can run code directly in the browser on
 Open Colab → Write code cell → Shift+Enter runs it
 ```
 
-### Later Projects: Python & VS Code
+### Later Projects: Python &
 
 The hardware projects — where you deploy code to a real robot — require Python installed on your machine and a code editor. We use **Visual Studio Code** for these stages.
 

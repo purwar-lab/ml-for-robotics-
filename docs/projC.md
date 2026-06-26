@@ -276,7 +276,7 @@ The Arduino `for` loop has three parts separated by semicolons: the initial valu
 
 ### A Complete Minimal Sketch
 This sketch uses constants, variables, `setup()`, `loop()`, pin control, delay timing, an `if` statement, and Serial output.
-basics_demo.inoArduino
+basics_demo.ino
 ```cpp
 #define LED_PIN 13
 const int BLINK_SPEED = 500;  // milliseconds

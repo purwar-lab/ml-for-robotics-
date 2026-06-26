@@ -119,14 +119,14 @@ The gesture code uses only a subset of the 21 landmarks: the wrist, the thumb ch
 ---
 
 The robot needs one Boolean per hand: open or closed. The method below counts extended digits and returns open when at least three are extended.
-HandGestureDetector._is_open()VS Code
+HandGestureDetector._is_open()
 ```
 
 ```
 
 ### Try the Rule in the Browser
 Modify the y values to simulate a closed fist and verify the function returns `False`.
-Open hand simulationRun in browser
+Open hand simulation
 ```
 
 ```
@@ -139,7 +139,7 @@ Open hand simulationRun in browser
 ---
 
 The detector stores each hand by label, checks whether it is open, then chooses a command only when both hands are present.
-Complete detect() methodVS Code
+Complete detect() method
 ```
 
 ```
@@ -164,12 +164,12 @@ gesture_control.pyThe robot control script. Place it in the same folder as `shar
 
 ### One-Time Model Download
 Run this once in VS Code from the same folder as `gesture_recognize.py` and `gesture_control.py`. Both files need `hand_landmarker.task` in that folder.
-Download hand_landmarker.taskVS Code
+Download hand_landmarker.task
 ```
 
 ```
 This is the complete robot control file for reference. Come back to this as each lesson explains one section.
-Complete robot control fileVS Code
+Complete robot control file
 ```
 
 ```
@@ -200,27 +200,27 @@ Everything else is shared infrastructure from Exercise D.
 ---
 
 This class is the only new controller in Project 3. It initializes MediaPipe, reads each hand, classifies the two-hand gesture, and maps that gesture to motor speeds.
-Complete HandGestureDetector classVS Code
+Complete HandGestureDetector class
 ```
 
 ```
 
 ### Method 1: `__init__`
-__init__VS Code
+__init__
 ```
 
 ```
 `HandLandmarkerOptions` loads `hand_landmarker.task` and selects `RunningMode.VIDEO`, which requires a timestamp for each camera frame. The drawing helper is pure OpenCV: it converts normalized landmark coordinates into pixel positions, then draws lines and dots on the frame.
 
 ### Method 2: `_is_open`
-_is_openVS Code
+_is_open
 ```
 
 ```
 Identical to the `is_hand_open` function from Colab Cell 5. You already understand this.
 
 ### Method 3: `_gesture_to_speeds`
-_gesture_to_speedsVS Code
+_gesture_to_speeds
 ```
 
 ```
@@ -228,7 +228,7 @@ Command Speeds Meaning forward BASE_SPEED, BASE_SPEED both wheels forward backwa
 Using one wheel stationary and one wheel driving creates a pivot turn. It is more responsive than differential steering for coarse gesture control, where the user wants an immediate direction change. The tradeoff is that the turn is less smooth.
 
 ### Method 4: `detect`
-detectVS Code
+detect
 ```
 
 ```
@@ -242,7 +242,7 @@ The Colab concepts appear directly in this method: convert the frame to RGB, wra
 ---
 
 The loop follows the same architecture as Projects 1 and 2: read frame, compute motor speeds, send UDP command, draw a HUD, repeat.
-Complete main() functionVS Code
+Complete main() function
 ```
 
 ```
@@ -256,19 +256,11 @@ Line What changed from Projects 1 and 2 detector = HandGestureDetector() Replace
 ---
 
 ### Install MediaPipe and the HandLandmarker model
-TerminalVS Code
-```
-
-```
-Download hand_landmarker.taskVS Code
-```
-
-```
 Run the Python download snippet once from the same folder as `gesture_recognize.py` and `gesture_control.py`. Both scripts expect `hand_landmarker.task` beside them.
 
 ### Step 1: Test Gesture Recognition Locally First
 Before connecting to the robot, run `gesture_recognize.py` on your laptop webcam.
-Local webcam testVS Code
+Local webcam test
 ```
 
 ```
@@ -278,12 +270,12 @@ Test Expected display Hold both hands open FORWARD Make both fists BACK Right op
 In `gesture_control.py`, update `ESP_IP` with your Arduino IP from Exercise D and `MOBILE_IP` with your phone IP from Exercise B.
 
 ### Step 3: Run with Robot
-Robot controlVS Code
+Robot control
 ```
 
 ```
 The terminal prints each command as it is sent:
-Example outputVS Code
+Example output
 ```
 
 ```
