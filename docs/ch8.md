@@ -2,6 +2,8 @@
 
 ---
 
+You now have the map: Python basics, supervised learning, clustering, reinforcement learning, neural networks, and computer vision. The next step is choosing the right tool for your own robotics problem.
+
 ---
 
 ## Which ML Technique Should I Use?

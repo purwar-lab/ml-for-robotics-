@@ -165,7 +165,9 @@ Concept Python Arduino C++ Declare a variable speed = 150 int speed = 150; End a
 
 ### The Two Mandatory Functions
 Every Arduino sketch must have `setup()` and `loop()`. `setup()` runs once when the board powers on or resets. `loop()` runs forever after `setup()` finishes.
-Python equivalent`def setup():
+Python equivalent
+```python
+def setup():
     print("Starting up")
     # one-time initialization here
 
@@ -175,27 +177,39 @@ def loop():
 
 setup()
 while True:
-    loop()`
-Arduino C++`void setup() {
+    loop()
+```
+
+Arduino C++
+```cpp
+void setup() {
   Serial.println("Starting up");
   // one-time initialization here
 }
 
 void loop() {
   // repeating code here
-}`
+}
+```
 !!! info "What void means"
     The word `void` before a function name means the function returns nothing. If a function returns an integer, you write `int myFunction()`. If it returns a decimal number, you write `float myFunction()`. `setup()` and `loop()` always return `void` because Arduino calls them automatically.
 
 ### Declaring Variables: Types Are Required
 Python figures out a variable's type from its value. Arduino C++ requires you to state the type explicitly.
-Python`speed = 150
+Python
+```python
+speed = 150
 name = "ARIA"
-ready = True`
-Arduino C++`int speed = 150;
+ready = True
+```
+
+Arduino C++
+```cpp
+int speed = 150;
 float distance = 2.45;
 bool ready = true;
-char letter = 'A';`
+char letter = 'A';
+```
 Type What it stores Example int Whole numbers from about -32768 to 32767 int count = 0; long Larger whole numbers long ticks = 0; float Decimal numbers float distance = 1.5; bool True or false bool ready = true; char A single character char key = 'w'; void Nothing, used for functions void setup() { }
 !!! tip "Choosing types in this exercise"
     Use `int` for most counters and pin numbers. Use `long` for encoder tick counts because ticks can grow very large after extended operation. Use `float` for real-world measurements like distance in centimeters.
@@ -204,10 +218,17 @@ Type What it stores Example int Whole numbers from about -32768 to 32767 int cou
 
 ### Constants: #define and const
 In Python, constants are usually written in all caps by convention. In Arduino C++, you will see two common styles.
-#define`#define MAX_SPEED 255
-#define LED_PIN   13`
-const`const int MAX_SPEED = 255;
-const int LED_PIN = 13;`
+#define
+```cpp
+#define MAX_SPEED 255
+#define LED_PIN   13
+```
+
+const
+```cpp
+const int MAX_SPEED = 255;
+const int LED_PIN = 13;
+```
 `const` is preferred when the value has a clear type because the compiler can catch more mistakes. `#define` is a preprocessor text substitution. In Exercises C and D, `#define` is used for pin numbers and `const` is used for measured values such as wheel diameter.
 
 ### volatile: Variables Shared With Interrupts
@@ -247,31 +268,45 @@ Python Arduino C++ print("Speed:", speed) Serial.print("Speed: "); Serial.printl
 
 ### Loops and Conditionals
 The logic of `if`, `for`, and `while` is identical to Python. The syntax changes.
-Python if`if battery < 10:
+Python if
+```python
+if battery < 10:
     print("low")
 elif battery < 25:
     print("ok")
 else:
-    print("full")`
-Arduino C++ if`if (battery < 10) {
+    print("full")
+```
+
+Arduino C++ if
+```cpp
+if (battery < 10) {
   Serial.println("low");
 } else if (battery < 25) {
   Serial.println("ok");
 } else {
   Serial.println("full");
-}`
-Python loop`for i in range(5):
+}
+```
+Python loop
+```python
+for i in range(5):
     print(i)
 
 while battery > 20:
-    battery -= 1`
-Arduino C++ loop`for (int i = 0; i < 5; i++) {
+    battery -= 1
+```
+
+Arduino C++ loop
+```cpp
+for (int i = 0; i < 5; i++) {
   Serial.println(i);
 }
 
 while (battery > 20) {
   battery--;
-}`
+}
+```
 The Arduino `for` loop has three parts separated by semicolons: the initial value, the condition to keep looping, and the update after each iteration. `i++` means `i = i + 1`. `i--` means `i = i - 1`.
 
 ### A Complete Minimal Sketch

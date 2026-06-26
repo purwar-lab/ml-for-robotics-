@@ -13,9 +13,6 @@
 
 ### Why Python & Setting Up Colab
 **Concept.** Python is the default language of machine learning because the syntax is readable and the ecosystem is huge. NumPy, Pandas, scikit-learn, TensorFlow, PyTorch, OpenCV, and nearly every robotics ML example you find online will have Python support.
-!!! tip "About the code editors on this site"
-    The code boxes on this page are yours to edit. You can change any line and press **Run** or `Ctrl+Enter` to see your version execute instantly in the browser.
-    Your browser saves recent edits locally, so reloading this page usually keeps your scratch work. Those edits are not permanent course files, do not sync to other devices, and can disappear if you clear site data. Use **Reset** to restore the original example, and keep serious work in a Colab notebook where it is saved to your Google Drive automatically.
 **C++**
 Same idea in C++
 ```cpp
@@ -30,11 +27,6 @@ Your first Python cell
 ```python
 print("Hello, Robot!")
 ```
-!!! info "Which Python is running on this page?"
-    When you press **Run** on a code block on this website, you are running CPython 3.12 compiled to WebAssembly via [Pyodide](https://pyodide.org). It is the same Python you would install on your laptop, not a simulation or a simplified version.
-    Available packages in the browser interpreter: NumPy, Pandas, Matplotlib, SciPy, and scikit-learn.
-    Not available in the browser because they are too large: TensorFlow, PyTorch, and OpenCV. Code cells that need those packages are shown as Colab-only static code here; use the lesson's real notebook link when one is provided.
-    In Google Colab, you are running standard Python on a Google-managed Linux server. The exact default version can change over time, so check it with `!python --version` in a Colab cell. The beginner code in this course works in both places.
 !!! tip "Mini Exercise"
     Run `print("Hello, Robot!")` in Colab. Then change the message to include your name and your robot's name.
 !!! warning "Common Mistake"
@@ -47,13 +39,24 @@ print("Hello, Robot!")
 
 ---
 
-**Python vs Other Languages** — Python vs Other Languages: Three Things That Will Surprise You No curly braces: Python uses indentation In C, C++, or Java, blocks of code are wrapped in curly braces `{ }`. In Python, indentation, the spaces at the start of a line, is the structure. A block starts when indentation increases and ends when it goes back. C++ uses bracesC++`if (battery < 10) {
+**Python vs Other Languages** — Python vs Other Languages: Three Things That Will Surprise You No curly braces: Python uses indentation In C, C++, or Java, blocks of code are wrapped in curly braces `{ }`. In Python, indentation, the spaces at the start of a line, is the structure. A block starts when indentation increases and ends when it goes back.
+
+C++ uses braces
+```cpp
+if (battery < 10) {
     std::cout << "Low battery";
     returnToBase();
-}`
-Python uses indentationPython`if battery < 10:
+}
+```
+
+Python uses indentation
+```python
+if battery < 10:
     print("Low battery")
-    return_to_base()` **Rule:** Always use 4 spaces for each level of indentation. Do not mix spaces and tabs. Python will throw an `IndentationError`. ⚠️IndentationError is commonIf Python says `unexpected indent` or `expected an indented block`, look at the spaces at the start of the offending line. No semicolons at the end of lines Python does not need a semicolon at the end of each statement. One line equals one statement. Just press Enter and start the next line. No type declarations: Python figures out the type itself In C++ you write `int wheels = 4;`. In Python you write `wheels = 4`. Python looks at the value `4` and knows it is an integer automatically. This is called dynamic typing. You never need to write the type name when creating a variable. However, Python still has types. You just do not have to declare them. You can always check with `print(type(wheels))`, which prints `<class 'int'>`.
+    return_to_base()
+```
+
+**Rule:** Always use 4 spaces for each level of indentation. Do not mix spaces and tabs. Python will throw an `IndentationError`. ⚠️IndentationError is commonIf Python says `unexpected indent` or `expected an indented block`, look at the spaces at the start of the offending line. No semicolons at the end of lines Python does not need a semicolon at the end of each statement. One line equals one statement. Just press Enter and start the next line. No type declarations: Python figures out the type itself In C++ you write `int wheels = 4;`. In Python you write `wheels = 4`. Python looks at the value `4` and knows it is an integer automatically. This is called dynamic typing. You never need to write the type name when creating a variable. However, Python still has types. You just do not have to declare them. You can always check with `print(type(wheels))`, which prints `<class 'int'>`.
 **Variable** — A named container in memory that holds a value. Think of it as a labelled box for robot data.
 
 
@@ -751,7 +754,8 @@ Show Solution
 
 
 Checkpoint solution
-`robot_log = [
+```python
+robot_log = [
     {"time": "00:00", "distance": 1.2, "motor_temp": 54.2, "battery": 100, "task": "mapping"},
     {"time": "05:00", "distance": -1,  "motor_temp": 58.8, "battery": 94,  "task": "mapping"},
     {"time": "10:00", "distance": 0.4, "motor_temp": 66.1, "battery": 87,  "task": "avoidance"},
@@ -760,7 +764,7 @@ Checkpoint solution
     {"time": "25:00", "distance": 1.1, "motor_temp": 78.5, "battery": 66,  "task": "return"},
     {"time": "30:00", "distance": 0.9, "motor_temp": 74.0, "battery": 60,  "task": "return"},
 ]
-
+```
 def summarize_robot_log(log):
     total_entries = len(log)
     sensor_error_count = sum(1 for row in log if row["distance"] == -1)

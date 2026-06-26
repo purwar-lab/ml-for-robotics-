@@ -125,12 +125,18 @@ The output is a probability between 0 and 1 - values above 0.5 become class 1, b
 The sigmoid function turns any score into a probability, with 0.5 as the usual decision threshold.
 
 Real example: on a factory robot arm, logistic regression might learn that failure probability increases linearly with torque and tool wear. It cannot capture `failure only happens when both torque and temperature are high simultaneously` - that interaction requires a more complex model.
-What "linear with torque and tool wear" meansSuppose the model learns this score equation:`z = -8 + 2.3T + 1.7W
-P(failure) = σ(z) = 1 / (1 + e-z)`
+What "linear with torque and tool wear" meansSuppose the model learns this score equation:
+```
+z = -8 + 2.3T + 1.7W
+P(failure) = σ(z) = 1 / (1 + e-z)
+```
 
 The score equation feeds the sigmoid curve, converting feature values into failure probabilities.
-Here, `T` is torque and `W` is tool wear. The first equation is linear because the feature terms are added with weights. There is no term that multiplies two features together.What the interaction would requireFailure may not depend on torque alone or temperature alone. Instead, failure might depend on their combination. To capture that, add an interaction feature such as `Torque × Temperature`:`z = b0 + b1(Torque) + b2(Temperature)
-    + b3(Torque × Temperature)`A logistic regression boundary is always straight unless you manually add new interaction features. Models like decision trees can draw stepped or curved-looking boundaries from the data instead.Or use a more complex model, such as a decision tree, random forest, gradient boosting model, or neural network.What it gives you: the weight, or coefficient, for each feature. A weight of +2.3 on torque means higher torque strongly increases failure probability. A weight near 0 means that feature barely matters. This makes logistic regression one of the most interpretable models that exists.**Use when:** you want a fast interpretable baseline, you need to explain which features drive failures, or your data is roughly linearly separable.**Do not use when:** the relationship between features and the label involves complex interactions or non-linear patterns.
+Here, `T` is torque and `W` is tool wear. The first equation is linear because the feature terms are added with weights. There is no term that multiplies two features together.What the interaction would requireFailure may not depend on torque alone or temperature alone. Instead, failure might depend on their combination. To capture that, add an interaction feature such as `Torque × Temperature`:
+```
+z = b0 + b1(Torque) + b2(Temperature)
+    + b3(Torque × Temperature)
+```A logistic regression boundary is always straight unless you manually add new interaction features. Models like decision trees can draw stepped or curved-looking boundaries from the data instead.Or use a more complex model, such as a decision tree, random forest, gradient boosting model, or neural network.What it gives you: the weight, or coefficient, for each feature. A weight of +2.3 on torque means higher torque strongly increases failure probability. A weight near 0 means that feature barely matters. This makes logistic regression one of the most interpretable models that exists.**Use when:** you want a fast interpretable baseline, you need to explain which features drive failures, or your data is roughly linearly separable.**Do not use when:** the relationship between features and the label involves complex interactions or non-linear patterns.
 
 ---
 

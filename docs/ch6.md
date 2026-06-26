@@ -957,7 +957,9 @@ from tensorflow import keras
 
 ### The same network, two ways
 The math is identical to the sin(x) experiment. Only the syntax changes.
-sin.ipynb NumPy version`# Forward pass
+sin.ipynb NumPy version
+```python
+# Forward pass
 z1 = np.dot(x, W1) + b1
 a1 = relu(z1)
 z2 = np.dot(a1, W2) + b2
@@ -968,8 +970,11 @@ a3 = linear(z3)
 # Manual weight update (Adam)
 m_W1 = beta1*m_W1 + (1-beta1)*dW1
 ...
-`
-Keras equivalent`# Define the network
+```
+
+Keras equivalent
+```python
+# Define the network
 model = keras.Sequential([
     keras.layers.Dense(20, activation='relu', input_shape=(1,)),
     keras.layers.Dense(10, activation='relu'),
@@ -982,7 +987,7 @@ model.compile(optimizer=keras.optimizers.Adam(0.001),
 
 # Train (forward + backward + update all automatic)
 model.fit(x, y, epochs=3000, verbose=0)
-`
+```
 !!! info "What Keras hides"
     Keras does everything in `sin.ipynb`'s training loop automatically. The architecture is the same. The Adam optimizer is the same. The MSE loss is the same. Keras hides the implementation so you can focus on the design rather than the math.
     Now that you have implemented Adam by hand and watched the gradient flow backward through the layers, you know what Keras is doing under the hood. That understanding separates someone who uses Keras from someone who understands it.
