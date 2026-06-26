@@ -59,8 +59,9 @@ Which matters more depends on the cost of each mistake. For a medical diagnosis,
 ### The confusion matrix
 The confusion matrix shows all four possible outcomes of a binary classifier in one table. Every prediction the model makes falls into exactly one of the four cells. Reading the matrix tells you not just how accurate the model is but exactly what kind of mistakes it makes - and the two types of mistakes have very different consequences.
 Rows represent what actually happened. Columns represent what the model predicted. The diagonal, top-left and bottom-right, is where the model was right. The off-diagonal, top-right and bottom-left, is where it was wrong.
-|  | Predicted Normal | Predicted Failure |
-|--|-----------------|------------------|
+
+| | Predicted Normal | Predicted Failure|
+|-|:-:|:-:|
 | **Actual Normal** | True Negative — Correctly ignored healthy machine | False Positive — False alarm |
 | **Actual Failure** | False Negative — Missed failure | True Positive — Caught failure |
 
@@ -96,8 +97,9 @@ Rows represent what actually happened. Columns represent what the model predicte
 ### Key Algorithms Explained
 You have labeled data. You want a model that can predict the label for new examples. But which algorithm do you use? There is no single correct answer - each algorithm makes different assumptions about the shape of the patterns in your data. Understanding what each one assumes helps you choose wisely and interpret the results honestly.
 All four algorithms below are classification algorithms - they predict a category, failure versus normal, rather than a number. They all take the same input, a row of features, and produce the same output, a predicted class. The difference is **how** they make that prediction internally.
+
 | Algorithm | Type | Interpretable | Speed | Best For |
-|-----------|------|:-------------:|:-----:|----------|
+|-|:-:|:-:|:-:|:-:|
 | Logistic Regression | Linear classifier | High | Fast | Baselines and explanations |
 | Decision Tree | Tree classifier | High | Fast | Readable rules |
 | Random Forest | Ensemble | Medium | Medium | Strong tabular accuracy |
