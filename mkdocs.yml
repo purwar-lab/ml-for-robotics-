@@ -23,6 +23,7 @@ nav:
 theme: readthedocs
 markdown_extensions:
   - admonition
+  - tables
 extra_css:
   - css/dark-mode.css
 extra_javascript:

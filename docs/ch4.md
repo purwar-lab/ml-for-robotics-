@@ -136,46 +136,41 @@ print(f"Total captured: {sum(var)*100:.1f}% of original information")
 
 ---
 
-── What is K-Means ────────────────────────────────────────────
-
 ### What is K-Means?
-K-Means is an algorithm that automatically groups data points into **K clusters** --- where each cluster contains points that are similar to each other and different from the other groups. You do not tell it what the groups mean; it finds the groupings on its own just from the numbers.
-K-Means takes unlabelled data (left) and assigns every point
-      to one of K groups (right). The algorithm decides the groupings
-      purely from the distances between points --- no labels required.
+K-Means is an algorithm that automatically groups data points into **K clusters** — where each cluster contains points that are similar to each other and different from the other groups. You do not tell it what the groups mean; it finds the groupings on its own just from the numbers.
+
 !!! tip "Real-world analogy"
-    Imagine you tip a bag of mixed marbles onto a table --- red, blue, and green ones all mixed together. You do not know how many colours are in the bag, so you pick 3 spots on the table as starting piles and then slide each marble to whichever pile it is closest to. After one pass you recalculate the centre of each pile and repeat. After a few passes the marbles have naturally sorted themselves by colour. That is K-Means.
-In robotics this is useful whenever you have sensor readings but no labels --- for example, grouping vibration patterns to discover which ones tend to precede a failure, without anyone having hand-labelled the data first.
-Unlabelled sensor data → K-Means (you choose K) → K groups of similar readings → Inspect & interpret
-── How it works ───────────────────────────────────────────────
+    Imagine you tip a bag of mixed marbles onto a table — red, blue, and green ones all mixed together. You do not know how many colours are in the bag, so you pick 3 spots on the table as starting piles and then slide each marble to whichever pile it is closest to. After one pass you recalculate the centre of each pile and repeat. After a few passes the marbles have naturally sorted themselves by colour. That is K-Means.
 
-### How K-Means works --- step by step
-The algorithm repeats two simple operations until nothing changes. You choose **K** (the number of clusters) before it starts --- the rest is automatic.
-K-Means repeats four operations until nothing changes. Here is what happens at each step.
-1. Random Init → 2. Assign → 3. Recompute → 4. Converge 1 Random Initialization Place K centroids at random positions in feature space.
-![Place K centroids at random positions in feature space.](original/kmeans_plot1_init.png)
+In robotics this is useful whenever you have sensor readings but no labels — for example, grouping vibration patterns to discover which ones tend to precede a failure, without anyone having hand-labelled the data first.
 
-      These starting positions are guesses — the algorithm corrects
-      them over the next steps. The quality of the final result can
-      depend on where centroids start, which is why most implementations
-      run K-Means multiple times with different random starts and keep
-      the best result. scikit-learn's n_init="auto" handles this
-      automatically. 2 Assign Calculate the distance from every data point to every centroid.
-![Calculate the distance from every data point to every centroid.](original/kmeans_plot2_assign.png)
+### How K-Means works — step by step
+The algorithm repeats two simple operations until nothing changes. You choose **K** (the number of clusters) before it starts — the rest is automatic.
 
-      Assign each point to its closest centroid. All points assigned to
-      the same centroid form one cluster. After this step every point
-      belongs to exactly one cluster. 3 Recompute Move each centroid to the mean position of all points currently
-![Move each centroid to the mean position of all points currently](original/kmeans_plot3_recompute.png)
+**1. Random Initialization**
 
-      assigned to it. If cluster 1 contains 50 points, its new centroid
-      is the average position of those 50 points. This is where the word
-      Means in K-Means comes from. 4 Converge Repeat assign and recompute until no point changes its cluster
-![Repeat assign and recompute until no point changes its cluster](original/kmeans_plot4_converge.png)
+Place K centroids at random positions in feature space. These starting positions are guesses — the algorithm corrects them over the next steps. The quality of the final result can depend on where centroids start, which is why most implementations run K-Means multiple times with different random starts and keep the best result. scikit-learn's `n_init="auto"` handles this automatically.
 
-      between iterations. At this point centroids have settled and the
-      algorithm has converged. This is guaranteed to happen but is not
-      guaranteed to find the globally best solution — only a local one.
+![K-Means step 1: random initialization](original/kmeans_plot1_init.png)
+
+**2. Assign**
+
+Calculate the distance from every data point to every centroid. Assign each point to its closest centroid. All points assigned to the same centroid form one cluster. After this step every point belongs to exactly one cluster.
+
+![K-Means step 2: assign points to nearest centroid](original/kmeans_plot2_assign.png)
+
+**3. Recompute**
+
+Move each centroid to the mean position of all points currently assigned to it. If cluster 1 contains 50 points, its new centroid is the average position of those 50 points. This is where the word *Means* in K-Means comes from.
+
+![K-Means step 3: recompute centroids](original/kmeans_plot3_recompute.png)
+
+**4. Converge**
+
+Repeat assign and recompute until no point changes its cluster between iterations. At this point centroids have settled and the algorithm has converged. This is guaranteed to happen but is not guaranteed to find the globally best solution — only a local one.
+
+![K-Means step 4: convergence](original/kmeans_plot4_converge.png)
+
 Run to see K-Means converge step by step
 ```python
 import numpy as np

@@ -48,10 +48,23 @@ Open Playground at the link above. Select the Circle dataset. Look for four smal
 ---
 
 Before understanding a network of hundreds of neurons, understand one. A single neuron is just arithmetic --- three steps, no mystery.
-The exam scorer Imagine scoring a student's performance using three things: homework (weight 0.5), exam score (weight 0.4), attendance (weight 0.1). You multiply each by its weight, add them up, and get a score. A neuron does exactly this — it is a weighted sum of its inputs. The only extra step is squashing the result through a function so it stays in a useful range.
+**The exam scorer**
+
+Imagine scoring a student's performance using three things: homework (weight 0.5), exam score (weight 0.4), attendance (weight 0.1). You multiply each by its weight, add them up, and get a score. A neuron does exactly this — it is a weighted sum of its inputs. The only extra step is squashing the result through a function so it stays in a useful range.
 
 ### Three steps every neuron takes
-Weighted sum z = w1*x1 + w2*x2 + ... + wn*xn + b Each input x is multiplied by its weight w . All results are added together. The bias b is added last — it shifts the output regardless of inputs. Activation function a = f(z) The function f squashes z into a useful range. Without it, stacking neurons is useless — the whole network collapses into one weighted sum, which is just a straight line. Pass the result forward a becomes an input to the next layer's neurons. This is how information flows from left to right through the network.
+
+**Weighted sum** `z = w1*x1 + w2*x2 + ... + wn*xn + b`
+
+Each input `x` is multiplied by its weight `w`. All results are added together. The bias `b` is added last — it shifts the output regardless of inputs.
+
+**Activation function** `a = f(z)`
+
+The function `f` squashes `z` into a useful range. Without it, stacking neurons is useless — the whole network collapses into one weighted sum, which is just a straight line.
+
+**Pass the result forward**
+
+`a` becomes an input to the next layer's neurons. This is how information flows from left to right through the network.
 !!! tip "Try this before running"
     The code below computes what one neuron outputs given three sensor readings. Before running, predict: if temperature (`x[0]`) is very high (`0.9` out of `1.0`) and its weight is `0.8`, will the output confidence be above 50% or below 50%?
 single_neuron_sensor_confidence.py
@@ -80,6 +93,10 @@ print(f"Interpretation: {a*100:.1f}% confidence of abnormality")
 !!! tip "Exercise"
     Run the code, then try each change and note what happens:
 
+    1. Change `w[0]` from `0.8` to `-0.8`. What happens to confidence? Why does making a weight negative reverse its effect?
+    2. Change `b` from `-0.4` to `0.4`. What happens? The bias shifts the baseline — what does a positive bias mean in terms of the neuron's "default assumption"?
+    3. Set all weights to `0.0`. What is the output and why?
+
 ### Weights are not set by you
 In the code above, the weights are hand-picked numbers. In a real network, training finds these numbers automatically by trying to minimize the loss. The network starts with random weights and adjusts them thousands of times until the output is correct. You will see this process in lesson 6.6.
 !!! tip "TensorFlow Playground connection"
@@ -96,12 +113,24 @@ A single neuron draws one straight line. That is its only tool. Some problems ca
 [Open in Colab →](https://playground.tensorflow.org)
 
 ### Part 1 --- Set up the impossible problem
-Open Playground. https://playground.tensorflow.org Dataset: click the XOR dataset. It is the checkerboard pattern: orange top-right and bottom-left, blue top-left and bottom-right. Features: make sure only X1 and X2 are checked. Hidden layers: click the minus button until there are zero hidden layers — just inputs going straight to output. Learning rate: set to 0.03 . Activation: set to ReLU . Train: click ▶ and watch for 30 seconds.
+Open Playground: https://playground.tensorflow.org
+
+- **Dataset:** click the XOR dataset. It is the checkerboard pattern: orange top-right and bottom-left, blue top-left and bottom-right.
+- **Features:** make sure only `X1` and `X2` are checked.
+- **Hidden layers:** click the minus button until there are zero hidden layers — just inputs going straight to output.
+- **Learning rate:** set to `0.03`.
+- **Activation:** set to `ReLU`.
+- **Train:** click ▶ and watch for 30 seconds.
 !!! tip "Question"
     What accuracy does it reach? Does the boundary ever successfully separate the orange from the blue? Why do you think a straight line cannot solve this problem? Think geometrically: is there any straight line that puts all orange on one side and all blue on the other?
 
 ### Part 2 --- Add one hidden layer
-Click ↺ to reset. Add one hidden layer with 2 neurons. Click + next to Hidden Layers, then set the layer to 2 neurons. Keep everything else the same. Click ▶ to train. Watch until the test loss drops below 0.05 .
+
+- Click ↺ to reset.
+- Add one hidden layer with 2 neurons: click `+` next to Hidden Layers, then set the layer to 2 neurons.
+- Keep everything else the same.
+- Click ▶ to train.
+- Watch until the test loss drops below `0.05`.
 !!! tip "Question"
     How long did it take? What does the decision boundary look like now? The two neurons together created a boundary that one neuron could not. Watch the two neurons on the left --- each one is drawing its own line. Their combination creates the curved boundary you see on the right.
 
@@ -119,7 +148,9 @@ This is why deep networks can learn complex patterns. Each layer transforms the 
 ---
 
 Lesson 6.3 showed the problem empirically --- one neuron fails on XOR, a hidden layer fixes it. This lesson explains why mathematically without requiring calculus.
-The committee vote One judge scores a gymnastics routine: 7.2. That is a single number capturing a complex performance. Three judges each notice different things — difficulty, execution, artistry. Their combined scores are richer than any single judge's opinion. A hidden layer is a committee of neurons, each noticing a different aspect of the input. Their combined output gives the next layer richer information to work with.
+**The committee vote**
+
+One judge scores a gymnastics routine: 7.2. That is a single number capturing a complex performance. Three judges each notice different things — difficulty, execution, artistry. Their combined scores are richer than any single judge's opinion. A hidden layer is a committee of neurons, each noticing a different aspect of the input. Their combined output gives the next layer richer information to work with.
 
 ### What a layer actually does to data
 Each layer takes the outputs from the previous layer and transforms them. The first hidden layer transforms raw input features into a new representation. The second layer transforms that representation into an even more abstract one. By the final layer the data has been transformed enough that a single neuron can make the final decision.
@@ -149,7 +180,13 @@ count_params([3, 4, 4, 4, 1])
     Every connection is one weight, and every neuron has one bias. That is why bigger layers quickly create many more trainable numbers.
 
 ### How deep should you go?
-Architecture Parameters Good for 2->4->1 13 Very simple patterns 2->16->16->1 321 Most common starting point 2->64->64->64->1 8,513 Complex patterns, needs more data 2->256->256->1 66,305 Often overkill for small datasets
+
+| Architecture | Parameters | Good for |
+|---|---|---|
+| `2->4->1` | 13 | Very simple patterns |
+| `2->16->16->1` | 321 | Most common starting point |
+| `2->64->64->64->1` | 8,513 | Complex patterns, needs more data |
+| `2->256->256->1` | 66,305 | Often overkill for small datasets |
 !!! tip "Practical default"
     Start with two hidden layers of 16 neurons each. Only go bigger if the network clearly cannot learn the pattern after proper tuning.
 
@@ -161,13 +198,24 @@ Architecture Parameters Good for 2->4->1 13 Very simple patterns 2->16->16->1 32
 ---
 
 You have seen what a network is and that adding layers helps. Now: how does a network actually improve? How do 41 random numbers become 41 carefully tuned numbers that solve a problem?
-The blindfolded hiker You are blindfolded on a hilly landscape trying to find the lowest valley. You cannot see anything but you can feel the slope under your feet. Each step you take one step in the downhill direction. After enough steps you reach a valley. This is gradient descent — navigating a landscape you cannot see by following the local slope downward.
+**The blindfolded hiker**
+
+You are blindfolded on a hilly landscape trying to find the lowest valley. You cannot see anything but you can feel the slope under your feet. Each step you take one step in the downhill direction. After enough steps you reach a valley. This is gradient descent — navigating a landscape you cannot see by following the local slope downward.
 
 ### The loss --- your altitude
 The height in the hiking analogy is the loss. It measures how wrong the network is right now. When predictions are far from the true labels, loss is high. When predictions are close, loss is low. Training is the process of walking downhill on the loss surface until you reach a valley --- a set of weights where the network is as accurate as possible.
 
 ### The five steps of training
-Forward pass Feed a batch of training examples through the network left to right. Every neuron computes its weighted sum and activation. The final layer produces a prediction for each example in the batch. Compute loss Compare predictions to true labels. The loss is a single number — the average error across the batch. Large loss means the network is very wrong. Small loss means it is close. In Playground you see this number updating live in the top right. Backward pass (backpropagation) Calculate how much each weight contributed to the loss. This uses the chain rule from calculus — the network works backward from the output, spreading blame to each weight proportionally. You do not need to understand the calculus. The key insight is: every weight gets a score saying "increase me" or "decrease me." Update weights Move every weight a small step in the direction that reduces loss: new_weight = old_weight - learning_rate * gradient The learning rate controls how big the step is. Too large: overshoots the valley. Too small: takes forever. Repeat Do this for every batch in the training set. One complete pass through all training data = one epoch. Typical networks train for 10 to 500 epochs.
+
+**Forward pass** — Feed a batch of training examples through the network left to right. Every neuron computes its weighted sum and activation. The final layer produces a prediction for each example in the batch.
+
+**Compute loss** — Compare predictions to true labels. The loss is a single number — the average error across the batch. Large loss means the network is very wrong. Small loss means it is close. In Playground you see this number updating live in the top right.
+
+**Backward pass (backpropagation)** — Calculate how much each weight contributed to the loss. This uses the chain rule from calculus — the network works backward from the output, spreading blame to each weight proportionally. You do not need to understand the calculus. The key insight is: every weight gets a score saying "increase me" or "decrease me."
+
+**Update weights** — Move every weight a small step in the direction that reduces loss: `new_weight = old_weight - learning_rate * gradient`. The learning rate controls how big the step is. Too large: overshoots the valley. Too small: takes forever.
+
+**Repeat** — Do this for every batch in the training set. One complete pass through all training data = one epoch. Typical networks train for 10 to 500 epochs.
 !!! tip "Try this before running"
     Before running, predict --- what shape will the loss curve have over 50 epochs? Flat? Always going down? Bumpy? Sketch your prediction on paper, then run.
 healthy_training_curve.py
@@ -209,22 +257,39 @@ Lesson 6.5 described gradient descent in words. Now watch it happen. Playground 
 
 ### Experiment 1 --- A healthy training run
 Set up this exact configuration:
-Dataset: Circle, the two concentric rings. Features: X1 and X2 only. Hidden layers: 1 layer, 4 neurons. Activation: ReLU . Learning rate: 0.03 . Batch size: 10 . Regularization: None. Train: click ▶ and watch until test loss is below 0.05 .
+
+- **Dataset:** Circle, the two concentric rings.
+- **Features:** `X1` and `X2` only.
+- **Hidden layers:** 1 layer, 4 neurons.
+- **Activation:** `ReLU`.
+- **Learning rate:** `0.03`.
+- **Batch size:** `10`.
+- **Regularization:** None.
+- **Train:** click ▶ and watch until test loss is below `0.05`.
 !!! tip "Watch three things simultaneously"
     Each of these is showing you a different view of the same process.
 
 ### Experiment 2 --- Learning rate too high
-Click ↺ to reset. Change only the learning rate to 3 . That is 100x larger than the healthy run. Click ▶ and watch for 10 seconds.
+
+- Click ↺ to reset.
+- Change only the learning rate to `3`. That is 100x larger than the healthy run.
+- Click ▶ and watch for 10 seconds.
 !!! tip "Question"
     What happens to the loss graph? Does it decrease smoothly or oscillate wildly? What does the decision boundary look like? This is the hiking analogy --- taking steps so large you leap over the valley and land on the other side.
 
 ### Experiment 3 --- Learning rate too low
-Click ↺ to reset. Change only the learning rate to 0.0001 . That is 300x smaller than the healthy run. Click ▶ and watch for 30 seconds.
+
+- Click ↺ to reset.
+- Change only the learning rate to `0.0001`. That is 300x smaller than the healthy run.
+- Click ▶ and watch for 30 seconds.
 !!! tip "Question"
     How far does the loss decrease after 30 seconds compared to Experiment 1? The network is learning --- just extremely slowly. This is why `0.0001` is rarely used as a starting learning rate.
 
 ### Experiment 4 --- Batch size effect
-Click ↺ to reset and restore learning rate to 0.3 . Change batch size to 1 . The network now trains from one example at a time. Click ▶ and watch the loss graph specifically.
+
+- Click ↺ to reset and restore learning rate to `0.3`.
+- Change batch size to `1`. The network now trains from one example at a time.
+- Click ▶ and watch the loss graph specifically.
 !!! tip "Question"
     The loss graph is now much noisier. Why? Each step is based on only one example instead of 10. One example gives a noisy estimate of the true gradient. How does this compare to the hiking analogy --- is this like taking careful measured steps or like stumbling in a random direction each time?
 !!! tip "What you just learned"
@@ -246,7 +311,13 @@ The twist: we train on x from 0 to 2π, then test on 0 to 4π, a range the netwo
 !!! warning "Run this experiment in Google Colab"
     The training loop is intentionally written from scratch in NumPy. It is too slow for the browser runtime, so use the notebook.
 [Open in Colab →](https://colab.research.google.com/github/purwar-lab/ml-for-robotics-/blob/main/notebooks/ch6-sin-experiment.ipynb)
-Challenge 1: Minimum viable network Find the smallest HIDDEN_DIM1 and HIDDEN_DIM2 that still accurately approximates sin(x) on the training range. How few neurons can learn a sine wave? Challenge 2: Generalization limits Set TRAIN_RANGE=2 , TEST_RANGE=8 . Does the network generalize to 4x the training range? What about 6x? Challenge 3: Too many epochs Set EPOCHS=50000 . Does accuracy keep improving? What happens to the generalization plot? This is overfitting in action. Challenge 4: Learning rate extremes Try LEARNING_RATE=0.5 and LEARNING_RATE=0.000001 . What does the loss curve look like in each case?
+**Challenge 1: Minimum viable network** Find the smallest `HIDDEN_DIM1` and `HIDDEN_DIM2` that still accurately approximates sin(x) on the training range. How few neurons can learn a sine wave?
+
+**Challenge 2: Generalization limits** Set `TRAIN_RANGE=2`, `TEST_RANGE=8`. Does the network generalize to 4x the training range? What about 6x?
+
+**Challenge 3: Too many epochs** Set `EPOCHS=50000`. Does accuracy keep improving? What happens to the generalization plot? This is overfitting in action.
+
+**Challenge 4: Learning rate extremes** Try `LEARNING_RATE=0.5` and `LEARNING_RATE=0.000001`. What does the loss curve look like in each case?
 
 #### Cell 1: Setup and Data Generation
 Cell 1: Setup and data generation
@@ -262,7 +333,11 @@ np.random.seed(42)
 x = np.linspace(0, 2 * np.pi, 1000).reshape(-1, 1)
 y = np.sin(x)  # True function values
 ```
-Line Meaning np.linspace(0, 2*np.pi, 1000) Creates 1000 evenly spaced x values from 0 to 2π. This is the training range: the network only sees this interval. .reshape(-1, 1) Neural networks expect a 2D array where each row is one example. -1 means Python figures out that dimension automatically, giving shape (1000, 1) . y = np.sin(x) The true labels. For each x value, the correct output is sin(x). The network learns this mapping from scratch.
+| Line | Meaning |
+|---|---|
+| `np.linspace(0, 2*np.pi, 1000)` | Creates 1000 evenly spaced x values from 0 to 2π. This is the training range: the network only sees this interval. |
+| `.reshape(-1, 1)` | Neural networks expect a 2D array where each row is one example. `-1` means Python figures out that dimension automatically, giving shape `(1000, 1)`. |
+| `y = np.sin(x)` | The true labels. For each x value, the correct output is sin(x). The network learns this mapping from scratch. |
 
 #### Cell 2: Network Architecture
 The architecture is: `1 input -> 20 neurons -> 10 neurons -> 1 output`.
@@ -287,7 +362,13 @@ b2 = np.zeros((1, hidden_dim2)) # Biases for second hidden layer
 W3 = np.random.randn(hidden_dim2, output_dim) * 0.1 # Weights for output layer
 b3 = np.zeros((1, output_dim)) # Biases for output layer
 ```
-Parameter Shape Meaning W1 (1, 20) 1 input connects to 20 hidden neurons W2 (20, 10) 20 first-layer neurons connect to 10 second-layer neurons W3 (10, 1) 10 second-layer neurons connect to 1 output b1 (1, 20) one bias per neuron in layer 1 Total 271 1x20 + 20 + 20x10 + 10 + 10x1 + 1 parameters
+| Parameter | Shape | Meaning |
+|---|---|---|
+| `W1` | `(1, 20)` | 1 input connects to 20 hidden neurons |
+| `W2` | `(20, 10)` | 20 first-layer neurons connect to 10 second-layer neurons |
+| `W3` | `(10, 1)` | 10 second-layer neurons connect to 1 output |
+| `b1` | `(1, 20)` | one bias per neuron in layer 1 |
+| **Total** | `271` | `1x20 + 20 + 20x10 + 10 + 10x1 + 1` parameters |
 
 #### Cell 3: Activation Functions
 Why ReLU for hidden layers but linear for the output?
@@ -315,10 +396,34 @@ def linear_derivative(x):
 
 #### Cell 4: Adam Optimizer and Training Loop
 This is the most important cell. It performs the forward pass, computes loss, sends the gradient backward through every layer, and updates every weight with Adam.
-Adam parameter Meaning beta1 = 0.9 Momentum: keep 90% of the previous gradient direction and mix in 10% of the new gradient. beta2 = 0.999 Tracks a moving average of squared gradients, which Adam uses to scale each parameter update. epsilon = 1e-8 A tiny number that prevents division by zero.
-Forward-pass line Meaning z1 = np.dot(x, W1) + b1 Weighted sum for layer 1. a1 = relu(z1) Apply non-linearity. z2 = np.dot(a1, W2) + b2 Weighted sum for layer 2. a2 = relu(z2) Second hidden activation. z3 = np.dot(a2, W3) + b3 Final weighted sum. a3 = linear(z3) Regression output with no activation.
-Backprop line Meaning d_loss_a3 = 2*(a3-y)/len(x) Gradient of MSE with respect to the prediction. It points uphill, so updates move the opposite way. delta3 = d_loss_a3 * linear_derivative(a3) Chain rule at the output layer. Since the derivative of a linear function is 1, this is included for clarity. dW3 = np.dot(a2.T, delta3) Gradient for the third-layer weights. delta2 = np.dot(delta3, W3.T) * relu_derivative(z2) Error signal propagated backward through layer 3, then through layer 2 ReLU.
-Adam update line Meaning m_W1 = beta1*m_W1 + (1-beta1)*dW1 Update the moving average of the gradient. This is Adam momentum. v_W1 = beta2*v_W1 + (1-beta2)*(dW1**2) Update the moving average of squared gradients. Large recent gradients slow future updates. m_W1_hat = m_W1 / (1-beta1**epoch) v_W1_hat = v_W1 / (1-beta2**epoch) Bias correction. Early moment estimates start near zero, so Adam corrects them. W1 -= learning_rate * m_W1_hat / (np.sqrt(v_W1_hat) + epsilon) The actual adaptive update: learning rate scaled by momentum and squared-gradient history.
+| Adam parameter | Meaning |
+|---|---|
+| `beta1 = 0.9` | Momentum: keep 90% of the previous gradient direction and mix in 10% of the new gradient. |
+| `beta2 = 0.999` | Tracks a moving average of squared gradients, which Adam uses to scale each parameter update. |
+| `epsilon = 1e-8` | A tiny number that prevents division by zero. |
+
+| Forward-pass line | Meaning |
+|---|---|
+| `z1 = np.dot(x, W1) + b1` | Weighted sum for layer 1. |
+| `a1 = relu(z1)` | Apply non-linearity. |
+| `z2 = np.dot(a1, W2) + b2` | Weighted sum for layer 2. |
+| `a2 = relu(z2)` | Second hidden activation. |
+| `z3 = np.dot(a2, W3) + b3` | Final weighted sum. |
+| `a3 = linear(z3)` | Regression output with no activation. |
+
+| Backprop line | Meaning |
+|---|---|
+| `d_loss_a3 = 2*(a3-y)/len(x)` | Gradient of MSE with respect to the prediction. It points uphill, so updates move the opposite way. |
+| `delta3 = d_loss_a3 * linear_derivative(a3)` | Chain rule at the output layer. Since the derivative of a linear function is 1, this is included for clarity. |
+| `dW3 = np.dot(a2.T, delta3)` | Gradient for the third-layer weights. |
+| `delta2 = np.dot(delta3, W3.T) * relu_derivative(z2)` | Error signal propagated backward through layer 3, then through layer 2 ReLU. |
+
+| Adam update line | Meaning |
+|---|---|
+| `m_W1 = beta1*m_W1 + (1-beta1)*dW1` | Update the moving average of the gradient. This is Adam momentum. |
+| `v_W1 = beta2*v_W1 + (1-beta2)*(dW1**2)` | Update the moving average of squared gradients. Large recent gradients slow future updates. |
+| `m_W1_hat = m_W1 / (1-beta1**epoch)` `v_W1_hat = v_W1 / (1-beta2**epoch)` | Bias correction. Early moment estimates start near zero, so Adam corrects them. |
+| `W1 -= learning_rate * m_W1_hat / (np.sqrt(v_W1_hat) + epsilon)` | The actual adaptive update: learning rate scaled by momentum and squared-gradient history. |
 Cell 4: Adam optimizer and training loop
 ```python
 # -------------------------------
@@ -480,7 +585,7 @@ Cell 5b: Wider range plot
 plt.figure(figsize=(10, 6))
 plt.scatter(x_plot, y_true_plot, label="Actual sin(x) (Wider Range)", color='blue', alpha=0.7, s=5)
 plt.scatter(x_plot, y_pred_plot, label="Predicted (Wider Range)", color='red', marker='.', alpha=0.7, s=5)
-plt.title("Neural Network Regression on Wider Range [0, 4ʹ]")
+plt.title("Neural Network Regression on Wider Range [0, 4π]")
 plt.xlabel("x")
 plt.ylabel("sin(x)")
 plt.legend()
@@ -912,7 +1017,14 @@ Sometimes more data is not possible. Then dropout and early stopping are your be
     Dropout and early stopping are each a single line once you are using a real framework. You will write them for the first time in the next lesson, **6.10 From NumPy to Keras**. For now, focus on what each one does and why - the how is one lesson away.
 
 ### Watch overfitting happen in Playground
-Open TensorFlow Playground. https://playground.tensorflow.org Dataset: Circle. Hidden layers: 3 layers, 8 neurons each. This is overkill for the circle problem - intentionally too large. Noise: set to 50 to add noise to the data. Training to test ratio: set to 10 . This means only 10% training data, a very small dataset for such a large network. Train: click ▶ and train for several hundred epochs.
+
+Open TensorFlow Playground: https://playground.tensorflow.org
+
+- **Dataset:** Circle.
+- **Hidden layers:** 3 layers, 8 neurons each. This is overkill for the circle problem — intentionally too large.
+- **Noise:** set to `50` to add noise to the data.
+- **Training to test ratio:** set to `10`. This means only 10% training data, a very small dataset for such a large network.
+- **Train:** click ▶ and train for several hundred epochs.
 !!! tip "Observe"
     Watch the test loss, the orange line on the graph. Does it decrease steadily, or does it decrease then start rising? The boundary in the right panel probably fits the training data very tightly - too tightly. It is wrapping itself around individual training points, including the noisy ones.
 !!! tip "Question"
@@ -992,7 +1104,12 @@ model.fit(x, y, epochs=3000, verbose=0)
     Keras does everything in `sin.ipynb`'s training loop automatically. The architecture is the same. The Adam optimizer is the same. The MSE loss is the same. Keras hides the implementation so you can focus on the design rather than the math.
     Now that you have implemented Adam by hand and watched the gradient flow backward through the layers, you know what Keras is doing under the hood. That understanding separates someone who uses Keras from someone who understands it.
 [Open in Colab →](https://colab.research.google.com/github/purwar-lab/ml-for-robotics-/blob/main/notebooks/ch6-first-network.ipynb)
-Keras piece Manual NumPy equivalent Dense(20, activation="relu") W1 , b1 , np.dot , and relu loss="mse" mse_loss(y, a3) Adam(0.001) The full Adam moment, bias-correction, and update block from lesson 6.7 model.fit(...) Forward pass, loss, backpropagation, update, repeat
+| Keras piece | Manual NumPy equivalent |
+|---|---|
+| `Dense(20, activation="relu")` | `W1`, `b1`, `np.dot`, and `relu` |
+| `loss="mse"` | `mse_loss(y, a3)` |
+| `Adam(0.001)` | The full Adam moment, bias-correction, and update block from lesson 6.7 |
+| `model.fit(...)` | Forward pass, loss, backpropagation, update, repeat |
 Cell 1: Generate sin(x) data
 ```python
 import numpy as np
@@ -1139,7 +1256,16 @@ plt.show()
 
 ### Reading Training Curves
 Use this as a diagnostic card during later projects.
-Symptom Diagnosis Fix Loss stays flat from epoch 1 LR too small or bad initialization Increase LR or use Adam Loss spikes or goes to NaN LR too large Reduce LR by 10x Train loss falls, val loss rises Overfitting Add dropout, early stopping, or reduce network size Train and val loss plateau high Underfitting More epochs, larger network, or better architecture Val loss lower than train loss Normal with dropout Expected because dropout is active only during training Train accuracy 100%, val accuracy low Severe memorization Much more data or a much smaller network Both losses are noisy Batch size too small or LR too large Increase batch size to 32 or 64, or lower LR
+
+| Symptom | Diagnosis | Fix |
+|---|---|---|
+| Loss stays flat from epoch 1 | LR too small or bad initialization | Increase LR or use Adam |
+| Loss spikes or goes to NaN | LR too large | Reduce LR by 10x |
+| Train loss falls, val loss rises | Overfitting | Add dropout, early stopping, or reduce network size |
+| Train and val loss plateau high | Underfitting | More epochs, larger network, or better architecture |
+| Val loss lower than train loss | Normal with dropout | Expected because dropout is active only during training |
+| Train accuracy 100%, val accuracy low | Severe memorization | Much more data or a much smaller network |
+| Both losses are noisy | Batch size too small or LR too large | Increase batch size to 32 or 64, or lower LR |
 
 ---
 
@@ -1149,7 +1275,14 @@ Symptom Diagnosis Fix Loss stays flat from epoch 1 LR too small or bad initializ
 ---
 
 ### When to Use Neural Networks
-Do you have more than 10,000 training examples? No: try Random Forest first. If you must use a neural network, keep it small. Images, audio, or raw text? Yes: neural network. CNN for images; RNN or Transformer for sequence data. Tabular rows and columns? Try Random Forest or XGBoost first. Move to NN only if they underperform. Need to explain predictions? Consider Decision Tree or Logistic Regression. Neural networks are powerful but harder to interpret.
+
+**Do you have more than 10,000 training examples?** No: try Random Forest first. If you must use a neural network, keep it small.
+
+**Images, audio, or raw text?** Yes: neural network. CNN for images; RNN or Transformer for sequence data.
+
+**Tabular rows and columns?** Try Random Forest or XGBoost first. Move to NN only if they underperform.
+
+**Need to explain predictions?** Consider Decision Tree or Logistic Regression. Neural networks are powerful but harder to interpret.
 !!! tip "Robotics perspective"
     YOLO26n is a CNN you train. MediaPipe is a neural network Google trained. The lane follower deliberately uses no neural network. Knowing when not to use one is part of the skill.
 

@@ -17,10 +17,10 @@
 Same idea in C++
 ```cpp
 #include <iostream>
-      int main() {
-        std::cout << "Hello, Robot!" << std::endl;
-        return 0;
-      }
+int main() {
+  std::cout << "Hello, Robot!" << std::endl;
+  return 0;
+}
 ```
 **Python**
 Your first Python cell
@@ -39,7 +39,10 @@ print("Hello, Robot!")
 
 ---
 
-**Python vs Other Languages** — Python vs Other Languages: Three Things That Will Surprise You No curly braces: Python uses indentation In C, C++, or Java, blocks of code are wrapped in curly braces `{ }`. In Python, indentation, the spaces at the start of a line, is the structure. A block starts when indentation increases and ends when it goes back.
+### Python vs Other Languages: Three Things That Will Surprise You
+
+#### No curly braces: Python uses indentation
+In C, C++, or Java, blocks of code are wrapped in curly braces `{ }`. In Python, indentation — the spaces at the start of a line — is the structure. A block starts when indentation increases and ends when it goes back.
 
 C++ uses braces
 ```cpp
@@ -56,7 +59,17 @@ if battery < 10:
     return_to_base()
 ```
 
-**Rule:** Always use 4 spaces for each level of indentation. Do not mix spaces and tabs. Python will throw an `IndentationError`. ⚠️IndentationError is commonIf Python says `unexpected indent` or `expected an indented block`, look at the spaces at the start of the offending line. No semicolons at the end of lines Python does not need a semicolon at the end of each statement. One line equals one statement. Just press Enter and start the next line. No type declarations: Python figures out the type itself In C++ you write `int wheels = 4;`. In Python you write `wheels = 4`. Python looks at the value `4` and knows it is an integer automatically. This is called dynamic typing. You never need to write the type name when creating a variable. However, Python still has types. You just do not have to declare them. You can always check with `print(type(wheels))`, which prints `<class 'int'>`.
+**Rule:** Always use 4 spaces for each level of indentation. Do not mix spaces and tabs. Python will throw an `IndentationError`.
+
+!!! warning "IndentationError is common"
+    If Python says `unexpected indent` or `expected an indented block`, look at the spaces at the start of the offending line.
+
+#### No semicolons at the end of lines
+Python does not need a semicolon at the end of each statement. One line equals one statement. Just press Enter and start the next line.
+
+#### No type declarations: Python figures out the type itself
+In C++ you write `int wheels = 4;`. In Python you write `wheels = 4`. Python looks at the value `4` and knows it is an integer automatically. This is called dynamic typing. You never need to write the type name when creating a variable. However, Python still has types. You just do not have to declare them. You can always check with `print(type(wheels))`, which prints `<class 'int'>`.
+
 **Variable** — A named container in memory that holds a value. Think of it as a labelled box for robot data.
 
 
@@ -68,14 +81,14 @@ if battery < 10:
 Robot sensor variables
 ```python
 # Robot sensor variables
-      distance = 2.45          # float - distance in meters
-      is_obstacle = True       # bool - obstacle detected?
-      robot_name = "ARIA"      # str - robot's name
-      wheels = 4               # int - number of wheels
-      
-      print(type(distance))
-      print(type(is_obstacle))
-      print(f"{robot_name} sees an obstacle at {distance:.1f}m: {is_obstacle}")
+distance = 2.45          # float - distance in meters
+is_obstacle = True       # bool - obstacle detected?
+robot_name = "ARIA"      # str - robot's name
+wheels = 4               # int - number of wheels
+
+print(type(distance))
+print(type(is_obstacle))
+print(f"{robot_name} sees an obstacle at {distance:.1f}m: {is_obstacle}")
 ```
 | Line | What it does |
 | --- | --- |
@@ -115,12 +128,12 @@ Key operations: indexing with `my_list[0]`, negative indexing with `my_list[-1]`
 Lists: sensor readings over time
 ```python
 sensor_readings = [1.2, 0.9, 1.5, 2.1, 0.3]
-      sensor_readings.append(1.8)          # add new reading
-      
-      print(f"Latest reading: {sensor_readings[-1]}m")
-      print(f"Closest obstacle: {min(sensor_readings):.1f}m")
-      print(f"Total readings: {len(sensor_readings)}")
-      print(f"Middle slice: {sensor_readings[1:3]}")
+sensor_readings.append(1.8)          # add new reading
+
+print(f"Latest reading: {sensor_readings[-1]}m")
+print(f"Closest obstacle: {min(sensor_readings):.1f}m")
+print(f"Total readings: {len(sensor_readings)}")
+print(f"Middle slice: {sensor_readings[1:3]}")
 ```
 | Line | What it does |
 | --- | --- |
@@ -138,10 +151,10 @@ A tuple is ordered and immutable. Use it when data should not change, like a fix
 Tuples: fixed robot configuration
 ```python
 home_position = (0.0, 0.0)
-      wheel_diameter = (0.12,)       # single-element tuple needs a comma
-      
-      x, y = home_position           # tuple unpacking
-      print(f"Home is at x={x}, y={y}")
+wheel_diameter = (0.12,)       # single-element tuple needs a comma
+
+x, y = home_position           # tuple unpacking
+print(f"Home is at x={x}, y={y}")
 ```
 | Line | What it does |
 | --- | --- |
@@ -158,14 +171,14 @@ Key operations: `.add()`, `.remove()`, membership with `in`, union with `|`, int
 Sets: unique objects seen by a robot
 ```python
 objects_seen = {"chair", "table", "door", "chair", "wall"}
-      print(objects_seen)               # duplicates removed automatically
-      objects_seen.add("human")
-      print(f"Unique objects: {len(objects_seen)}")
-      
-      room_a_objects = {"chair", "table", "lamp"}
-      room_b_objects = {"table", "plant", "lamp"}
-      shared = room_a_objects & room_b_objects
-      print(f"Objects in both rooms: {shared}")
+print(objects_seen)               # duplicates removed automatically
+objects_seen.add("human")
+print(f"Unique objects: {len(objects_seen)}")
+
+room_a_objects = {"chair", "table", "lamp"}
+room_b_objects = {"table", "plant", "lamp"}
+shared = room_a_objects & room_b_objects
+print(f"Objects in both rooms: {shared}")
 ```
 | Line | What it does |
 | --- | --- |
@@ -180,22 +193,22 @@ Key operations: access with `dict[key]`, safer access with `.get(key, default)`,
 Dictionaries: robot state packet
 ```python
 robot_state = {
-          "name": "ARIA",
-          "battery": 87,
-          "speed": 1.2,
-          "task": "mapping",
-          "obstacles_detected": 3
-      }
-      
-      print(f"Battery: {robot_state['battery']}%")
-      robot_state["battery"] -= 5
-      robot_state["location"] = (3.1, 4.2)
-      
-      camera_status = robot_state.get("camera", "not installed")
-      print(f"Camera: {camera_status}")
-      
-      for key, value in robot_state.items():
-          print(f"  {key}: {value}")
+    "name": "ARIA",
+    "battery": 87,
+    "speed": 1.2,
+    "task": "mapping",
+    "obstacles_detected": 3
+}
+
+print(f"Battery: {robot_state['battery']}%")
+robot_state["battery"] -= 5
+robot_state["location"] = (3.1, 4.2)
+
+camera_status = robot_state.get("camera", "not installed")
+print(f"Camera: {camera_status}")
+
+for key, value in robot_state.items():
+    print(f"  {key}: {value}")
 ```
 When you call `robot_state.items()`, Python gives you back each key-value pair as a small tuple: `("name", "ARIA")`, `("battery", 87)`, and so on. The line `for key, value in robot_state.items():` uses tuple unpacking. Each pair is split into `key` and `value` automatically on every loop iteration.
 | Line | What it does |
@@ -226,21 +239,21 @@ When you call `robot_state.items()`, Python gives you back each key-value pair a
 Battery and obstacle decisions
 ```python
 battery = 23
-      distance_to_obstacle = 0.4
-      
-      if battery < 10:
-          print("CRITICAL: Return to base immediately!")
-      elif battery < 25:
-          print("WARNING: Low battery. Finish current task and return.")
-          if distance_to_obstacle < 0.5:
-              print("ALSO: Obstacle too close - slow down!")
-      else:
-          print("Battery OK. Continuing mission.")
-      
-      safe_zones = {"base", "charging_dock", "lab_entrance"}
-      current_zone = "charging_dock"
-      if current_zone in safe_zones:
-          print(f"{current_zone} is a safe zone. Power down.")
+distance_to_obstacle = 0.4
+
+if battery < 10:
+    print("CRITICAL: Return to base immediately!")
+elif battery < 25:
+    print("WARNING: Low battery. Finish current task and return.")
+    if distance_to_obstacle < 0.5:
+        print("ALSO: Obstacle too close - slow down!")
+else:
+    print("Battery OK. Continuing mission.")
+
+safe_zones = {"base", "charging_dock", "lab_entrance"}
+current_zone = "charging_dock"
+if current_zone in safe_zones:
+    print(f"{current_zone} is a safe zone. Power down.")
 ```
 | Line | What it does |
 | --- | --- |
@@ -327,12 +340,22 @@ else:
 
 #### List Comprehensions: a One-Line Loop
 A list comprehension is a shorthand way to build a new list from an existing one, all in one line. It looks unusual at first, but it follows a fixed pattern you can memorize.
-new_list = [ expression for item in existing_list if condition ]
+```
+new_list = [ expression   for item in existing_list   if condition ]
+```
 
+The expanded equivalent:
+
+```
 new_list = []
-for item in existing_list :
-    if condition :
-        new_list.append( expression ) Expression. The value to put into the new list. In the long version, this is the value passed into .append() . Existing list. The collection Python loops through. In the long version, it appears after for item in . Condition. The optional test that decides whether an item is included. If the condition is false, that item is skipped.
+for item in existing_list:
+    if condition:
+        new_list.append(expression)
+```
+
+- **Expression.** The value to put into the new list. In the long version, this is the value passed into `.append()`.
+- **Existing list.** The collection Python loops through. In the long version, it appears after `for item in`.
+- **Condition.** The optional test that decides whether an item is included. If the condition is false, that item is skipped.
 List comprehensions: a one-line loop
 ```python
 # Long version (normal for loop)
@@ -387,36 +410,51 @@ print("In cm:", in_cm)
     The Colab notebook contains every code cell from this lesson in order, exactly as shown on this page. It opens pre-filled so you can run cells top to bottom, modify them, and save your own copy to Google Drive with **File → Save a copy in Drive**
 
 #### Anatomy of a Function
-def analyze_sensor_data ( readings , danger_threshold = 0.5 ): """
+
+```python
+def analyze_sensor_data(readings, danger_threshold=0.5):
+    """
     Analyze a list of sensor readings.
     Returns a summary dictionary.
-    """ clean = [r for r in readings if r > 0] return {"min": min(clean)} def keyword. Tells Python that the next block defines a function. Function name. This is the name you call later, such as analyze_sensor_data(data) . Required parameter. readings has no default, so the caller must provide it. Optional parameter. danger_threshold can be provided by the caller, but it also has a fallback value. Default value. If the caller does not pass danger_threshold , Python uses 0.5 . Docstring. Triple-quoted text that documents what the function does. Function body. The indented code that runs when the function is called. Return line. Sends a value back to whoever called the function.
+    """
+    clean = [r for r in readings if r > 0]
+    return {"min": min(clean)}
+```
+
+- **`def` keyword.** Tells Python that the next block defines a function.
+- **Function name.** This is the name you call later, such as `analyze_sensor_data(data)`.
+- **Required parameter.** `readings` has no default, so the caller must provide it.
+- **Optional parameter.** `danger_threshold` can be provided by the caller, but it also has a fallback value.
+- **Default value.** If the caller does not pass `danger_threshold`, Python uses `0.5`.
+- **Docstring.** Triple-quoted text that documents what the function does.
+- **Function body.** The indented code that runs when the function is called.
+- **Return line.** Sends a value back to whoever called the function.
 Function: analyze robot sensor readings
 ```python
 def analyze_sensor_data(readings, danger_threshold=0.5, unit="m"):
-          """
-          Analyze a list of sensor readings and return a summary.
-          """
-          if not readings:
-              return {"error": "No readings provided"}
-      
-          clean = [r for r in readings if r > 0]
-      
-          return {
-              "min": min(clean),
-              "max": max(clean),
-              "average": sum(clean) / len(clean),
-              "danger_count": sum(1 for r in clean if r < danger_threshold),
-              "unit": unit
-          }
-      
-      data = [1.2, 0.3, 0.8, 0.4, 2.1, 0.1, -0.5, 1.6]
-      result = analyze_sensor_data(data, danger_threshold=0.5)
-      
-      print(f"Min distance:  {result['min']:.2f}{result['unit']}")
-      print(f"Max distance:  {result['max']:.2f}{result['unit']}")
-      print(f"Average:       {result['average']:.2f}{result['unit']}")
-      print(f"Danger events: {result['danger_count']}")
+    """
+    Analyze a list of sensor readings and return a summary.
+    """
+    if not readings:
+        return {"error": "No readings provided"}
+
+    clean = [r for r in readings if r > 0]
+
+    return {
+        "min": min(clean),
+        "max": max(clean),
+        "average": sum(clean) / len(clean),
+        "danger_count": sum(1 for r in clean if r < danger_threshold),
+        "unit": unit
+    }
+
+data = [1.2, 0.3, 0.8, 0.4, 2.1, 0.1, -0.5, 1.6]
+result = analyze_sensor_data(data, danger_threshold=0.5)
+
+print(f"Min distance:  {result['min']:.2f}{result['unit']}")
+print(f"Max distance:  {result['max']:.2f}{result['unit']}")
+print(f"Average:       {result['average']:.2f}{result['unit']}")
+print(f"Danger events: {result['danger_count']}")
 ```
 | Line | What it does |
 | --- | --- |
@@ -701,17 +739,17 @@ NumPy Arrays and math Pandas Data tables Matplotlib Plots and charts Scikit-lear
 Standard ML import block
 ```python
 import numpy as np
-      import pandas as pd
-      import matplotlib.pyplot as plt
-      
-      sensor_array = np.array([1.2, 0.9, 1.5, 2.1, 0.3, 1.8])
-      
-      print(f"Mean: {np.mean(sensor_array):.3f}")
-      print(f"Std Dev: {np.std(sensor_array):.3f}")
-      print(f"Readings above 1.0m: {np.sum(sensor_array > 1.0)}")
-      
-      sensor_array_cm = sensor_array * 100
-      print(f"In cm: {sensor_array_cm}")
+import pandas as pd
+import matplotlib.pyplot as plt
+
+sensor_array = np.array([1.2, 0.9, 1.5, 2.1, 0.3, 1.8])
+
+print(f"Mean: {np.mean(sensor_array):.3f}")
+print(f"Std Dev: {np.std(sensor_array):.3f}")
+print(f"Readings above 1.0m: {np.sum(sensor_array > 1.0)}")
+
+sensor_array_cm = sensor_array * 100
+print(f"In cm: {sensor_array_cm}")
 ```
 !!! tip "Robotics Connection"
     Robotics data is often arrays: images, lidar scans, sensor logs, joint angles, and motor current. NumPy is the shared foundation underneath most of those tools.
@@ -736,14 +774,14 @@ import numpy as np
 Cell 1: create simulated robot log
 ```python
 robot_log = [
-          {"time": "00:00", "distance": 1.2, "motor_temp": 54.2, "battery": 100, "task": "mapping"},
-          {"time": "05:00", "distance": -1,  "motor_temp": 58.8, "battery": 94,  "task": "mapping"},
-          {"time": "10:00", "distance": 0.4, "motor_temp": 66.1, "battery": 87,  "task": "avoidance"},
-          {"time": "15:00", "distance": 2.2, "motor_temp": 63.4, "battery": 80,  "task": "delivery"},
-          {"time": "20:00", "distance": -1,  "motor_temp": 71.0, "battery": 73,  "task": "delivery"},
-          {"time": "25:00", "distance": 1.1, "motor_temp": 78.5, "battery": 66,  "task": "return"},
-          {"time": "30:00", "distance": 0.9, "motor_temp": 74.0, "battery": 60,  "task": "return"},
-      ]
+    {"time": "00:00", "distance": 1.2, "motor_temp": 54.2, "battery": 100, "task": "mapping"},
+    {"time": "05:00", "distance": -1,  "motor_temp": 58.8, "battery": 94,  "task": "mapping"},
+    {"time": "10:00", "distance": 0.4, "motor_temp": 66.1, "battery": 87,  "task": "avoidance"},
+    {"time": "15:00", "distance": 2.2, "motor_temp": 63.4, "battery": 80,  "task": "delivery"},
+    {"time": "20:00", "distance": -1,  "motor_temp": 71.0, "battery": 73,  "task": "delivery"},
+    {"time": "25:00", "distance": 1.1, "motor_temp": 78.5, "battery": 66,  "task": "return"},
+    {"time": "30:00", "distance": 0.9, "motor_temp": 74.0, "battery": 60,  "task": "return"},
+]
 ```
 The variable `robot_log` now contains 30 minutes of sensor data. Your job is to analyze it. Try the exercise yourself before opening the solution.
 !!! tip "Exercise"
@@ -764,7 +802,7 @@ robot_log = [
     {"time": "25:00", "distance": 1.1, "motor_temp": 78.5, "battery": 66,  "task": "return"},
     {"time": "30:00", "distance": 0.9, "motor_temp": 74.0, "battery": 60,  "task": "return"},
 ]
-```
+
 def summarize_robot_log(log):
     total_entries = len(log)
     sensor_error_count = sum(1 for row in log if row["distance"] == -1)
@@ -795,4 +833,5 @@ print(f"Sensor errors:       {summary['sensor_errors']}")
 print(f"Valid entries:       {summary['valid_entries']}")
 print(f"Highest temperature: {summary['hottest_temp']:.1f} C during {summary['hottest_task']}")
 print(f"Battery drain/min:   {summary['average_drain']:.2f}%")
-print(f"Tasks performed:     {', '.join(sorted(summary['unique_tasks']))}")`
+print(f"Tasks performed:     {', '.join(sorted(summary['unique_tasks']))}")
+```
