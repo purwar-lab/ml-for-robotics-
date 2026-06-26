@@ -4,10 +4,6 @@
 
 ## Welcome & How to Use This Guide
 
-*Beginner · 8 min*
-
----
-
 ### Machine Learning for Robotics Engineers
 
 You're a freshman ME student. You may have never written a line of code. That's exactly who this guide is for.
@@ -32,10 +28,6 @@ This page is a long-scroll textbook, lab manual, and project checklist. You will
 
 ## What You Will Build
 
-*Beginner · 6 min*
-
----
-
 This course builds the foundation you need to understand and use machine learning in robotics, even if you are starting with no programming background.
 
 | Skill | Description |
@@ -50,10 +42,6 @@ Later chapters turn those skills into applied notebook projects. Chapter 0 is on
 ---
 
 ## Tools You Need
-
-*Beginner · 10 min*
-
----
 
 ### Early Chapters: Zero Installation
 
@@ -84,10 +72,6 @@ Later in the course you will also create a free Kaggle account to access dataset
 ---
 
 ## Reading Tips
-
-*Beginner · 4 min*
-
----
 
 - Read top to bottom the first time. The early Python ideas are used later without re-explaining them.
 - Use the sidebar to jump back to specific topics when a notebook cell feels unfamiliar.

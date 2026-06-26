@@ -4,7 +4,6 @@
 
 ## Unsupervised Learning: Industrial Vibration Clustering
 
-*Beginner · 8 min*
 
 ---
 
@@ -29,13 +28,12 @@ The algorithm is told nothing --- it finds structure itself.
 
 ---
 
-## 4.1 Clustering & Dimensionality Reduction
+## Clustering & Dimensionality Reduction
 
-*Beginner · 18 min*
 
 ---
 
-### 4.1 Concept: Clustering & Dimensionality Reduction
+### Concept: Clustering & Dimensionality Reduction
 
 #### Clustering
 Clustering divides a dataset into groups where rows inside each group are more similar to each other than to rows in other groups. The algorithm does not know what the groups represent --- that interpretation is your job as the engineer.
@@ -129,9 +127,8 @@ print(f"Total captured: {sum(var)*100:.1f}% of original information")
 
 ---
 
-## 4.2 K-Means Deep Dive
+## K-Means Deep Dive
 
-*Beginner · 18 min*
 
 ---
 
@@ -276,13 +273,12 @@ DBSCAN is powerful when clusters have irregular shapes, when outliers need to be
 
 ---
 
-## 4.3 Project: Clustering Robot Sensor Readings
+## Project: Clustering Robot Sensor Readings
 
-*Intermediate · 40 min*
 
 ---
 
-### 4.3 ★ Project: Clustering Robot Sensor Readings
+###  Project: Clustering Robot Sensor Readings
 **Dataset:** [Screw Machine / Rotating Shaft Vibration Data](https://www.kaggle.com/datasets/jishnukoliyadan/vibration-analysis-on-rotating-shaft). If the Kaggle file changes, the fallback is synthetic vibration data representing normal, imbalanced, and loose modes.
 
 ### What you are building

@@ -2,9 +2,8 @@
 
 ---
 
-## PB.0 Why a Phone and Not a Webcam
+## Why a Phone and Not a Webcam
 
-*Exercise · Phone Stream · 8 min*
 
 ---
 
@@ -19,9 +18,8 @@ The best.pt file from Exercise A. Your phone and laptop on the same WiFi network
 
 ---
 
-## PB.1 Android Setup: IP Webcam
+## Android Setup: IP Webcam
 
-*Android · MJPEG · 10 min*
 
 ---
 
@@ -50,9 +48,8 @@ The `/video` path returns a continuous MJPEG stream: a sequence of JPEG images s
 
 ---
 
-## PB.2 iOS Setup: SimpleIPCamera
+## iOS Setup: SimpleIPCamera
 
-*iOS · MJPEG · 8 min*
 
 ---
 
@@ -78,9 +75,8 @@ If your laptop is on ethernet and your phone is on WiFi they are usually on the 
 
 ---
 
-## PB.3 Finding Your Phone's IP Address
+## Finding Your Phone's IP Address
 
-*Networking · IP Address · 8 min*
 
 ---
 
@@ -99,9 +95,8 @@ Device IP address Meaning Laptop 192.168.1.10 Same 192.168.1 prefix. Phone 192.1
 
 ---
 
-## PB.4 Testing the Stream in a Browser
+## Testing the Stream in a Browser
 
-*Debugging · Browser Test · 8 min*
 
 ---
 
@@ -119,9 +114,8 @@ What you see What to try Page times out immediately Phone and laptop are on diff
 
 ---
 
-## PB.5 Running Detection on the Stream
+## Running Detection on the Stream
 
-*Run locally · YOLO26n · 16 min*
 
 ---
 
@@ -258,9 +252,8 @@ A window opens showing your phone camera feed live. When you hold your trained o
 
 ---
 
-## PB.6 Understanding the Stream Code
+## Understanding the Stream Code
 
-*Code Walkthrough · MJPEG · 14 min*
 
 ---
 
@@ -307,9 +300,8 @@ This is identical to what you wrote in Exercise A's `detect_webcam.py`. The only
 
 ---
 
-## PB.7 Connecting the Dots to Project 1
+## Connecting the Dots to Project 1
 
-*Bridge · Checklist · 10 min*
 
 ---
 

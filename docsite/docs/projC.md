@@ -2,9 +2,8 @@
 
 ---
 
-## PC.0 What You Are Building
+## What You Are Building
 
-*Hardware · Arduino · Encoder control · 12 min*
 
 ---
 
@@ -39,9 +38,8 @@ How to write `driveDistance()` and `turnDegrees()` so the robot can run a repeat
 
 ---
 
-## PC.1 Understanding the Hardware
+## Understanding the Hardware
 
-*Hardware tour · Motors · Custom shield · 14 min*
 
 ---
 
@@ -72,9 +70,8 @@ Wire group Typical wires Purpose Motor power Motor + and motor - Connect directl
 
 ---
 
-## PC.2 How Encoder Motors Work
+## How Encoder Motors Work
 
-*Quadrature · Interrupts · Tick counting · 14 min*
 
 ---
 
@@ -109,9 +106,8 @@ void rightEncoderISR() {
 
 ---
 
-## PC.3 Wiring the System
+## Wiring the System
 
-*Wiring · Power safety · Power jumper · 18 min*
 
 ---
 
@@ -153,9 +149,8 @@ These pins are completely free and are not used by the shield, encoders, or LED:
 
 ---
 
-## PC.4 Arduino Programming Basics
+## Arduino Programming Basics
 
-*Arduino C++ · Python bridge · Hardware code · 22 min*
 
 ---
 
@@ -316,9 +311,8 @@ Upload this sketch, open Serial Monitor at `115200`, and verify that the LED bli
 
 ---
 
-## PC.5 Your First Arduino Sketch: Blink and Serial
+## Your First Arduino Sketch: Blink and Serial
 
-*Arduino IDE · Serial Monitor · Board test · 12 min*
 
 ---
 
@@ -359,9 +353,8 @@ You should see the uptime printing once per second. Serial communication is how 
 
 ---
 
-## PC.6 Reading Encoder Pulses
+## Reading Encoder Pulses
 
-*Interrupts · Encoder test · No motor motion · 16 min*
 
 ---
 
@@ -447,9 +440,8 @@ These numbers go into the next sketches. Measure them from your actual motors. D
 
 ---
 
-## PC.7 Converting Ticks to Distance
+## Converting Ticks to Distance
 
-*Robot math · Wheel diameter · Calibration · 12 min*
 
 ---
 
@@ -469,9 +461,8 @@ Use a ruler or calipers to measure the outer diameter of one wheel in millimeter
 
 ---
 
-## PC.8 Driving Forward a Precise Distance
+## Driving Forward a Precise Distance
 
-*Motor control · Closed loop · Safety timeout · 24 min*
 
 ---
 
@@ -661,9 +652,8 @@ Code idea Why it matters targetTicks = (long)(fabs(targetCm) / CM_PER_TICK + 0.5
 
 ---
 
-## PC.9 Turning Exactly 90 Degrees
+## Turning Exactly 90 Degrees
 
-*Differential drive · Turn geometry · Calibration · 18 min*
 
 ---
 
@@ -745,9 +735,8 @@ void loop() {
 
 ---
 
-## PC.10 Putting It Together: Running a Path
+## Putting It Together: Running a Path
 
-*Path sequence · Dead reckoning · Square test · 16 min*
 
 ---
 
@@ -784,9 +773,8 @@ Observation Likely adjustment Each side is too long or too short. Recheck wheel 
 
 ---
 
-## PC.11 Troubleshooting and Tuning
+## Troubleshooting and Tuning
 
-*Debugging · Tuning · Project 1 bridge · 18 min*
 
 ---
 

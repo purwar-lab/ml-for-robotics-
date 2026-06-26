@@ -2,23 +2,16 @@
 
 ---
 
-## Python Programming Fundamentals
-
-*Beginner · 1 min*
-
----
-
 **Python** — A readable programming language used heavily in machine learning, robotics tooling, data analysis, and automation.
 
 ---
 
-## 1.1 Why Python & Setting Up Colab
+## Why Python & Setting Up Colab
 
-*Beginner · 8 min*
 
 ---
 
-### 1.1 Why Python & Setting Up Colab
+### Why Python & Setting Up Colab
 **Concept.** Python is the default language of machine learning because the syntax is readable and the ecosystem is huge. NumPy, Pandas, scikit-learn, TensorFlow, PyTorch, OpenCV, and nearly every robotics ML example you find online will have Python support.
 !!! tip "About the code editors on this site"
     The code boxes on this page are yours to edit. You can change any line and press **Run** or `Ctrl+Enter` to see your version execute instantly in the browser.
@@ -49,9 +42,8 @@ print("Hello, Robot!")
 
 ---
 
-## 1.2 Variables & Data Types
+## Variables & Data Types
 
-*Beginner · 10 min*
 
 ---
 
@@ -65,7 +57,7 @@ Python uses indentationPython`if battery < 10:
 **Variable** — A named container in memory that holds a value. Think of it as a labelled box for robot data.
 
 
-### 1.2 Variables & Data Types
+### Variables & Data Types
 **Concept.** A variable is a named box that holds a value. Python has four beginner-friendly basic types: `int` for whole numbers, `float` for decimals, `str` for text, and `bool` for true/false values.
 [Open in Colab →](https://colab.research.google.com/github/purwar-lab/ml-for-robotics-/blob/main/notebooks/ch1-variables.ipynb)
 !!! info "Colab notebook is pre-filled"
@@ -100,16 +92,15 @@ Type conversion changes one type into another: `int("42")`, `str(3.14)`, and `fl
 
 ---
 
-## 1.3 Data Structures
+## Data Structures
 
-*Beginner · 16 min*
 
 ---
 
 **Data Structure** — A container pattern for organizing related values, such as lists of readings or dictionaries of robot state.
 
 
-### 1.3 Data Structures: Lists, Tuples, Sets, Dictionaries
+### Data Structures: Lists, Tuples, Sets, Dictionaries
 **Concept.** Data structures are containers. They let you keep related values together instead of creating a separate variable for everything.
 [Open in Colab →](https://colab.research.google.com/github/purwar-lab/ml-for-robotics-/blob/main/notebooks/ch1-data-structures.ipynb)
 !!! info "Colab notebook is pre-filled"
@@ -219,16 +210,15 @@ When you call `robot_state.items()`, Python gives you back each key-value pair a
 
 ---
 
-## 1.4 Control Flow
+## Control Flow
 
-*Beginner · 10 min*
 
 ---
 
 **Control Flow** — The part of a program that decides which code runs based on conditions.
 
 
-### 1.4 Control Flow: if / elif / else
+### Control Flow: if / elif / else
 **Concept.** Control flow lets your program make decisions. Comparisons include `==`, `!=`, `<`, `>`, `<=`, and `>=`. Logical operators include `and`, `or`, and `not`.
 Battery and obstacle decisions
 ```python
@@ -268,16 +258,15 @@ battery = 23
 
 ---
 
-## 1.5 Loops
+## Loops
 
-*Beginner · 12 min*
 
 ---
 
 **Loop** — A programming structure that repeats work over a collection or until a condition changes.
 
 
-### 1.5 Loops: for and while
+### Loops: for and while
 **Concept.** Loops repeat work. Use `for` when you know what collection you are walking through. Use `while` when you repeat until a condition changes.
 You will also see `continue` to skip the rest of the current loop iteration and `zip()` to walk through two lists together, such as timestamps and readings.
 [Open in Colab →](https://colab.research.google.com/github/purwar-lab/ml-for-robotics-/blob/main/notebooks/ch1-loops.ipynb)
@@ -380,16 +369,15 @@ print("In cm:", in_cm)
 
 ---
 
-## 1.6 Functions
+## Functions
 
-*Beginner · 12 min*
 
 ---
 
 **Function** — A reusable block of code with a name, inputs, and often a returned result.
 
 
-### 1.6 Functions
+### Functions
 **Concept.** Functions package reusable behavior. They make code easier to test, read, and repair. A function can take parameters, use default values, and return a result.
 [Open in Colab →](https://colab.research.google.com/github/purwar-lab/ml-for-robotics-/blob/main/notebooks/ch1-functions.ipynb)
 !!! info "Colab notebook is pre-filled"
@@ -579,16 +567,15 @@ configure_robot(speed=1.5, task="mapping", battery=87)
 
 ---
 
-## 1.7 Classes
+## Classes
 
-*Beginner · 14 min*
 
 ---
 
 **Class** — A blueprint that bundles related data (attributes) and the functions that act on it (methods) into one object.
 
 
-### 1.7 Classes
+### Classes
 **Concept.** A function packages behavior. A **class** packages behavior *and* the data that behavior works on, so they travel together as one object. Every robot project later in this course is built from classes --- `Tracker`, `Commander`, `Telemetry`, and `MobileVideoStream` are all classes. This lesson teaches the basics so those files read like something you already understand.
 
 #### Why Not Just Functions?
@@ -674,16 +661,15 @@ Each call to `step()` remembers the previous error, because that value lives on 
 
 ---
 
-## 1.8 Libraries & Imports
+## Libraries & Imports
 
-*Beginner · 8 min*
 
 ---
 
 **Library** — A package of reusable code written by other developers so you do not rebuild common tools from scratch.
 
 
-### 1.8 Libraries & Imports
+### Libraries & Imports
 **Concept.** A library is code someone else packaged so you do not have to rebuild everything from scratch. In Colab, common ML libraries are already installed. For anything missing, you can run `!pip install package_name`.
 
 #### Installing and Importing Libraries
@@ -733,13 +719,12 @@ import numpy as np
 
 ---
 
-## 1.9 Checkpoint Exercise: Sensor Data Parser
+## Checkpoint Exercise: Sensor Data Parser
 
-*Beginner · 18 min*
 
 ---
 
-### 1.9 ★ Checkpoint Exercise: Sensor Data Parser
+###  Checkpoint Exercise: Sensor Data Parser
 **The task.** A robot has been collecting data for 30 minutes. You are given a raw log as a list of dictionaries. Parse it, clean it, and produce a summary report.
 [Open in Colab →](https://colab.research.google.com/github/purwar-lab/ml-for-robotics-/blob/main/notebooks/ch1-checkpoint.ipynb)
 !!! info "Colab notebook is pre-filled"

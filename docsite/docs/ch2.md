@@ -2,12 +2,6 @@
 
 ---
 
-## What is Machine Learning?
-
-*Beginner · 8 min*
-
----
-
 **Machine Learning** — A way to build programs that learn patterns from examples instead of following only hand-written rules.
 
 **Instead of programming rules, you feed the robot examples and let it figure out the rules itself.** Show it 10,000 throws. It watches, finds patterns, and builds its own internal model of how to catch. That's machine learning: computers learning from data, not from explicit instructions.
@@ -36,13 +30,12 @@ Train a convolutional neural network that recognizes real traffic signs for mobi
 
 ---
 
-## 2.1 Traditional Programming vs ML
+## Traditional Programming vs ML
 
-*Beginner · 6 min*
 
 ---
 
-### 2.1 Traditional Programming vs ML
+### Traditional Programming vs ML
 **Traditional Programming**
 **Input:** data + rules
 **Output:** answers
@@ -54,13 +47,12 @@ The computer learns the logic from examples.
 
 ---
 
-## 2.2 Three Flavors of ML
+## Three Flavors of ML
 
-*Beginner · 8 min*
 
 ---
 
-### 2.2 Three Flavors of ML
+### Three Flavors of ML
 **Supervised Learning**
 Learn from labeled examples. Example: sensor readings labeled as failed or healthy.
 **Unsupervised Learning**
@@ -70,11 +62,10 @@ Learn through actions and rewards. Example: a robot learns a navigation policy b
 
 ---
 
-## 2.3 When to Use Which
+## When to Use Which
 
-*Beginner · 6 min*
 
 ---
 
-### 2.3 When to Use Which
+### When to Use Which
 Question Use Robotics Example Do you have labeled answers? Supervised learning Predict failure from known historical failures. Do you have raw data but no labels? Unsupervised learning Cluster sensor behavior into normal and unusual modes. Does the system learn by acting? Reinforcement learning Teach a robot to navigate a maze. Is the input an image or video? Computer vision Classify signs, detect parts, follow lanes.

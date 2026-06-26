@@ -2,9 +2,8 @@
 
 ---
 
-## PD.0 What Is UDP and Why Does a Robot Use It?
+## What Is UDP and Why Does a Robot Use It?
 
-*Networking · Robot control · 12 min*
 
 ---
 
@@ -31,9 +30,8 @@ Exercise C is complete and working: motors move, encoders count, and direction d
 
 ---
 
-## PD.1 How WiFi Works on the UNO R4
+## How WiFi Works on the UNO R4
 
-*Arduino · WiFi setup · 14 min*
 
 ---
 
@@ -65,9 +63,8 @@ Arduino 192.168.1.42 Laptop 192.168.1.15 Result Same prefix, likely reachable
 
 ---
 
-## PD.1b Your First UDP Message: Blink an LED
+## Your First UDP Message: Blink an LED
 
-*Hands-on · UDP + tkinter · 20 min*
 
 ---
 
@@ -459,9 +456,8 @@ Create arduino_secrets.h . Add the arduino_secrets.h file shown above to the ske
 
 ---
 
-## PD.1c Driving Motors and a Servo over UDP
+## Driving Motors and a Servo over UDP
 
-*Hands-on · UDP + tkinter · 20 min*
 
 ---
 
@@ -635,9 +631,8 @@ Keep the PD.1b sketch running. The Arduino should still have udp_command_receive
 
 ---
 
-## PD.2 The Arduino Sketch: Connect, Listen, Drive
+## The Arduino Sketch: Connect, Listen, Drive
 
-*Arduino · UDP firmware · 28 min*
 
 ---
 
@@ -817,9 +812,8 @@ connectToWiFi() — in wifi_helper.h Calls WiFi.begin(SECRET_SSID, SECRET_PASS) 
 
 ---
 
-## PD.3 The Python Script: Send Commands, Read Telemetry
+## The Python Script: Send Commands, Read Telemetry
 
-*Python · UDP sockets · 24 min*
 
 ---
 
@@ -913,9 +907,8 @@ socket.AF_INET, socket.SOCK_DGRAM AF_INET means IPv4 networking. SOCK_DGRAM mean
 
 ---
 
-## PD.4 Keyboard Control: Drive with WASD
+## Keyboard Control: Drive with WASD
 
-*Python · Interactive control · 26 min*
 
 ---
 
@@ -1047,9 +1040,8 @@ Key state Left command Right command Robot behavior W +180 +180 Drive forward. S
 
 ---
 
-## PD.5 Receiving Encoder Telemetry in Python
+## Receiving Encoder Telemetry in Python
 
-*Telemetry · CSV logging · 22 min*
 
 ---
 
@@ -1190,9 +1182,8 @@ The tick lines should flatten. If they keep changing, the wheels are still movin
 
 ---
 
-## PD.6 Understanding the Full Communication Loop
+## Understanding the Full Communication Loop
 
-*Architecture · Timing · 18 min*
 
 ---
 
@@ -1214,9 +1205,8 @@ Packet Direction Example Parser MOTOR,left,right Laptop to Arduino MOTOR,180,120
 
 ---
 
-## PD.7 Connecting the Dots to Project 1
+## Connecting the Dots to Project 1
 
-*Project 1 bridge · Review · 16 min*
 
 ---
 

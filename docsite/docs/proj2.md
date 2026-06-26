@@ -1,10 +1,9 @@
-# ★ Project 2: Lane Follower
+#  Project 2: Lane Follower
 
 ---
 
-## P2.0 What Is Classical Computer Vision?
+## What Is Classical Computer Vision?
 
-*OpenCV · Project 1 extension · 14 min*
 
 ---
 
@@ -441,9 +440,8 @@ Download this file and place it in your `my-detector` project folder. You will n
 
 ---
 
-## P2.0b Get the Code
+## Get the Code
 
-*Download · GitHub · 8 min*
 
 ---
 
@@ -461,9 +459,8 @@ Project 2 specific code: detect_lane(), LaneFollower class, binary thresholding 
 
 ---
 
-## P2.1 Physical Setup: Your Track and Camera
+## Physical Setup: Your Track and Camera
 
-*Hardware setup · Camera angle · 12 min*
 
 ---
 
@@ -503,9 +500,8 @@ Black tape is on a light floor, or white tape is on a dark floor with threshold 
 
 ---
 
-## P2.2 The OpenCV Experiment Notebook
+## The OpenCV Experiment Notebook
 
-*Colab first · Still image experiment · 30 min*
 
 ---
 
@@ -578,9 +574,8 @@ I wrote down BINARY_THRESHOLD = _____ from Cell 4. I wrote down the kernel size 
 
 ---
 
-## P2.3 Configuration: Fill In Your Values
+## Configuration: Fill In Your Values
 
-*Setup · Calibration values · 18 min*
 
 ---
 
@@ -640,9 +635,8 @@ Value Your value Source ESP_IP "____________" Exercise D Serial Monitor BINARY_T
 
 ---
 
-## P2.4 The detect_lane Function
+## The detect_lane Function
 
-*OpenCV · Pipeline reading · 32 min*
 
 ---
 
@@ -781,9 +775,8 @@ Returned value Where it is used points[0] / near_pt The near line center used by
 
 ---
 
-## P2.5 The LaneFollower Class
+## The LaneFollower Class
 
-*Control logic · Full method · 24 min*
 
 ---
 
@@ -876,9 +869,8 @@ def scale_motors(left, right):
 
 ---
 
-## P2.6 The Main Loop
+## The Main Loop
 
-*Runtime loop · Camera to motors · 18 min*
 
 ---
 
@@ -1016,9 +1008,8 @@ elif key == ord('y'):
 
 ---
 
-## P2.7 Visualisation and the Binary Window
+## Visualisation and the Binary Window
 
-*Debugging · OpenCV windows · 16 min*
 
 ---
 
@@ -1060,9 +1051,8 @@ def draw_debug(frame, debug, left_speed, right_speed, telem):
 
 ---
 
-## P2.8 Running and Tuning
+## Running and Tuning
 
-*Testing · Tuning · 18 min*
 
 ---
 
@@ -1119,9 +1109,8 @@ Robot cuts corners Lookahead too weak or speed too high Increase direction-error
 
 ---
 
-## P2.9 Connecting the Dots
+## Connecting the Dots
 
-*Review · Architecture · 12 min*
 
 ---
 

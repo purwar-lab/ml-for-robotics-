@@ -2,33 +2,24 @@ site_name: ML for Robotics
 
 nav:
   - Home: index.md
-  - Chapter 0: ch0.md
-  - Chapter 1: ch1.md
-  - Chapter 2: ch2.md
-  - Chapter 3: ch3.md
-  - Chapter 4: ch4.md
-  - Chapter 5: ch5.md
-  - Chapter 6: ch6.md
-  - Chapter 7: ch7.md
-  - Chapter 8: ch8.md
-  - Exercise A: projA.md
-  - Exercise B: projB.md
-  - Exercise C: projC.md
-  - Exercise D: projD.md
-  - Project 1: proj1.md
-  - Project 2: proj2.md
-  - Project 3: proj3.md
-  - Project 4: proj4.md
+  - "Chapter 0: Welcome & How to Use This Guide": ch0.md
+  - "Chapter 1: Python Programming Fundamentals": ch1.md
+  - "Chapter 2: What is Machine Learning?": ch2.md
+  - "Chapter 3: Supervised Learning": ch3.md
+  - "Chapter 4: Unsupervised Learning": ch4.md
+  - "Chapter 5: Reinforcement Learning": ch5.md
+  - "Chapter 6: Neural Networks": ch6.md
+  - "Chapter 7: Computer Vision for Robotics": ch7.md
+  - "Chapter 8: What's Next?": ch8.md
+  - "Exercise A: Train Your First Detector": projA.md
+  - "Exercise B: Your Phone as a Robot Camera": projB.md
+  - "Exercise C: Precise Movement with Encoders": projC.md
+  - "Exercise D: Talk to Your Robot Over WiFi": projD.md
+  - "Project 1: Object Tracker": proj1.md
+  - "Project 2: Lane Follower": proj2.md
+  - "Project 3: Gesture Controlled Robot": proj3.md
+  - "Project 4: Pan-Tilt Ball Tracker": proj4.md
 
-  #   - Why Python: ch1/1.md 
-  # - Chapter 0:
-  #     - Welcome: chapter-0/welcome.md
-      # - What You Will Build: chapter-0/build.md
-      # - Tools: chapter-0/tools.md
-      # - Reading Tips: chapter-0/reading-tips.md
-# theme: mkdocs 
 theme: readthedocs
 markdown_extensions:
   - admonition
-  # - pymdownx.details
-  # - pymdownx.superfences

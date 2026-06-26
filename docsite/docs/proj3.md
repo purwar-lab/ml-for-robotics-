@@ -2,9 +2,8 @@
 
 ---
 
-## P3.0 What Is MediaPipe?
+## What Is MediaPipe?
 
-*MediaPipe · Pre-trained model · 12 min*
 
 ---
 
@@ -23,9 +22,8 @@ Gesture Command Both hands open FORWARD Both hands closed BACKWARD Right open, l
 
 ---
 
-## P3.1 How Hand Landmark Detection Works
+## How Hand Landmark Detection Works
 
-*Landmarks · Coordinates · 15 min*
 
 ---
 
@@ -39,9 +37,8 @@ Extended finger tip.y < pip.y Curled finger tip.y > pip.y
 
 ---
 
-## P3.2 The MediaPipe Colab Notebook
+## The MediaPipe Colab Notebook
 
-*Colab · Still images · 25 min*
 
 ---
 
@@ -96,9 +93,8 @@ Left hand Right hand Command OPEN OPEN FORWARD CLOSED CLOSED BACKWARD CLOSED OPE
 
 ---
 
-## P3.3 Understanding Landmarks
+## Understanding Landmarks
 
-*Landmark review · 8 min*
 
 ---
 
@@ -113,9 +109,8 @@ The gesture code uses only a subset of the 21 landmarks: the wrist, the thumb ch
 
 ---
 
-## P3.4 Open vs Closed: Reading Finger State
+## Open vs Closed: Reading Finger State
 
-*Finger state · Browser demo · 15 min*
 
 ---
 
@@ -134,9 +129,8 @@ Open hand simulationRun in browser
 
 ---
 
-## P3.5 Two-Hand Gesture Logic
+## Two-Hand Gesture Logic
 
-*Gesture mapping · Safety logic · 18 min*
 
 ---
 
@@ -153,9 +147,8 @@ Line What it does mp.Image(...) Wraps the RGB NumPy frame in the image object ex
 
 ---
 
-## P3.6 Get the Robot Code
+## Get the Robot Code
 
-*VS Code · Robot file · 20 min*
 
 ---
 
@@ -179,9 +172,8 @@ Complete robot control fileVS Code
 
 ---
 
-## P3.7 What Changes from Projects 1 and 2
+## What Changes from Projects 1 and 2
 
-*Architecture · No PID · 12 min*
 
 ---
 
@@ -198,9 +190,8 @@ Everything else is shared infrastructure from Exercise D.
 
 ---
 
-## P3.8 The HandGestureDetector Class
+## The HandGestureDetector Class
 
-*Class walkthrough · MediaPipe · 22 min*
 
 ---
 
@@ -241,9 +232,8 @@ The Colab concepts appear directly in this method: convert the frame to RGB, wra
 
 ---
 
-## P3.9 The Main Loop
+## The Main Loop
 
-*Main loop · Keep-alive · 18 min*
 
 ---
 
@@ -256,9 +246,8 @@ Line What changed from Projects 1 and 2 detector = HandGestureDetector() Replace
 
 ---
 
-## P3.10 Running and Testing
+## Running and Testing
 
-*Run locally · Checklist · 18 min*
 
 ---
 
@@ -303,9 +292,8 @@ gesture_recognize.py runs on laptop webcam without errors All five gestures clas
 
 ---
 
-## P3.11 Connecting the Dots
+## Connecting the Dots
 
-*Summary · Architecture · 10 min*
 
 ---
 

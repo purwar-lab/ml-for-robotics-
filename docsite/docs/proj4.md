@@ -1,10 +1,9 @@
-# ★ Project 4: Pan-Tilt Ball Tracker
+#  Project 4: Pan-Tilt Ball Tracker
 
 ---
 
-## P4.0 What You Are Building
+## What You Are Building
 
-*Exercise · YOLO + servos · 10 min*
 
 ---
 
@@ -17,9 +16,8 @@ Concept Where you saw it What is new here YOLO detection Exercise A, Project 1 S
 
 ---
 
-## P4.1 What Is a Servo Motor?
+## What Is a Servo Motor?
 
-*Hardware · Servo basics · 12 min*
 
 ---
 
@@ -36,9 +34,8 @@ Most hobby servos rotate from 0 to 180 degrees. This exercise clamps pan to `10.
 
 ---
 
-## P4.2 The Pan-Tilt Mechanism
+## The Pan-Tilt Mechanism
 
-*Mechanism · Mounting · 10 min*
 
 ---
 
@@ -56,9 +53,8 @@ If the camera moves the wrong way, change the matching Python flag: `PAN_INVERT`
 
 ---
 
-## P4.3 Get the Code
+## Get the Code
 
-*Code · Downloads · 15 min*
 
 ---
 
@@ -711,9 +707,8 @@ void loop() {
 
 ---
 
-## P4.4 The Arduino Sketch: Servos Over WiFi
+## The Arduino Sketch: Servos Over WiFi
 
-*Arduino · Firmware · 25 min*
 
 ---
 
@@ -754,9 +749,8 @@ The Arduino learns the laptop IP from the first packet it receives, then sends t
 
 ---
 
-## P4.5 Understanding the SERVO Command Protocol
+## Understanding the SERVO Command Protocol
 
-*Protocol · UDP packets · 10 min*
 
 ---
 
@@ -770,9 +764,8 @@ The protocol is simpler because hobby servos do not report measured position. Th
 
 ---
 
-## P4.6 Configuration: Your Variables
+## Configuration: Your Variables
 
-*Configuration · Tuning · 18 min*
 
 ---
 
@@ -792,9 +785,8 @@ PID gains`KP` sets response strength, `KD` damps motion, and `MAX_*_SPEED` limit
 
 ---
 
-## P4.7 Velocity-Mode PID
+## Velocity-Mode PID
 
-*PID · Browser demo · 16 min*
 
 ---
 
@@ -815,9 +807,8 @@ Velocity-mode PID simulationRun in browser
 
 ---
 
-## P4.8 The PanTiltTracker Class
+## The PanTiltTracker Class
 
-*Python class · YOLO control · 20 min*
 
 ---
 
@@ -1319,9 +1310,8 @@ if __name__ == "__main__":
 
 ---
 
-## P4.9 Two PIDs at Once
+## Two PIDs at Once
 
-*Control · Dual PID · 12 min*
 
 ---
 
@@ -1333,9 +1323,8 @@ Ball position err_pan err_tilt Pan moves Tilt moves Right of center positive zer
 
 ---
 
-## P4.10 The Main Loop
+## The Main Loop
 
-*Main loop · OpenCV · 14 min*
 
 ---
 
@@ -1355,9 +1344,8 @@ Q Quit and home servos. H Home servos immediately. R Reset both PID integrators.
 
 ---
 
-## P4.11 Running and Testing
+## Running and Testing
 
-*Run locally · Testing · 18 min*
 
 ---
 
@@ -1383,9 +1371,8 @@ Problem Likely cause Fix Servos do not move Wrong ESP_IP or port Check Serial Mo
 
 ---
 
-## P4.12 Connecting the Dots
+## Connecting the Dots
 
-*Summary · Architecture · 10 min*
 
 ---
 

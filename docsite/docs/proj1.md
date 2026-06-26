@@ -1,10 +1,9 @@
-# ★ Project 1: Object Tracker
+#  Project 1: Object Tracker
 
 ---
 
-## P1.0 What We Are Building
+## What We Are Building
 
-*Project · Run locally · 8 min*
 
 ---
 
@@ -415,9 +414,8 @@ Download this file and place it in your `my-detector` project folder. You will n
 
 ---
 
-## P1.0b Get the Code
+## Get the Code
 
-*Download · GitHub · 8 min*
 
 ---
 
@@ -435,9 +433,8 @@ Both files must be in the same folder. `shared.py` is imported by `obj_track_adv
 
 ---
 
-## P1.1 Setting Up VS Code
+## Setting Up VS Code
 
-*Beginner · Run locally · 12 min*
 
 ---
 
@@ -450,9 +447,8 @@ Open your my-detector folder in VS Code. Activate the same virtual environment y
 
 ---
 
-## P1.2 Installing Dependencies
+## Installing Dependencies
 
-*Beginner · Run locally · 14 min*
 
 ---
 
@@ -494,9 +490,8 @@ If `All dependencies present.` prints, move on.
 
 ---
 
-## P1.3 Configuration: Tuning Your Robot
+## Configuration: Tuning Your Robot
 
-*Beginner · Run locally · 16 min*
 
 ---
 
@@ -520,9 +515,8 @@ Value Your entry Source ESP_IP "____________" Exercise D Serial Monitor TARGET_O
 
 ---
 
-## P1.3b The Shared Infrastructure
+## The Shared Infrastructure
 
-*Architecture · shared.py · 16 min*
 
 ---
 
@@ -884,9 +878,8 @@ RobotState is four string constants naming the four states. `ramp()` limits how 
 
 ---
 
-## P1.4 The PID Controller
+## The PID Controller
 
-*Controls · Run locally · 18 min*
 
 ---
 
@@ -1004,9 +997,8 @@ Phase 1: Angle PID only. Temporarily set MAX_SPEED = 0 . Set BODY_TURN_KP = 5 , 
 
 ---
 
-## P1.5 Reading the Camera Stream
+## Reading the Camera Stream
 
-*Networking · Run locally · 16 min*
 
 ---
 
@@ -1112,9 +1104,8 @@ if fid == last_fid:
 
 ---
 
-## P1.6 Sending Commands (UDP)
+## Sending Commands (UDP)
 
-*Networking · Run locally · 12 min*
 
 ---
 
@@ -1229,9 +1220,8 @@ LED Robot state Meaning Green TRACKING Ball found and confirmed. Orange SEARCHIN
 
 ---
 
-## P1.7 Receiving Telemetry
+## Receiving Telemetry
 
-*Networking · Run locally · 12 min*
 
 ---
 
@@ -1354,9 +1344,8 @@ void sendTelemetry() {
 
 ---
 
-## P1.8 State Machine: How the Robot Thinks
+## State Machine: How the Robot Thinks
 
-*Behavior · Run locally · 15 min*
 
 ---
 
@@ -1439,9 +1428,8 @@ STOPPED -> ACQUIRING : ball appears Trigger: YOLO returns a bounding box in _det
 
 ---
 
-## P1.9 The Tracker: Putting It Together
+## The Tracker: Putting It Together
 
-*Control Logic · Run locally · 24 min*
 
 ---
 
@@ -1556,9 +1544,8 @@ The tracker does not just return motor speeds. It also returns state, area, smoo
 
 ---
 
-## P1.10 Visualisation and the HUD
+## Visualisation and the HUD
 
-*OpenCV · Run locally · 18 min*
 
 ---
 
@@ -1631,9 +1618,8 @@ YOLO detections can flicker slightly from frame to frame even when the ball is s
 
 ---
 
-## P1.11 The Main Loop
+## The Main Loop
 
-*Integration · Run locally · 20 min*
 
 ---
 
@@ -1738,9 +1724,8 @@ The program sends `commander.stop()` before stopping video and telemetry threads
 
 ---
 
-## P1.12 Running and Testing
+## Running and Testing
 
-*Checklist · Run locally · 14 min*
 
 ---
 

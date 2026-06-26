@@ -2,34 +2,26 @@
 
 ---
 
-## Computer Vision for Robotics
-
-*Beginner · 1 min*
-
----
-
 **Computer Vision** — Techniques that let computers interpret images and video as useful sensor data.
 
 ---
 
-## 7.1 Why Vision Matters in Robotics
+## Why Vision Matters in Robotics
 
-*Beginner · 6 min*
 
 ---
 
-### 7.1 Why Vision Matters in Robotics
+### Why Vision Matters in Robotics
 Cameras are cheap, rich sensors. Robots use vision to read signs, detect obstacles, estimate pose, inspect parts, track lanes, and understand human workspaces.
 
 ---
 
-## 7.2 Tools: OpenCV
+## Tools: OpenCV
 
-*Beginner · 12 min*
 
 ---
 
-### 7.2 Tools: OpenCV
+### Tools: OpenCV
 OpenCV is the Open Source Computer Vision Library, the general-purpose toolkit for image processing. An image is a NumPy array: height x width x color channels.
 OpenCV quick demo
 ```python
@@ -61,37 +53,34 @@ OpenCV quick demo
 
 ---
 
-## 7.3 Tools: TensorFlow/Keras
+## Tools: TensorFlow/Keras
 
-*Beginner · 10 min*
 
 ---
 
-### 7.3 Tools: TensorFlow/Keras
+### Tools: TensorFlow/Keras
 TensorFlow is Google's library for building and training neural networks. Keras is the friendly wrapper on top, like power steering on a car. You will use tensors, layers, models, epochs, batches, loss functions, and optimizers.
 Input image → Layers stacked in order → Class probabilities
 
 ---
 
-## 7.4 How CNNs See
+## How CNNs See
 
-*Intermediate · 12 min*
 
 ---
 
-### 7.4 How Convolutional Neural Networks See
+### How Convolutional Neural Networks See
 A normal neural network sees a flat list of pixels. A CNN scans small filters across the image, so it can learn edges, corners, textures, shapes, and eventually objects.
 Input 32x32 image → Conv2D + MaxPool → Dense → 43 signs
 
 ---
 
-## 7.5 Project: Traffic Sign Classifier
+## Project: Traffic Sign Classifier
 
-*Intermediate · 35 min*
 
 ---
 
-### 7.5 ★ Project: Traffic Sign Classifier with TensorFlow + OpenCV
+###  Project: Traffic Sign Classifier with TensorFlow + OpenCV
 **Dataset:** [German Traffic Sign Recognition Benchmark (GTSRB)](https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign). It has 43 classes and about 50,000 real-world sign images.
 !!! tip "Download Dataset"
     Direct Kaggle URL: [gtsrb-german-traffic-sign](https://www.kaggle.com/datasets/meowmeowmeowmeowmeow/gtsrb-german-traffic-sign).

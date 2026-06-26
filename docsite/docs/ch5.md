@@ -4,7 +4,6 @@
 
 ## Reinforcement Learning: Teach a Robot to Navigate a Maze
 
-*Beginner · 6 min*
 
 ---
 
@@ -12,26 +11,24 @@
 
 ---
 
-## 5.1 Agent, Environment, Reward
+## Agent, Environment, Reward
 
-*Beginner · 8 min*
 
 ---
 
-### 5.1 Concept: Agent, Environment, Reward
+### Concept: Agent, Environment, Reward
 Agent action → Environment reward + state → Agent updates policy
 RL is different from supervised learning because there is no answer key for every state. The agent must explore, make mistakes, and learn from reward signals.
 Real robotics uses RL in legged locomotion, drone control, robotic surgery research, dexterous manipulation, and simulation-to-real training.
 
 ---
 
-## 5.2 Q-Learning Explained with a Grid
+## Q-Learning Explained with a Grid
 
-*Intermediate · 12 min*
 
 ---
 
-### 5.2 Q-Learning Explained with a Grid
+### Q-Learning Explained with a Grid
 A Q-table stores the expected value of taking each action in each state. In FrozenLake, there are 16 grid states and 4 actions, so the table is 16 x 4.
 Q-learning update equation
 ```
@@ -47,13 +44,12 @@ Q(s, a) <- Q(s, a) + alpha [ r + gamma * max Q(s', a') - Q(s, a) ]
 
 ---
 
-## 5.3 Project: Teaching a Robot to Navigate a Maze
+## Project: Teaching a Robot to Navigate a Maze
 
-*Intermediate · 30 min*
 
 ---
 
-### 5.3 ★ Project: Teaching a Robot to Navigate a Maze
+###  Project: Teaching a Robot to Navigate a Maze
 **Environment:** OpenAI Gym / Gymnasium `FrozenLake-v1`. The notebook logs rewards to CSV, uploads them as a Kaggle dataset, and loads them back for analysis.
 !!! tip "Download Dataset"
     This project generates `frozenlake_training_log.csv`. Upload or retrieve logs through [kaggle.com/datasets](https://www.kaggle.com/datasets).

@@ -2,9 +2,8 @@
 
 ---
 
-## 6.0 What Is a Neural Network?
+## What Is a Neural Network?
 
-*Beginner · 8 min*
 
 ---
 
@@ -18,9 +17,8 @@ Use neural networks when the relationship between inputs and outputs is too comp
 
 ---
 
-## 6.1 Meet TensorFlow Playground
+## Meet TensorFlow Playground
 
-*Beginner · 10 min*
 
 ---
 
@@ -44,9 +42,8 @@ Open Playground at the link above. Select the Circle dataset. Look for four smal
 
 ---
 
-## 6.2 Anatomy of a Neuron
+## Anatomy of a Neuron
 
-*Beginner · 12 min*
 
 ---
 
@@ -90,9 +87,8 @@ In the code above, the weights are hand-picked numbers. In a real network, train
 
 ---
 
-## 6.3 ★ Playground: One Neuron Fails
+##  Playground: One Neuron Fails
 
-*Experiment · 15 min*
 
 ---
 
@@ -117,9 +113,8 @@ This is why deep networks can learn complex patterns. Each layer transforms the 
 
 ---
 
-## 6.4 Layers: The Fix
+## Layers: The Fix
 
-*Beginner · 12 min*
 
 ---
 
@@ -160,9 +155,8 @@ Architecture Parameters Good for 2->4->1 13 Very simple patterns 2->16->16->1 32
 
 ---
 
-## 6.5 How Networks Learn
+## How Networks Learn
 
-*Beginner · 12 min*
 
 ---
 
@@ -205,9 +199,8 @@ plt.show()
 
 ---
 
-## 6.6 ★ Playground: Watch It Learn
+##  Playground: Watch It Learn
 
-*Experiment · 18 min*
 
 ---
 
@@ -241,13 +234,12 @@ Click ↺ to reset and restore learning rate to 0.3 . Change batch size to 1 . T
 
 ---
 
-## 6.7 ★ Experiment: Teach a Network to Learn sin(x)
+##  Experiment: Teach a Network to Learn sin(x)
 
-*Colab · 35 min*
 
 ---
 
-### 6.7 ★ Experiment: Teach a Network to Learn sin(x)
+###  Experiment: Teach a Network to Learn sin(x)
 You know what sin(x) looks like: a smooth wave that rises and falls between -1 and +1. A neural network knows nothing. It starts with random weights and has no concept of waves, curves, or math.
 In this experiment you will watch it figure out sin(x) from scratch, purely by being shown `(x, sin(x))` pairs thousands of times and correcting itself each time.
 The twist: we train on x from 0 to 2π, then test on 0 to 4π, a range the network has never seen. This directly shows whether the network truly learned the sin function or just memorized the training data.
@@ -786,13 +778,12 @@ print(f"Total parameters: {input_dim*HIDDEN_DIM1 + HIDDEN_DIM1 + HIDDEN_DIM1*HID
 
 ---
 
-## 6.8 Activation Functions
+## Activation Functions
 
-*Beginner · 10 min*
 
 ---
 
-### 6.8 Activation Functions
+### Activation Functions
 Activation functions create non-linearity. Without them, stacking layers still behaves like one linear model.
 **Sigmoid**
 Outputs 0 to 1. Good for binary classifier output layers. Can suffer vanishing gradients.
@@ -841,9 +832,8 @@ plt.show()
 
 ---
 
-## 6.9 Overfitting and How to Fight It
+## Overfitting and How to Fight It
 
-*Beginner · 12 min*
 
 ---
 
@@ -932,9 +922,8 @@ Open TensorFlow Playground. https://playground.tensorflow.org Dataset: Circle. H
 
 ---
 
-## 6.10 From NumPy to Keras
+## From NumPy to Keras
 
-*Colab · 25 min*
 
 ---
 
@@ -1138,25 +1127,23 @@ plt.show()
 
 ---
 
-## 6.11 Reading Training Curves
+## Reading Training Curves
 
-*Reference · 8 min*
 
 ---
 
-### 6.11 Reading Training Curves
+### Reading Training Curves
 Use this as a diagnostic card during later projects.
 Symptom Diagnosis Fix Loss stays flat from epoch 1 LR too small or bad initialization Increase LR or use Adam Loss spikes or goes to NaN LR too large Reduce LR by 10x Train loss falls, val loss rises Overfitting Add dropout, early stopping, or reduce network size Train and val loss plateau high Underfitting More epochs, larger network, or better architecture Val loss lower than train loss Normal with dropout Expected because dropout is active only during training Train accuracy 100%, val accuracy low Severe memorization Much more data or a much smaller network Both losses are noisy Batch size too small or LR too large Increase batch size to 32 or 64, or lower LR
 
 ---
 
-## 6.12 When to Use Neural Networks
+## When to Use Neural Networks
 
-*Reference · 2 min*
 
 ---
 
-### 6.12 When to Use Neural Networks
+### When to Use Neural Networks
 Do you have more than 10,000 training examples? No: try Random Forest first. If you must use a neural network, keep it small. Images, audio, or raw text? Yes: neural network. CNN for images; RNN or Transformer for sequence data. Tabular rows and columns? Try Random Forest or XGBoost first. Move to NN only if they underperform. Need to explain predictions? Consider Decision Tree or Logistic Regression. Neural networks are powerful but harder to interpret.
 !!! tip "Robotics perspective"
     YOLO26n is a CNN you train. MediaPipe is a neural network Google trained. The lane follower deliberately uses no neural network. Knowing when not to use one is part of the skill.

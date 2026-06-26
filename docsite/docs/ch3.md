@@ -4,7 +4,6 @@
 
 ## Supervised Learning: Robot Arm Failure Prediction
 
-*Beginner · 1 min*
 
 ---
 
@@ -12,13 +11,12 @@
 
 ---
 
-## 3.1 Classification & Regression
+## Classification & Regression
 
-*Beginner · 12 min*
 
 ---
 
-### 3.1 Concept: Classification & Regression
+### Concept: Classification & Regression
 Every supervised learning problem falls into one of two types. **Classification** predicts a category - the machine either failed or it did not, the email is spam or it is not, the image shows a cat or a dog. The answer is always one choice from a fixed list. **Regression** predicts a number - how many hours until the machine fails, what the temperature will be tomorrow, how fast the robot should move. The answer can be any value on a continuous scale.
 In this chapter the problem is classification: given five sensor readings from a CNC machine, predict whether the machine is about to fail. The correct answer for each row of training data is already known - an engineer labeled it. The model learns by seeing thousands of **sensor readings → failure/normal** pairs and adjusting its internal numbers until it can predict the label from the sensors alone.
 Input features → Model prediction → Compare to label, adjust, repeat
@@ -61,13 +59,12 @@ Predicted Normal Predicted Failure Actual Normal True Negative Correctly ignored
 
 ---
 
-## 3.2 Key Algorithms
+## Key Algorithms
 
-*Beginner · 14 min*
 
 ---
 
-### 3.2 Key Algorithms Explained
+### Key Algorithms Explained
 You have labeled data. You want a model that can predict the label for new examples. But which algorithm do you use? There is no single correct answer - each algorithm makes different assumptions about the shape of the patterns in your data. Understanding what each one assumes helps you choose wisely and interpret the results honestly.
 All four algorithms below are classification algorithms - they predict a category, failure versus normal, rather than a number. They all take the same input, a row of features, and produce the same output, a predicted class. The difference is **how** they make that prediction internally.
 In this lesson:
@@ -94,9 +91,8 @@ No algorithm is universally best. This is formalized in the No Free Lunch theore
 
 ---
 
-## 3.2a Logistic Regression
+## Logistic Regression
 
-*Beginner · 8 min*
 
 ---
 
@@ -134,9 +130,8 @@ Here, `T` is torque and `W` is tool wear. The first equation is linear because t
 
 ---
 
-## 3.2b Decision Tree
+## Decision Tree
 
-*Beginner · 8 min*
 
 ---
 
@@ -174,9 +169,8 @@ Depth controls complexity: too shallow misses structure, too deep memorizes nois
 
 ---
 
-## 3.2c Random Forest
+## Random Forest
 
-*Beginner · 8 min*
 
 ---
 
@@ -214,9 +208,8 @@ Feature importance summarizes which inputs the forest relied on most often; for 
 
 ---
 
-## 3.2d Support Vector Machine
+## Support Vector Machine
 
-*Beginner · 8 min*
 
 ---
 
@@ -255,13 +248,12 @@ What it gives you: a boundary defined by support vectors and a margin width. Thi
 
 ---
 
-## 3.3 The ML Pipeline
+## The ML Pipeline
 
-*Beginner · 10 min*
 
 ---
 
-### 3.3 The ML Pipeline
+### The ML Pipeline
 Every ML project follows the same sequence of steps --- from raw data to a working predictor. This sequence is called the ML pipeline. Learning it once means you can apply it to any dataset. The next lesson walks through every step on a real engineering dataset. This lesson gives you the map first.
 Step 1: Get Data Data is the raw material of every ML project. In this course it comes from Kaggle, a platform hosting thousands of free labeled datasets. In industry it comes from sensors, databases, or instruments you build yourself. Step 2: Explore (EDA) Before training anything, look at your data. Check how many rows and columns exist, what data types each column has, and whether the class distribution is balanced. Functions like df.head() , df.info() , and df.describe() give you this picture in seconds. Skipping this step means discovering problems only after hours of wasted training. Step 3: Clean Real data has missing values, duplicate rows, and outliers. Most ML algorithms cannot handle missing values: they either crash or produce silent wrong results. Cleaning means finding and fixing these issues before training starts. Step 4: Feature Engineering Features are the columns you feed into the model. Raw columns are not always in the most useful form: a string category like "L" , "M" , or "H" must be converted to numbers before a model can read it. Feature engineering transforms raw data into the best possible inputs for the algorithm. Step 5: Split Into Train and Test Sets You cannot evaluate a model on the same data it trained on; that is like marking your own homework. Split the data before training so the test set stays completely unseen until the final evaluation. train_test_split_demo.py from sklearn.model_selection import train_test_split
 import numpy as np
@@ -295,9 +287,8 @@ print("After: ", X_train_scaled[0].round(3)) ! Scaling leak Always call fit_tran
 
 ---
 
-## 3.4 Project: Robot Arm Failure Prediction
+## Project: Robot Arm Failure Prediction
 
-*Beginner · 40 min*
 
 ---
 

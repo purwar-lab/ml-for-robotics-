@@ -1,10 +1,9 @@
-# ★ Exercise A: Train Your First Detector
+#  Exercise A: Train Your First Detector
 
 ---
 
-## PA.0 What is Object Detection?
+## What is Object Detection?
 
-*Prerequisite Exercise · Concept · 10 min*
 
 ---
 
@@ -25,9 +24,8 @@ YOLO proposes many candidate boxes. Each box gets a confidence score from 0 to 1
 
 ---
 
-## PA.1 Introducing YOLO26
+## Introducing YOLO26
 
-*Prerequisite Exercise · YOLO26n · 8 min*
 
 ---
 
@@ -48,9 +46,8 @@ Older YOLO versions needed a post-processing step called Non-Maximum Suppression
 
 ---
 
-## PA.2 Setting Up VS Code & Dependencies
+## Setting Up VS Code & Dependencies
 
-*Beginner · Run locally · 14 min*
 
 ---
 
@@ -101,9 +98,8 @@ A parameter is one learned number inside the neural network. YOLO26n already lea
 
 ---
 
-## PA.3 Creating Your Roboflow Project and Uploading Images
+## Creating Your Roboflow Project and Uploading Images
 
-*Roboflow · Upload Images · 18 min*
 
 ---
 
@@ -131,9 +127,8 @@ Mark as Complete
 
 ---
 
-## PA.4 Labeling Your Images in Roboflow
+## Labeling Your Images in Roboflow
 
-*Roboflow · Auto-Label · 20 min*
 
 ---
 
@@ -203,9 +198,8 @@ Rule 1: Draw the box tightly around the object. The box edge should touch the ou
 
 ---
 
-## PA.5 Generating and Exporting Your Dataset
+## Generating and Exporting Your Dataset
 
-*Roboflow · Augmentation · 16 min*
 
 ---
 
@@ -285,9 +279,8 @@ The next lesson uses this snippet to download the dataset into Colab, runs the t
 
 ---
 
-## PA.6 Training in Google Colab
+## Training in Google Colab
 
-*Colab · GPU Training · 20 min*
 
 ---
 
@@ -407,9 +400,8 @@ print(f"Best weights saved at: {weights[0]}")
 
 ---
 
-## PA.7 Reading the Training Results
+## Reading the Training Results
 
-*Evaluation · Metrics · 12 min*
 
 ---
 
@@ -438,9 +430,8 @@ If your results are weak, do not guess at model code first. Open `val_batch0_pre
 
 ---
 
-## PA.8 Running Inference Locally
+## Running Inference Locally
 
-*Run locally · Webcam · 14 min*
 
 ---
 
@@ -504,9 +495,8 @@ python detect_webcam.py
 
 ---
 
-## PA.9 Understanding the Model Output
+## Understanding the Model Output
 
-*YOLO Output · Debugging · 12 min*
 
 ---
 
@@ -565,9 +555,8 @@ Attribute Type What it contains r.boxes list-like object All detections in this 
 
 ---
 
-## PA.10 Preparing for Project 1
+## Preparing for Project 1
 
-*Checklist · Bridge · 8 min*
 
 ---
 
