@@ -73,9 +73,13 @@ plt.show()
 
 #### PCA
 Principal Component Analysis (PCA) is not a clustering algorithm. It is a dimensionality reduction technique: it compresses many features into fewer dimensions while preserving as much variation as possible.
+![pca_plot3_3d_to_2d.png](original/pca_plot3_3d_to_2d.png)
+
 PCA projects high-dimensional data onto fewer dimensions. Three features compressed to two --- the two directions that capture the most variation in the original data are kept, the rest is discarded.
 Imagine your feature table has 10 columns. You cannot plot 10 dimensions. PCA finds the two directions in that 10-dimensional space that capture the most variation and projects everything onto those two axes. The result is a 2D scatter plot you can actually look at.
 PCA does not label the axes for you. The first principal component is the direction of greatest variance in your data. It might correspond roughly to overall vibration intensity or frequency content, but you interpret that from the data, not from PCA.
+![pca_plot1_variance_directions.png](original/pca_plot1_variance_directions.png)
+
 PC1 points in the direction of greatest variance in the data. PC2 points perpendicular to PC1, capturing the next largest spread. Neither axis is labeled automatically --- you read the data to decide what each principal component represents.
 Run to see PCA projecting 4 features into 2D
 ```python
@@ -149,18 +153,26 @@ Unlabelled sensor data → K-Means (you choose K) → K groups of similar readin
 The algorithm repeats two simple operations until nothing changes. You choose **K** (the number of clusters) before it starts --- the rest is automatic.
 K-Means repeats four operations until nothing changes. Here is what happens at each step.
 1. Random Init → 2. Assign → 3. Recompute → 4. Converge 1 Random Initialization Place K centroids at random positions in feature space.
+![Place K centroids at random positions in feature space.](original/kmeans_plot1_init.png)
+
       These starting positions are guesses — the algorithm corrects
       them over the next steps. The quality of the final result can
       depend on where centroids start, which is why most implementations
       run K-Means multiple times with different random starts and keep
       the best result. scikit-learn's n_init="auto" handles this
       automatically. 2 Assign Calculate the distance from every data point to every centroid.
+![Calculate the distance from every data point to every centroid.](original/kmeans_plot2_assign.png)
+
       Assign each point to its closest centroid. All points assigned to
       the same centroid form one cluster. After this step every point
       belongs to exactly one cluster. 3 Recompute Move each centroid to the mean position of all points currently
+![Move each centroid to the mean position of all points currently](original/kmeans_plot3_recompute.png)
+
       assigned to it. If cluster 1 contains 50 points, its new centroid
       is the average position of those 50 points. This is where the word
       Means in K-Means comes from. 4 Converge Repeat assign and recompute until no point changes its cluster
+![Repeat assign and recompute until no point changes its cluster](original/kmeans_plot4_converge.png)
+
       between iterations. At this point centroids have settled and the
       algorithm has converged. This is guaranteed to happen but is not
       guaranteed to find the globally best solution — only a local one.
@@ -467,3 +479,7 @@ cbar.ax.tick_params(colors='#8b949e')
 plt.tight_layout()
 plt.show()
 ```
+
+![clustering_image.png](original/clustering_image.png)
+
+![kmeans_plot0_concept.png](original/kmeans_plot0_concept.png)

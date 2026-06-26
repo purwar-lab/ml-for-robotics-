@@ -111,6 +111,8 @@ Roboflow is a web platform that handles the three hardest parts of building a cu
 Go to [roboflow.com](https://roboflow.com/). Click **Get Started** in the top right corner.
 Sign up with your Google account or an email address. Roboflow is free for public projects. You do not need to enter a credit card.
 After signing up you will be asked to choose between two plans.
+![After signing up you will be asked to choose between two plans.](original/tier_type.png)
+
 Choose the Public Plan to keep the project free.
 Choose the **Public Plan** by clicking **Continue with Public**. The public plan is completely free and has everything needed for this course. The only difference from the paid plan is your dataset will be publicly visible on Roboflow Universe, which is fine for a learning project.
 
@@ -119,8 +121,18 @@ Roboflow will ask if you want to invite collaborators to your workspace. You are
 
 ### Step 3 --- Create a new project (If you don't see this option, click on Roboflow icon to go to your portal)
 You will land on a screen asking you to create a project.
+![You will land on a screen asking you to create a project.](original/project_type.png)
+
 Create a public Object Detection project and enter your class label.
-Project Name: use a name describing what you are detecting. Examples: tennis-ball-detector , orange-cone-tracker , red-mug-detector . Use lowercase and hyphens, no spaces. Project Type: leave this as the default Object Detection . Do not change it. Object detection is what YOLO does: it finds objects and draws boxes around them with their coordinates. Click Create Public Project to continue. Step 4 — Choose the Traditional Model Builder If you do not see this section then skip this. After creating the project Roboflow shows two options. Choose Use Traditional Model Builder Instead . Roboflow Rapid is a newer prompt-based tool that skips manual labeling. It is convenient but it is a black box: you would not learn what is actually happening. The Traditional Model Builder shows every step, which is what this course requires. Step 5 — The upload screen You should now see the main upload page with a drag-and-drop zone. The upload screen is where images, videos, and folders are added. This is where your images go. Keep this tab open in your browser and proceed to collect images in the next step. Step 6 — Collecting your images before uploading Before uploading anything you need images. Here is exactly how to collect good ones. What object to use Best choices A tennis ball, orange ball, any brightly colored ball, a colored traffic cone or marker, or a specific mug, bottle, or toy you own. Avoid first Your hand or face, multiple similar-looking objects, or anything that changes shape dramatically like cloth or paper. ⚙ Why a ball works well A ball is the classic choice for a reason. It looks roughly the same from every angle because it is spherical. A distinctive color separates it from most backgrounds. These two properties mean the model learns faster and needs fewer images than a complex multi-sided object. How many images to capture Target 150 images minimum . 200 to 300 gives noticeably better results. This sounds like a lot but it takes about 10 minutes with a phone. How to capture them Distances: take shots from 0.3m away, 1m away, 2m away, and 3m away. The tracker needs to work at all these distances. Angles: straight on, from the left, from the right, from above, and from slightly below. Objects look different from different angles. Backgrounds: use at least 4 different locations: kitchen floor, carpet, concrete, grass, table. This is the most important variation. Lighting: bright room with windows, dimmer room, artificial light, and slight shadow across the object. Real robots work in varied lighting. Partial views: place the object half behind another object in some shots. The model needs to recognize the object even when partially blocked. ⚠ Vary your backgrounds deliberately The single biggest beginner mistake is collecting all images in one location with one background color. The model will learn the background pattern instead of the object. It will detect perfectly in that room and fail completely everywhere else. Vary your backgrounds deliberately even if it feels unnecessary. Use your web camera. Take photos manually or record a short video and extract frames. Roboflow accepts both. For video extraction: record a 30-second video walking around the object from different angles and distances. Roboflow will extract one frame per second automatically, giving you 30 images from one recording. Do this in 5 different locations for 150 images total. Step 7 — Upload your images to Roboflow Return to the Roboflow upload tab in your browser. Drag and drop your image files or your video files directly into the upload area. You can upload everything at once. Uploaded images appear in the upload batch before saving. If you upload a video, Roboflow asks how many frames per second to extract. For video uploads, choose a frame rate that produces enough varied images. For a 30-second walkthrough video choose as many frames per second as gives you around 80 images from one recording. For a longer video lower the rate to avoid too many nearly identical frames. Click Choose Frame Rate to confirm. Roboflow processes the video and saves each extracted frame as a separate image in your project. After uploading you will see all your images in a grid. Roboflow flags any images it cannot read. After processing, Roboflow shows extracted frames in a grid. Images marked Not Annotated in yellow have no labels yet. That is expected: you will label them in the next lesson. Press Save and Continue . You will then see the annotation part. Step 9 — Save and continue Click Save and Continue in the upper right corner. Roboflow uploads and processes all your images. Depending on how many you uploaded this takes 30 seconds to 2 minutes. When it finishes you will see the Annotate section of your project with your images ready to label. This is where the next lesson begins.
+Project Name: use a name describing what you are detecting. Examples: tennis-ball-detector , orange-cone-tracker , red-mug-detector . Use lowercase and hyphens, no spaces. Project Type: leave this as the default Object Detection . Do not change it. Object detection is what YOLO does: it finds objects and draws boxes around them with their coordinates. Click Create Public Project to continue. Step 4 — Choose the Traditional Model Builder If you do not see this section then skip this. After creating the project Roboflow shows two options. Choose Use Traditional Model Builder Instead . Roboflow Rapid is a newer prompt-based tool that skips manual labeling. It is convenient but it is a black box: you would not learn what is actually happening. The Traditional Model Builder shows every step, which is what this course requires. Step 5 — The upload screen You should now see the main upload page with a drag-and-drop zone.
+![You should now see the main upload page with a drag-and-drop zone.](original/upload_data.png)
+ The upload screen is where images, videos, and folders are added. This is where your images go. Keep this tab open in your browser and proceed to collect images in the next step. Step 6 — Collecting your images before uploading Before uploading anything you need images. Here is exactly how to collect good ones. What object to use Best choices A tennis ball, orange ball, any brightly colored ball, a colored traffic cone or marker, or a specific mug, bottle, or toy you own. Avoid first Your hand or face, multiple similar-looking objects, or anything that changes shape dramatically like cloth or paper. ⚙ Why a ball works well A ball is the classic choice for a reason. It looks roughly the same from every angle because it is spherical. A distinctive color separates it from most backgrounds. These two properties mean the model learns faster and needs fewer images than a complex multi-sided object. How many images to capture Target 150 images minimum . 200 to 300 gives noticeably better results. This sounds like a lot but it takes about 10 minutes with a phone. How to capture them Distances: take shots from 0.3m away, 1m away, 2m away, and 3m away. The tracker needs to work at all these distances. Angles: straight on, from the left, from the right, from above, and from slightly below. Objects look different from different angles. Backgrounds: use at least 4 different locations: kitchen floor, carpet, concrete, grass, table. This is the most important variation. Lighting: bright room with windows, dimmer room, artificial light, and slight shadow across the object. Real robots work in varied lighting. Partial views: place the object half behind another object in some shots. The model needs to recognize the object even when partially blocked. ⚠ Vary your backgrounds deliberately The single biggest beginner mistake is collecting all images in one location with one background color. The model will learn the background pattern instead of the object. It will detect perfectly in that room and fail completely everywhere else. Vary your backgrounds deliberately even if it feels unnecessary. Use your web camera. Take photos manually or record a short video and extract frames. Roboflow accepts both. For video extraction: record a 30-second video walking around the object from different angles and distances. Roboflow will extract one frame per second automatically, giving you 30 images from one recording. Do this in 5 different locations for 150 images total. Step 7 — Upload your images to Roboflow Return to the Roboflow upload tab in your browser. Drag and drop your image files or your video files directly into the upload area. You can upload everything at once.
+![just_image.png](original/just_image.png)
+ Uploaded images appear in the upload batch before saving. If you upload a video, Roboflow asks how many frames per second to extract.
+![If you upload a video, Roboflow asks how many frames per second to extract.](original/fps_selections.png)
+ For video uploads, choose a frame rate that produces enough varied images. For a 30-second walkthrough video choose as many frames per second as gives you around 80 images from one recording. For a longer video lower the rate to avoid too many nearly identical frames. Click Choose Frame Rate to confirm. Roboflow processes the video and saves each extracted frame as a separate image in your project. After uploading you will see all your images in a grid. Roboflow flags any images it cannot read.
+![grid.png](original/grid.png)
+ After processing, Roboflow shows extracted frames in a grid. Images marked Not Annotated in yellow have no labels yet. That is expected: you will label them in the next lesson. Press Save and Continue . You will then see the annotation part. Step 9 — Save and continue Click Save and Continue in the upper right corner. Roboflow uploads and processes all your images. Depending on how many you uploaded this takes 30 seconds to 2 minutes. When it finishes you will see the Annotate section of your project with your images ready to label. This is where the next lesson begins.
 Mark as Complete
 [Previous← PA.2 Setup](?lesson=projA-vscode)
 [NextPA.4 Labeling in Roboflow →](?lesson=projA-labeling)
@@ -152,6 +164,8 @@ Class Name: type the exact class name you used when creating the project. For ex
 Good description example for a ball: **A miniaturized basketball, small and orange with black lines, typically sitting on a flat surface.**
 Good description example for a cone: **A bright orange traffic cone, roughly triangular, about 30cm tall.**
 The more specific your description the better the AI performs. Mention color, shape, size, and any distinctive markings.
+![ball.png](original/ball.png)
+
 Fill in the class name and a specific object description before generating test results.
 Once you have filled in both fields, click **Generate Test Results**. Roboflow runs the AI on a small sample of your images so you can preview the quality before committing.
 Review the test results. If the boxes look correct on the preview images, click **Auto-Label** to run on your full batch.
@@ -163,6 +177,8 @@ After auto-labeling finishes, the images move from Unassigned to the Annotating 
 Auto-label is not perfect. Some images will have boxes in the wrong place, boxes that are too loose, or images where the object was missed entirely. You now go through and fix these manually.
 In the Annotating column, look for images flagged with warnings or that look incorrect in the thumbnail. Click any image to open it in the annotation editor.
 The annotation editor looks like this:
+![The annotation editor looks like this:](original/BB.png)
+
 The annotation editor shows the image, class list, and bounding box controls.
 If the box is in the right place and tight around the object: leave it as is and move to the next image. If the box is wrong, click the box to select it and press Delete to remove it. Then draw a new one manually as described in Step 4. If the object is in the image but no box was drawn, the AI missed it. Draw the box manually as described in Step 4.
 Press the right arrow key to move to the next image. Press the left arrow key to go back.
@@ -173,6 +189,8 @@ Press the right arrow key to move to the next image. Press the left arrow key to
 For any image where the AI missed the object or drew the wrong box, draw the correct box yourself.
 Press the **B** key to activate the Bounding Box tool. You can also click the rectangle icon in the right toolbar.
 Click and drag across your object from one corner to the opposite corner. Release the mouse. A popup appears asking for the class name. Type your class name and press Enter.
+![BB.png](original/BB.png)
+
 Draw the bounding box tightly around the object.
 The box appears highlighted on the image.
 Shortcut Action B Activate bounding box tool Right arrow Next image Left arrow Previous image Delete Remove selected box Ctrl+Z Undo last action Escape Deselect current tool
@@ -182,6 +200,8 @@ Draw tight. The box edge should touch the outer boundary of the object on all fo
 
 ### Step 5 --- Add images to the dataset and approve all
 After reviewing and fixing an image, click the checkmark button in the top right of the annotation editor.
+![BB.png](original/BB.png)
+
 Use the approve control after the label is correct.
 A popup appears. The dropdown labeled **TRAIN**, **VALID**, or **TEST** determines which split this image goes into. Choose a reasonable split.
 Once you have gone through all images, return to the main Annotate view. Click **Approve All** to move all reviewed images to the Dataset column in one action.
@@ -234,6 +254,8 @@ Auto-Orient: corrects rotation metadata from phone cameras. Without this fix the
 
 ### Step 3 --- Augmentation settings
 Augmentation creates modified copies of your training images. Each augmented copy is a new training example showing the object under a slightly different condition. This expands your effective dataset size and teaches the model to be robust to variation.
+![augmentation.png](original/augmentation.png)
+
 Choose only the augmentation options needed for this first detector.
 Enable these augmentations and set the values shown:
 Augmentation Setting Why Flip Horizontal: ON Your object looks valid when mirrored. A ball on the left side of frame and a ball on the right side should both be detected. Rotation ON, between -15 and +15 degrees Cameras are rarely perfectly level. Small tilts should not confuse the model. Brightness ON, between -25% and +25% Your robot will operate in different lighting conditions. The model should not depend on a specific brightness level. Blur ON, up to 1.5 pixels Images from a moving robot can be slightly blurry due to motion. Training on slightly blurred images improves detection on real video frames.
@@ -248,6 +270,8 @@ With 150 original training images and 3x augmentation you get approximately 450 
 ### Step 5 --- Generate the version
 Click **Generate** at the bottom of the page. Roboflow processes your images and augmentations. This takes 1 to 3 minutes depending on the number of images.
 When generation finishes you will see a summary showing the total image counts for train, valid, and test including augmented images.
+![complete_roboflow.png](original/complete_roboflow.png)
+
 The generated version summary shows the finalized dataset version.
 
 ### Step 6 --- Export the dataset
@@ -578,3 +602,13 @@ best.pt is in the my-detector folder and webcam detection works. The model corre
     If `mAP50` is below 0.75, the tracker will behave erratically and it will be hard to tell whether the problem is the model or the control code. Add 50-100 more images with varied backgrounds and retrain. This almost always helps.
 !!! tip "Next step"
     You have the model. [Exercise B](?lesson=projB-overview) connects it to a live phone camera stream, then Exercise C builds the encoder movement foundation before Project 1 combines everything.
+
+![auto_label.png](original/auto_label.png)
+
+![preprocess.png](original/preprocess.png)
+
+![preprocess.png](original/preprocess.png)
+
+![download.png.png](original/download.png.png)
+
+![dataset_code.png](original/dataset_code.png)

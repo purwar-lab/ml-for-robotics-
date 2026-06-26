@@ -111,11 +111,15 @@ Logistic regression learns a probability surface, then turns that probability in
 
 Despite the name, logistic regression is a classifier, not a regressor. The name comes from the logistic, or sigmoid, function it uses internally, not from the type of output it produces.
 How it works: it draws a straight line, or in higher dimensions a flat plane called a hyperplane, that separates the two classes. Every data point on one side is classified as normal, every point on the other side as failure. The line is chosen to maximize the probability of the training labels being correct.
+![plot2_decision_boundary.png](original/plot2_decision_boundary.png)
+
 
 
 A straight decision boundary divides the feature space into normal and failure regions.
 
 The output is a probability between 0 and 1 - values above 0.5 become class 1, below 0.5 become class 0.
+![plot1_sigmoid.png](original/plot1_sigmoid.png)
+
 
 
 The sigmoid function turns any score into a probability, with 0.5 as the usual decision threshold.
@@ -151,16 +155,22 @@ A decision tree tests possible thresholds and chooses the split that makes the c
 A decision tree is a flowchart the algorithm builds automatically from your training data. At each step it asks one yes/no question about a feature, splits the data into two groups, and repeats until it can make a confident prediction.
 How it works: the algorithm searches for the single feature and threshold that best separates failures from normal readings. For example, `is tool wear > 180 minutes?` splits the data so that most failures are on the yes side. It then repeats this for each sub-group independently, building a tree of questions. At each leaf, the bottom of a branch, it outputs the majority class of the training examples that ended up there.
 Real example: a robot maintenance tree might first ask whether tool wear is high. If yes, it may ask whether torque is also high. If no, it may check temperature difference. The final leaves are the predicted classes.
+![dt_plot2_tree_diagram.png](original/dt_plot2_tree_diagram.png)
+
 
 
 The final model is a readable tree of questions, arrows, and class predictions.
 
 What it gives you: a human-readable set of rules. You can print the tree and show it to a maintenance engineer who has never heard of machine learning. They can follow the branches manually and understand why the model made each decision.
+![dt_plot3_regions.png](original/dt_plot3_regions.png)
+
 
 
 Because each split is a threshold on one feature, decision trees carve the feature space into rectangular regions.
 
 The main control knob is tree depth. A shallow tree may underfit because it asks too few questions. A very deep tree may overfit because it memorizes tiny quirks in the training set instead of learning a stable pattern.
+![dt_plot4_depth_complexity.png](original/dt_plot4_depth_complexity.png)
+
 
 
 Depth controls complexity: too shallow misses structure, too deep memorizes noise, and the best model is usually in between.
@@ -189,6 +199,8 @@ Random Forest fixes the main weakness of a single decision tree: one tree can ov
 
 A random forest fixes the main weakness of a single decision tree, overfitting, by training hundreds of trees and having them vote. The final prediction is the majority vote across all trees.
 Each tree is trained on a random sample of the training data and uses a random subset of features at each split. This randomness makes each tree slightly different, which is exactly what makes the group more reliable than one tree alone.
+![rf_plot2_bootstrap.png](original/rf_plot2_bootstrap.png)
+
 
 
 Bootstrap sampling means each tree sees a different version of the dataset, so their mistakes are less likely to be identical.
@@ -200,6 +212,8 @@ The forest prediction is a vote: here, 73 trees vote failure and 27 vote normal,
 
 Real example: one tree might overfit to a specific pattern of high temperature and low torque that appeared in its training sample. The other 99 trees were not trained on that exact sample and vote it down. The ensemble is much more robust than any individual tree.
 What it gives you: a confidence score, the vote percentage, and feature importance scores - a ranked list of which features the trees used most often for their splits. In the AI4I dataset, tool wear typically ranks as the most important feature for predicting failure.
+![rf_plot3_feature_importance.png](original/rf_plot3_feature_importance.png)
+
 
 
 Feature importance summarizes which inputs the forest relied on most often; for this maintenance example, tool wear is the strongest signal.
@@ -229,11 +243,15 @@ SVM does not choose just any separating line. It chooses the line with the wides
 A Support Vector Machine, or SVM, finds the widest possible empty gap - called the margin - between the two classes, then draws the decision boundary down the center of that gap. The training examples closest to the boundary are called support vectors. They are the only points that determine where the line goes. All other training examples are ignored once the margin is found.
 How it works: imagine the training data as dots on a table. You want to place a ruler between the two colored groups with as much space as possible on either side. The SVM finds the optimal ruler position mathematically. Any new data point is then classified based on which side of the ruler it falls on.
 Real example: with torque and tool wear as the two axes, the SVM finds the boundary where normal readings cluster on one side and failure readings cluster on the other, with maximum gap between the two groups. New readings are classified by which side they land on.
+![svm_plot2_real_example.png](original/svm_plot2_real_example.png)
+
 
 
 On torque and tool wear data, the boundary is chosen by the readings closest to the margin, not by every point equally.
 
 Kernel trick: what if the data is not linearly separable in 2D? SVM can project the data into higher dimensions using a kernel function, where a linear boundary in the higher dimension corresponds to a curve in the original space. The RBF, or radial basis function, kernel is the most common choice and handles most non-linear problems well.
+![svm_plot3_kernel_trick.png](original/svm_plot3_kernel_trick.png)
+
 
 
 The kernel trick lets SVM solve curved decision problems without manually inventing new features.
@@ -529,3 +547,17 @@ best_n = tree_counts[scores.index(max(scores))]
 print(f"Best result: {max(scores):.3f} F1 with {best_n} trees")
 ```
 📝 What to look for The line usually rises sharply from 10 → 50 trees and then flattens. That flat part is the "diminishing returns" zone — extra computation, no extra accuracy. This pattern appears in almost every real ML project. Expected output A line plot and a printed best score. Compare it against the 100-tree score from Cell 14.
+
+![Speed: Very fast](original/plot4_hyperplane_3d.png)
+
+![plot3_probability_curve.png](original/plot3_probability_curve.png)
+
+![Speed: Fast](original/dt_plot1_split_search.png)
+
+![Speed: Medium](original/rf_plot4_overfitting.png)
+
+![rf_plot1_voting.png](original/rf_plot1_voting.png)
+
+![Speed: Medium (slow on large data)](original/svm_plot1_margin.png)
+
+![svm_plot4_c_parameter.png](original/svm_plot4_c_parameter.png)

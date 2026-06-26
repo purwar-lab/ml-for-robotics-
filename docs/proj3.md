@@ -28,9 +28,13 @@ Gesture Command Both hands open FORWARD Both hands closed BACKWARD Right open, l
 ---
 
 MediaPipe does not just detect that a hand is present. It detects 21 specific points on the hand called landmarks. Each landmark has an x, y, and z coordinate normalized to the image size.
+![hand_landmarks.png](original/hand_landmarks.png)
+
 MediaPipe hand landmark indices used for gesture detection.
 Index Meaning 0 wrist, reference point for thumb detection 2, 3, 4 thumb MCP, thumb IP, thumb tip 6, 8 index PIP and tip 10, 12 middle PIP and tip 14, 16 ring PIP and tip 18, 20 pinky PIP and tip
 The core insight: if a finger tip is above its PIP joint, it has a lower y value because y increases downward. That finger is extended. If the tip is below the PIP joint, the finger is curled.
+![extended_finger.png](original/extended_finger.png)
+
 Extended finger tip.y < pip.y Curled finger tip.y > pip.y
 !!! info "Normalized coordinates"
     The coordinates are normalized: x and y are between 0 and 1, where (0,0) is the top-left of the image and (1,1) is the bottom-right. This means the detection works regardless of image resolution. A hand at x=0.5 is always in the horizontal center of the frame.
@@ -307,3 +311,12 @@ Classical image processingFast, no model needed, brittle to lighting changes.**U
 Pre-trained task-specific modelZero training required, very accurate for the specific task, cannot be used outside its design.**Use when:** your task matches one that already has a production model.
 !!! tip "The architecture is the point"
     The pipeline you built, phone camera to laptop vision to UDP commands to Arduino to motors, is architecturally identical to how commercial mobile robots receive instructions. In a production robot each part would be dedicated hardware, but the data flow is the same.
+
+![curled_finger.png](original/curled_finger.png)
+
+[Download](original/shared.py)
+
+[Download](original/gesture_control.py)
+
+
+<video controls width="100%"><source src="original/hand_gesture.mp4" type="video/mp4"></video>

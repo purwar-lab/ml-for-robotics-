@@ -1126,3 +1126,10 @@ Part What you learned Where it appears in Project 2 Chapter 1 Python fundamental
 Binary window shows only the line white and the floor dark. Magenta dots appear on the line when the camera is pointed at it. Robot drives straight on a straight section. Robot follows a 90-degree corner without losing the line. You can explain position_error versus direction_error . You can explain how SMOOTH_RATE affects cornering. You understand why DIST_KP is 0 by default and when you would enable it. You can diagnose detection problems from the binary window.
 !!! tip "Classical vision robot"
     You now have two complete robot behaviors running on the same architecture: a YOLO object tracker and an OpenCV lane follower.
+
+[Download](original/shared.py)
+
+[Download](original/lane_follower_adv.py)
+
+
+<video controls width="100%"><source src="original/lane_follower.mp4" type="video/mp4"></video>

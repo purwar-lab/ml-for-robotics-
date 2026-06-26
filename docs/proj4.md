@@ -1383,3 +1383,11 @@ Separable axesPan and tilt are independent enough to control with two separate P
 Reusable protocol designChanging from `MOTOR` to `SERVO` reuses the same UDP infrastructure.
 !!! tip "Robotics connection"
     The same architecture appears in security cameras, telescope mounts, drone gimbals, and target-tracking camera systems: detect the target, compute image error, update angles, repeat.
+
+[Download](original/shared.py)
+
+[Download](original/pan_and_tilt.py)
+
+[Download](original/pan_tilt_arduino.ino)
+
+[Download](original/test_servos.py)

@@ -1742,3 +1742,10 @@ Robot spins in circles constantly Likely cause: motor sign wrong or bad target a
 Place the ball on the floor while the robot faces a different direction. Run the script. Within about two seconds, the robot turns toward the ball, moves toward it, and settles at the calibrated distance. Move the ball a meter to the side and the robot pivots and approaches again. Pick up the ball and the robot searches briefly, then stops after `LOST_TIMEOUT`.
 !!! tip "Closed-loop vision robot"
     You have combined a neural network you trained, streaming video from your phone, PID controllers, UDP commands at robotics speed, encoder telemetry, and a state machine into one working physical system.
+
+[Download](original/shared.py)
+
+[Download](original/obj_track_adv.py)
+
+
+<video controls width="100%"><source src="original/project_1.mp4" type="video/mp4"></video>

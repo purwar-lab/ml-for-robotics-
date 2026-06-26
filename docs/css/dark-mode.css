@@ -1,0 +1,182 @@
+.dark-mode-toggle {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 999;
+  background: var(--dark-toggle-bg, #2c3e50);
+  color: var(--dark-toggle-fg, #fff);
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  transition: background 0.2s, transform 0.2s;
+  line-height: 44px;
+  text-align: center;
+}
+
+.dark-mode-toggle:hover {
+  transform: scale(1.1);
+}
+
+html.dark-mode {
+  --dark-bg: #1a1a2e;
+  --dark-bg-alt: #16213e;
+  --dark-bg-card: #0f3460;
+  --dark-fg: #e0e0e0;
+  --dark-fg-heading: #ffffff;
+  --dark-fg-muted: #a0a0b0;
+  --dark-border: #2a2a4a;
+  --dark-accent: #4fc3f7;
+  --dark-accent-hover: #81d4fa;
+}
+
+html.dark-mode body {
+  background-color: var(--dark-bg, #1a1a2e);
+  color: var(--dark-fg, #e0e0e0);
+}
+
+html.dark-mode .wy-nav-side {
+  background-color: var(--dark-bg-alt, #16213e);
+}
+
+html.dark-mode .wy-side-nav-search {
+  background-color: var(--dark-bg-card, #0f3460);
+}
+
+html.dark-mode .wy-menu-vertical li.current {
+  background-color: var(--dark-bg-alt, #16213e);
+}
+
+html.dark-mode .wy-menu-vertical li a {
+  color: var(--dark-fg, #e0e0e0);
+}
+
+html.dark-mode .wy-menu-vertical li a:hover {
+  background-color: var(--dark-bg-card, #0f3460);
+}
+
+html.dark-mode .wy-menu-vertical li.current a {
+  background-color: var(--dark-bg-card, #0f3460);
+  border-color: var(--dark-accent, #4fc3f7);
+}
+
+html.dark-mode .wy-nav-content-wrap {
+  background-color: var(--dark-bg, #1a1a2e);
+}
+
+html.dark-mode .wy-nav-content {
+  background-color: var(--dark-bg, #1a1a2e);
+  max-width: none;
+}
+
+html.dark-mode h1,
+html.dark-mode h2,
+html.dark-mode h3,
+html.dark-mode h4,
+html.dark-mode h5,
+html.dark-mode h6 {
+  color: var(--dark-fg-heading, #ffffff);
+}
+
+html.dark-mode a {
+  color: var(--dark-accent, #4fc3f7);
+}
+
+html.dark-mode a:hover {
+  color: var(--dark-accent-hover, #81d4fa);
+}
+
+html.dark-mode code {
+  background-color: var(--dark-bg-card, #0f3460);
+  color: var(--dark-fg, #e0e0e0);
+  border-color: var(--dark-border, #2a2a4a);
+}
+
+html.dark-mode pre {
+  background-color: var(--dark-bg-card, #0f3460) !important;
+  border-color: var(--dark-border, #2a2a4a) !important;
+}
+
+html.dark-mode .wy-table,
+html.dark-mode table {
+  background-color: var(--dark-bg-alt, #16213e);
+  border-color: var(--dark-border, #2a2a4a);
+}
+
+html.dark-mode .wy-table thead th,
+html.dark-mode table thead th {
+  background-color: var(--dark-bg-card, #0f3460);
+  color: var(--dark-fg-heading, #ffffff);
+  border-color: var(--dark-border, #2a2a4a);
+}
+
+html.dark-mode .wy-table td,
+html.dark-mode table td {
+  border-color: var(--dark-border, #2a2a4a);
+}
+
+html.dark-mode .wy-table-striped tbody tr:nth-child(2n) {
+  background-color: rgba(255,255,255,0.03);
+}
+
+html.dark-mode .rst-content .note,
+html.dark-mode .rst-content .tip,
+html.dark-mode .rst-content .info,
+html.dark-mode .rst-content .warning {
+  background-color: var(--dark-bg-alt, #16213e);
+  border-color: var(--dark-border, #2a2a4a);
+}
+
+html.dark-mode .rst-content .admonition-title {
+  background-color: var(--dark-bg-card, #0f3460);
+  color: var(--dark-fg-heading, #ffffff);
+}
+
+html.dark-mode .rst-content .admonition {
+  background-color: var(--dark-bg-alt, #16213e);
+}
+
+html.dark-mode .wy-breadcrumbs {
+  color: var(--dark-fg-muted, #a0a0b0);
+}
+
+html.dark-mode .wy-breadcrumbs a {
+  color: var(--dark-accent, #4fc3f7);
+}
+
+html.dark-mode .wy-side-scroll::-webkit-scrollbar {
+  background-color: var(--dark-bg-alt, #16213e);
+}
+
+html.dark-mode .wy-side-scroll::-webkit-scrollbar-thumb {
+  background-color: var(--dark-border, #2a2a4a);
+}
+
+html.dark-mode .wy-menu-vertical li.toctree-l1.current > a {
+  background-color: var(--dark-bg-card, #0f3460);
+  color: var(--dark-fg-heading, #ffffff);
+}
+
+html.dark-mode .wy-menu-vertical li.toctree-l2 a {
+  color: var(--dark-fg, #e0e0e0);
+}
+
+html.dark-mode .wy-menu-vertical li.toctree-l2.current > a {
+  background-color: var(--dark-bg-card, #0f3460);
+}
+
+html.dark-mode blockquote {
+  color: var(--dark-fg-muted, #a0a0b0);
+  border-color: var(--dark-border, #2a2a4a);
+}
+
+html.dark-mode hr {
+  border-color: var(--dark-border, #2a2a4a);
+}
+
+html.dark-mode .rst-content .section ul li {
+  color: var(--dark-fg, #e0e0e0);
+}

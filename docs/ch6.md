@@ -1147,3 +1147,6 @@ Symptom Diagnosis Fix Loss stays flat from epoch 1 LR too small or bad initializ
 Do you have more than 10,000 training examples? No: try Random Forest first. If you must use a neural network, keep it small. Images, audio, or raw text? Yes: neural network. CNN for images; RNN or Transformer for sequence data. Tabular rows and columns? Try Random Forest or XGBoost first. Move to NN only if they underperform. Need to explain predictions? Consider Decision Tree or Logistic Regression. Neural networks are powerful but harder to interpret.
 !!! tip "Robotics perspective"
     YOLO26n is a CNN you train. MediaPipe is a neural network Google trained. The lane follower deliberately uses no neural network. Knowing when not to use one is part of the skill.
+
+
+<video controls width="100%"><source src="original/tf_playground.mp4" type="video/mp4"></video>
