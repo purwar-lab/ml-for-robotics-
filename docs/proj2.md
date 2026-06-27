@@ -14,6 +14,9 @@ Approach YOLO in Project 1 OpenCV classical vision in Project 2 Input Any image 
 !!! tip "Industrial robotics uses both"
     Factory robots often use classical vision for measurement, barcode reading, scratch detection, and line following because the environment is controlled. Neural networks are used when the visual world is messy. Your floor track is controlled, so classical vision is the right engineering choice.
 
+<video controls width="100%"><source src="/original/lane_follower.mp4" type="video/mp4"></video>
+
+
 ### By the End of This Project
 You will place black tape on a light floor to make a high-contrast track. Your phone camera will watch the floor from a forward-down angle. Python will process each camera frame in milliseconds using OpenCV. The robot will follow the tape through turns without any trained model. You will understand every line that makes that behavior happen.
 
@@ -456,6 +459,11 @@ Already have this from Project 1? You do not need to download it again. Skip to 
 Project 2 specific code: detect_lane(), LaneFollower class, binary thresholding pipeline, two-point steering, and the main loop.
 !!! info "Do not run the files yet"
     They will not work with the default placeholder values. Complete every lesson in this project first, then run the project file in the final lesson.
+
+[shared.py](original/shared.py)
+
+[lane_follower_adv.py](original/lane_follower_adv.py)
+
 
 ---
 
@@ -1127,9 +1135,3 @@ Binary window shows only the line white and the floor dark. Magenta dots appear 
 !!! tip "Classical vision robot"
     You now have two complete robot behaviors running on the same architecture: a YOLO object tracker and an OpenCV lane follower.
 
-[Download](original/shared.py)
-
-[Download](original/lane_follower_adv.py)
-
-
-<video controls width="100%"><source src="original/lane_follower.mp4" type="video/mp4"></video>
