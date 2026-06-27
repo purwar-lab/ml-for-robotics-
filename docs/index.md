@@ -6,10 +6,10 @@ A browser-based course dashboard for learning Python, machine learning, reinforc
 
 ## What You Will Build
 
-- **Robot Failure Predictor** — scikit-learn + AI4I (Chapter 3)
-- **Sensor Cluster Analyzer** — K-Means + PCA (Chapter 4)
-- **First Neural Network** — Keras + training curves (Chapter 6)
-- **Traffic Sign Classifier** — OpenCV + Keras (Chapter 7)
+- **Python Confidence** — Write and read basic Python, use notebooks, import libraries, and understand the code you run.
+- **Data Thinking** — Look at tables, sensor readings, labels, plots, and train/test splits the way an engineer would.
+- **ML Intuition** — Know when a problem is supervised, unsupervised, reinforcement learning, or computer vision.
+- **Robotics Context** — Connect models to mechanical systems, sensors, failures, vibration patterns, navigation, and images.
 
 ---
 
