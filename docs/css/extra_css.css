@@ -38,3 +38,8 @@ html.narrow .wy-nav-content {
     hyphens: none;
     white-space: normal;
 }
+
+/* Hide auto-numbering on h1 (chapter titles already contain the number) */
+h1 .enumerate-headings-plugin {
+  display: none;
+}
