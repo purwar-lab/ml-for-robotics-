@@ -183,7 +183,7 @@ count_params([3, 4, 4, 4, 1])
 ### How deep should you go?
 
 | Architecture | Parameters | Good for |
-|:-:|:-:|:--|
+|:--|:--|:--|
 | `2->4->1` | 13 | Very simple patterns |
 | `2->16->16->1` | 321 | Most common starting point |
 | `2->64->64->64->1` | 8,513 | Complex patterns, needs more data |
@@ -364,7 +364,7 @@ W3 = np.random.randn(hidden_dim2, output_dim) * 0.1 # Weights for output layer
 b3 = np.zeros((1, output_dim)) # Biases for output layer
 ```
 | Parameter | Shape | Meaning |
-|:-:|:-:|:--|
+|:--|:--|:--|
 | `W1` | `(1, 20)` | 1 input connects to 20 hidden neurons |
 | `W2` | `(20, 10)` | 20 first-layer neurons connect to 10 second-layer neurons |
 | `W3` | `(10, 1)` | 10 second-layer neurons connect to 1 output |
@@ -398,7 +398,7 @@ def linear_derivative(x):
 #### Cell 4: Adam Optimizer and Training Loop
 This is the most important cell. It performs the forward pass, computes loss, sends the gradient backward through every layer, and updates every weight with Adam.
 | Adam parameter | Meaning |
-|:-:|:--|
+|:--|:--|
 | `beta1 = 0.9` | Momentum: keep 90% of the previous gradient direction and mix in 10% of the new gradient. |
 | `beta2 = 0.999` | Tracks a moving average of squared gradients, which Adam uses to scale each parameter update. |
 | `epsilon = 1e-8` | A tiny number that prevents division by zero. |
@@ -1106,7 +1106,7 @@ model.fit(x, y, epochs=3000, verbose=0)
     Now that you have implemented Adam by hand and watched the gradient flow backward through the layers, you know what Keras is doing under the hood. That understanding separates someone who uses Keras from someone who understands it.
 [Open in Colab →](https://colab.research.google.com/github/purwar-lab/ml-for-robotics-/blob/main/notebooks/ch6-first-network.ipynb)
 | Keras piece | Manual NumPy equivalent |
-|:-:|:--|
+|:--|:--|
 | `Dense(20, activation="relu")` | `W1`, `b1`, `np.dot`, and `relu` |
 | `loss="mse"` | `mse_loss(y, a3)` |
 | `Adam(0.001)` | The full Adam moment, bias-correction, and update block from lesson 6.7 |

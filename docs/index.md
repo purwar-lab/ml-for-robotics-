@@ -16,7 +16,7 @@ A browser-based course dashboard for learning Python, machine learning, reinforc
 ## Course Chapters
 
 | Chapter | Description |
-|:--------|:------------|
+|:--|:--|
 | **Chapter 0** — Welcome & How to Use This Guide | Set up the course tools and understand what you will build. |
 | **Chapter 1** — Python Programming Fundamentals | Variables, data structures, control flow, loops, functions, and imports. |
 | **Chapter 2** — What is Machine Learning? | Understand ML, the three learning families, and when to use each. |
@@ -30,7 +30,7 @@ A browser-based course dashboard for learning Python, machine learning, reinforc
 ## Exercises
 
 | Exercise | Description |
-|:---------|:------------|
+|:--|:--|
 | **Exercise A** — Train Your First Detector | Collect Roboflow data, label boxes, train YOLO26n in Colab, and run your own detector locally. |
 | **Exercise B** — Your Phone as a Robot Camera | Stream phone video over WiFi and run your trained YOLO26n detector on every frame. |
 | **Exercise C** — Precise Movement with Encoders | Encoder ticks, exact distance driving, 90-degree turns, and programmed paths. |
@@ -39,7 +39,7 @@ A browser-based course dashboard for learning Python, machine learning, reinforc
 ## Projects
 
 | Project | Description |
-|:--------|:------------|
+|:--|:--|
 | **Project 1** — Object Tracker | Build a local YOLO + PID vision loop that sends UDP motor commands. |
 | **Project 2** — Lane Follower | Replace YOLO with classical OpenCV thresholding, row scanning, and two-point steering. |
 | **Project 3** — Gesture Controlled Robot | Use MediaPipe hand landmarks to map two-hand gestures to UDP motor commands. |

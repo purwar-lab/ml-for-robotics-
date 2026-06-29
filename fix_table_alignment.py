@@ -5,14 +5,18 @@ fix_table_alignment.py
 Automatically adjusts markdown table column alignment:
   - Columns where all cells have < THRESHOLD words  →  centered  (:--:)
   - Columns where any cell has >= THRESHOLD words    →  left      (:-- )
+  - Columns where any cell contains backtick code   →  left      (:-- )
+    (disable with --no-code-left)
 
-Words inside backtick code spans are excluded from the count so that
-short inline code labels (e.g. `test_size=0.2`) don't push a column
-to left-align on their own.
+Words inside backtick code spans are excluded from the word count so
+that short inline code labels don't push a column left via word count
+alone — but with --code-left (the default) any backtick in any cell
+forces the whole column left regardless of word count.
 
 Usage:
   python fix_table_alignment.py docs/*.md
   python fix_table_alignment.py docs/*.md --threshold 4
+  python fix_table_alignment.py docs/*.md --no-code-left
   python fix_table_alignment.py docs/*.md --dry-run
 """
 
@@ -37,6 +41,11 @@ def strip_markdown(text: str) -> str:
 def count_words(cell: str) -> int:
     """Count English words in a cell, ignoring backtick code content."""
     return len(strip_markdown(cell).split())
+
+
+def cell_has_code(cell: str) -> bool:
+    """Return True if the cell contains at least one backtick code span."""
+    return bool(re.search(r'`[^`]+`', cell))
 
 
 def parse_cells(line: str) -> list[str]:
@@ -81,11 +90,13 @@ def build_separator(alignments: list[str]) -> str:
 # Core table fixer
 # ---------------------------------------------------------------------------
 
-def fix_tables(text: str, threshold: int) -> str:
+def fix_tables(text: str, threshold: int, code_left: bool = True) -> str:
     """
     Scan *text* for markdown tables and rewrite each separator row so that:
       - columns whose data cells all have < threshold words  → centered
       - columns with any data cell having >= threshold words → left
+      - columns where any data cell contains backtick code  → left
+        (only when code_left is True)
     """
     lines = text.splitlines(keepends=True)
     result: list[str] = []
@@ -135,15 +146,21 @@ def fix_tables(text: str, threshold: int) -> str:
                 else:
                     break
 
-            # Compute the maximum word count for each column across data rows.
+            # Compute per-column stats across all data rows.
             max_words = [0] * n_cols
+            table_has_code = False
             for row in data_rows:
                 for col, cell in enumerate(parse_cells(row)[:n_cols]):
                     max_words[col] = max(max_words[col], count_words(cell))
+                    if code_left and cell_has_code(cell):
+                        table_has_code = True
+
+            table_has_long = any(w >= threshold for w in max_words)
+            force_left = table_has_code or table_has_long
 
             alignments = [
-                'center' if w < threshold else 'left'
-                for w in max_words
+                'left' if force_left else 'center'
+                for _ in range(n_cols)
             ]
 
             new_sep = build_separator(alignments)
@@ -194,6 +211,16 @@ def main() -> None:
         ),
     )
     parser.add_argument(
+        '--code-left',
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help=(
+            'Force left-alignment for any column that contains backtick code '
+            'in at least one cell (default: enabled). '
+            'Use --no-code-left to rely on word count alone.'
+        ),
+    )
+    parser.add_argument(
         '--dry-run', '-n',
         action='store_true',
         help='Show which files would change without writing them',
@@ -216,7 +243,7 @@ def main() -> None:
             continue
 
         original = path.read_text(encoding='utf-8')
-        fixed = fix_tables(original, args.threshold)
+        fixed = fix_tables(original, args.threshold, code_left=args.code_left)
 
         if fixed == original:
             if args.verbose:

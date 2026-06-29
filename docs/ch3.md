@@ -61,7 +61,7 @@ The confusion matrix shows all four possible outcomes of a binary classifier in 
 Rows represent what actually happened. Columns represent what the model predicted. The diagonal, top-left and bottom-right, is where the model was right. The off-diagonal, top-right and bottom-left, is where it was wrong.
 
 | | Predicted Normal | Predicted Failure|
-|:-:|:--|:-:|
+|:--|:--|:--|
 | **Actual Normal** | True Negative — Correctly ignored healthy machine | False Positive — False alarm |
 | **Actual Failure** | False Negative — Missed failure | True Positive — Caught failure |
 
@@ -99,7 +99,7 @@ You have labeled data. You want a model that can predict the label for new examp
 All four algorithms below are classification algorithms - they predict a category, failure versus normal, rather than a number. They all take the same input, a row of features, and produce the same output, a predicted class. The difference is **how** they make that prediction internally.
 
 | Algorithm | Type | Interpretable | Speed | Best For |
-|:-:|:-:|:-:|:-:|:-:|
+|:--|:--|:--|:--|:--|
 | Logistic Regression | Linear classifier | High | Fast | Baselines and explanations |
 | Decision Tree | Tree classifier | High | Fast | Readable rules |
 | Random Forest | Ensemble | Medium | Medium | Strong tabular accuracy |
@@ -115,7 +115,7 @@ SVM is worth trying when your dataset is small and clean. On larger datasets Ran
 4. **Try SVM if the dataset is small.** Use it when you have under 10,000 rows and Random Forest is not generalizing well.
 
 | | Interpretable | Performance |
-|:-:|:-:|:-:|
+|:--|:--|:--|
 | **Simple** | Logistic Regression | Support Vector Machine |
 | **Complex** | Decision Tree | Random Forest |
 
@@ -347,7 +347,7 @@ print(f"Test rows:     {len(X_test)}")
 ```
 
 | Setting | Meaning |
-|:-:|:--|
+|:--|:--|
 | `test_size=0.2` | 800 rows train, 200 rows test. |
 | `random_state=42` | Same split every time you run the code. |
 | `stratify=y` | If 10% of `y` is class 1, both sets will be 10%. |
@@ -556,7 +556,7 @@ print("Logistic Regression trained.")
 *Expected output:* `Logistic Regression trained.`
 **Cell 12** evaluates that model and draws a confusion matrix : a 2×2 grid that shows exactly which types of mistakes it made.
 |  | **Predicted Normal** | **Predicted Failure** |
-|:-:|:--|:-:|
+|:--|:--|:--|
 | **Was actually Normal** | True Negative ✓ | False Positive ✗ |
 | **Was actually a Failure** | False Negative ✗ *(the dangerous mistake)* | True Positive ✓ |
 Cell 12: Evaluate Logistic Regression

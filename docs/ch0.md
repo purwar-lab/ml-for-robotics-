@@ -17,7 +17,7 @@ This page is a long-scroll textbook, lab manual, and project checklist. You will
 #### Learning Journey
 
 | Step | Topic | Description |
-|:-:|:-:|:--|
+|:--|:--|:--|
 | 0 | **Setup** | Browser tools, Colab later, how to read this guide |
 | 1 | **Python** | Variables, loops, functions, libraries |
 | 2 | **ML Concepts** | Supervised, unsupervised, reinforcement |
@@ -31,7 +31,7 @@ This page is a long-scroll textbook, lab manual, and project checklist. You will
 This course builds the foundation you need to understand and use machine learning in robotics, even if you are starting with no programming background.
 
 | Skill | Description |
-|:-:|:--|
+|:--|:--|
 | **Python Confidence** | Write and read basic Python, use notebooks, import libraries, and understand the code you run. |
 | **Data Thinking** | Look at tables, sensor readings, labels, plots, and train/test splits the way an engineer would. |
 | **ML Intuition** | Know when a problem is supervised, unsupervised, reinforcement learning, or computer vision. |

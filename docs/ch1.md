@@ -731,7 +731,7 @@ After running that cell, those packages are available for the rest of your Colab
     Most packages come pre-installed in Google Colab. You only need `!pip install` for packages that are less common. If you try to import something and see `ModuleNotFoundError`, that is your signal to run `!pip install package-name` first.
 The install name and the import name are sometimes different. Here are the package names used in this course.
 | What we call it | pip install command | import statement |
-|:-:|:-:|:-:|
+|:--|:--|:--|
 | NumPy | `!pip install numpy` | `import numpy as np` |
 | Pandas | `!pip install pandas` | `import pandas as pd` |
 | Matplotlib | `!pip install matplotlib` | `import matplotlib.pyplot as plt` |
