@@ -4,6 +4,7 @@
 
 ## What We Are Building
 
+<video controls width="100%"><source src="/original/project_1.mp4" type="video/mp4"></video>
 
 ---
 
@@ -12,26 +13,31 @@ Exercise A trained best.pt YOLO26n detection, class names, confidence, and bound
 All four exercises converging --- the robot detects, steers, and tracks autonomously.
 
 ### The Five Components
-**1. Object Detection**
-**What it does:** finds the ball in every camera frame and returns center position plus bounding-box area.
-**Where you learned it:** Exercise A, especially PA.8 and PA.9.
-**New here:** none. It is the same YOLO call you used in `detect_stream.py`.
-**2. Camera Stream**
-**What it does:** pulls MJPEG frames from your phone camera.
-**Where you learned it:** Exercise B, PB.5 and PB.6.
-**New here:** a background thread so frame reading does not block robot control.
-**3. PID Controller**
-**What it does:** converts error into motor correction continuously.
-**Where you learned the idea:** Exercise C's distance control in PC.8.
-**New here:** continuous adjustment instead of a threshold stop.
-**4. UDP Communication**
-**What it does:** sends `MOTOR` commands and receives `ENC` telemetry.
-**Where you learned it:** Exercise D, PD.2, PD.3, and PD.6.
-**New here:** none. `Commander` and `Telemetry` wrap Exercise D sockets in classes.
-**5. State Machine**
-**What it does:** manages behavior across `STOPPED`, `SEARCHING`, `ACQUIRING`, and `TRACKING`.
-**Where you saw the concept:** new in Project 1 --- a hand-designed finite state machine, *not* the learned states of Chapter 5's reinforcement learning.
-**New here:** states directly choose motor outputs and timeout behavior.
+
+1. **Object Detection**  
+   **What it does:** finds the ball in every camera frame and returns center position plus bounding-box area.  
+   **Where you learned it:** Exercise A, especially PA.8 and PA.9.  
+   **New here:** none. It is the same YOLO call you used in `detect_stream.py`.
+
+2. **Camera Stream**  
+   **What it does:** pulls MJPEG frames from your phone camera.  
+   **Where you learned it:** Exercise B, PB.5 and PB.6.  
+   **New here:** a background thread so frame reading does not block robot control.
+
+3. **PID Controller**  
+   **What it does:** converts error into motor correction continuously.  
+   **Where you learned the idea:** Exercise C's distance control in PC.8.  
+   **New here:** continuous adjustment instead of a threshold stop.
+
+4. **UDP Communication**  
+   **What it does:** sends `MOTOR` commands and receives `ENC` telemetry.  
+   **Where you learned it:** Exercise D, PD.2, PD.3, and PD.6.  
+   **New here:** none. `Commander` and `Telemetry` wrap Exercise D sockets in classes.
+
+5. **State Machine**  
+   **What it does:** manages behavior across `STOPPED`, `SEARCHING`, `ACQUIRING`, and `TRACKING`.  
+   **Where you saw the concept:** new in Project 1 --- a hand-designed finite state machine, *not* the learned states of Chapter 5's reinforcement learning.  
+   **New here:** states directly choose motor outputs and timeout behavior.
 
 ### Pre-flight Checklist
 best.pt is in the project folder and detects your target above 0.75 confidence. Phone stream opens in a browser without timing out. Robot drives 30 cm with less than 2 cm error. WASD keyboard control works over UDP. You know your robot's ESP_IP from Exercise D Serial Monitor output. You know your phone stream URL from Exercise B.
@@ -693,188 +699,6 @@ def ramp(current, target, max_step):
         return target
     return current + max_step * np.sign(diff)
 ```
-
-### PID
-PID controller
-```python
-class PID:
-    """Proportional-Integral-Derivative controller with optional output clamping."""
-
-    def __init__(self, kp, ki, kd, max_integral=100.0, output_limits=None):
-        self.kp = kp
-        self.ki = ki
-        self.kd = kd
-        self.max_integral  = max_integral
-        self.output_limits = output_limits
-        self._integral   = 0.0
-        self._prev_error = 0.0
-        self._prev_time  = None
-
-    def update(self, error):
-        now = time.time()
-        dt  = 0.02 if self._prev_time is None else max(now - self._prev_time, 1e-4)
-        self._prev_time = now
-
-        self._integral   = np.clip(self._integral + error * dt,
-                                   -self.max_integral, self.max_integral)
-        derivative       = (error - self._prev_error) / dt
-        self._prev_error = error
-
-        output = self.kp * error + self.ki * self._integral + self.kd * derivative
-        if self.output_limits:
-            output = np.clip(output, *self.output_limits)
-        return output
-
-    def reset(self):
-        self._integral   = 0.0
-        self._prev_error = 0.0
-        self._prev_time  = None
-```
-The PID controller. Takes an error value, returns a correction. Two instances run simultaneously in Project 1 --- one for steering, one for distance. Explained in full in lesson P1.4.
-
-### MobileVideoStream
-MobileVideoStream
-```python
-class MobileVideoStream:
-    """Continuously pulls MJPEG frames from a phone camera in a background thread."""
-
-    def __init__(self, url):
-        self.url       = url
-        self.frame     = None
-        self.fid       = 0
-        self.connected = False
-        self.running   = True
-        self._lock     = threading.Lock()
-        threading.Thread(target=self._run, daemon=True).start()
-
-    def _run(self):
-        backoff = 1.0
-        while self.running:
-            try:
-                response = requests.get(self.url, stream=True, timeout=10)
-                if response.status_code != 200:
-                    raise ConnectionError("Non-200 status")
-
-                self.connected = True
-                backoff = 1.0
-                buf = b""
-
-                for chunk in response.iter_content(1024):
-                    buf += chunk
-                    start = buf.find(b"\xff\xd8")
-                    end   = buf.find(b"\xff\xd9")
-
-                    if start != -1 and end != -1:
-                        jpg = buf[start : end + 2]
-                        buf = buf[end + 2 :]
-                        img = cv2.imdecode(np.frombuffer(jpg, np.uint8), cv2.IMREAD_COLOR)
-                        if img is not None:
-                            with self._lock:
-                                self.frame = img
-                                self.fid  += 1
-
-                    if not self.running:
-                        break
-
-            except Exception:
-                self.connected = False
-                time.sleep(backoff)
-                backoff = min(backoff * 2, 8.0)
-
-    def read(self):
-        with self._lock:
-            return self.frame, self.fid
-
-    def stop(self):
-        self.running = False
-```
-Connects to the phone camera over WiFi and delivers frames continuously in a background thread. You built the non-threaded version of this in Exercise B. Explained in full in lesson P1.5.
-
-### Commander and Telemetry
-Commander
-```python
-class Commander:
-    """Sends UDP motor commands to the ESP."""
-
-    def __init__(self, ip, port):
-        self.ip    = ip
-        self.port  = port
-        self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
-    def motors(self, left, right, light="off"):
-        msg = f"MOTOR,{int(left)},{int(right)},{light.upper()}"
-        self._sock.sendto(msg.encode(), (self.ip, self.port))
-
-    def stop(self):
-        self._sock.sendto(b"STOP,OFF", (self.ip, self.port))
-```
-Telemetry
-```python
-class Telemetry:
-    """Receives encoder telemetry from the ESP over UDP."""
-
-    def __init__(self, port):
-        self.left_ticks  = 0
-        self.right_ticks = 0
-        self.cmd_left    = 0
-        self.cmd_right   = 0
-        self.running     = True
-        self._lock       = threading.Lock()
-        self._sock       = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self._sock.bind(("", port))
-        self._sock.settimeout(1.0)
-        threading.Thread(target=self._run, daemon=True).start()
-
-    def _run(self):
-        while self.running:
-            try:
-                data, _ = self._sock.recvfrom(128)
-                parts   = data.decode().strip().split(",")
-                if parts[0] == "ENC" and len(parts) == 5:
-                    with self._lock:
-                        self.left_ticks  = int(parts[1])
-                        self.right_ticks = int(parts[2])
-                        self.cmd_left    = int(parts[3])
-                        self.cmd_right   = int(parts[4])
-            except Exception:
-                pass
-
-    def read(self):
-        with self._lock:
-            return {
-                "left_ticks":  self.left_ticks,
-                "right_ticks": self.right_ticks,
-                "cmd_left":    self.cmd_left,
-                "cmd_right":   self.cmd_right,
-            }
-
-    def stop(self):
-        self.running = False
-        self._sock.close()
-```
-Commander sends motor commands to the Arduino over UDP. Telemetry receives encoder tick data back. You built both of these in Exercise D. Explained in P1.6 and P1.7.
-
-### RobotState and ramp()
-RobotState constants
-```python
-class RobotState:
-    STOPPED   = "STOPPED"
-    SEARCHING = "SEARCHING"
-    ACQUIRING = "ACQUIRING"
-    TRACKING  = "TRACKING"
-```
-ramp()
-```python
-def ramp(current, target, max_step):
-    """Limit how fast a value can change per step."""
-    diff = target - current
-    if abs(diff) <= max_step:
-        return target
-    return current + max_step * np.sign(diff)
-```
-RobotState is four string constants naming the four states. `ramp()` limits how fast a value can change --- the acceleration limiter. Both are used in the state machine lesson P1.8.
-!!! info "You only read this once"
-    Every lesson from P1.4 onward explains one section of `obj_track_adv.py` specifically. `shared.py` is the foundation underneath all of it. When Project 2 arrives, its first import line will be identical to Project 1's. That one line is the whole point.
 
 ---
 
@@ -1748,4 +1572,3 @@ Place the ball on the floor while the robot faces a different direction. Run the
 [Download](original/obj_track_adv.py)
 
 
-<video controls width="100%"><source src="original/project_1.mp4" type="video/mp4"></video>

@@ -4,6 +4,7 @@
 
 ## What Is MediaPipe?
 
+<video controls width="100%"><source src="/original/hand_gesture.mp4" type="video/mp4"></video>
 
 ---
 
@@ -23,7 +24,6 @@ Gesture Command Both hands open FORWARD Both hands closed BACKWARD Right open, l
 ---
 
 ## How Hand Landmark Detection Works
-
 
 ---
 
@@ -153,6 +153,9 @@ Line What it does mp.Image(...) Wraps the RGB NumPy frame in the image object ex
 
 ## Get the Robot Code
 
+[Download](original/shared.py)
+
+[Download](original/gesture_control.py)
 
 ---
 
@@ -306,9 +309,3 @@ Pre-trained task-specific modelZero training required, very accurate for the spe
 
 ![curled_finger.png](original/curled_finger.png)
 
-[Download](original/shared.py)
-
-[Download](original/gesture_control.py)
-
-
-<video controls width="100%"><source src="original/hand_gesture.mp4" type="video/mp4"></video>

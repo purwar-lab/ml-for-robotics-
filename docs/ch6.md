@@ -4,6 +4,7 @@
 
 ## What Is a Neural Network?
 
+<video controls width="100%"><source src="/original/tf_playground.mp4" type="video/mp4"></video>
 
 ---
 
@@ -1287,4 +1288,3 @@ Use this as a diagnostic card during later projects.
     YOLO26n is a CNN you train. MediaPipe is a neural network Google trained. The lane follower deliberately uses no neural network. Knowing when not to use one is part of the skill.
 
 
-<video controls width="100%"><source src="original/tf_playground.mp4" type="video/mp4"></video>

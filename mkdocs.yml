@@ -16,9 +16,9 @@ nav:
   - "Exercise C: Precise Movement with Encoders": projC.md
   - "Exercise D: Talk to Your Robot Over WiFi": projD.md
   - "Project 1: Object Tracker": proj1.md
-  - "Project 2: Lane Follower": proj2.md
-  - "Project 3: Gesture Controlled Robot": proj3.md
-  - "Project 4: Pan-Tilt Ball Tracker": proj4.md
+  # - "Project 2: Lane Follower": proj2.md
+  # - "Project 3: Gesture Controlled Robot": proj3.md
+  # - "Project 4: Pan-Tilt Ball Tracker": proj4.md
 
 theme: readthedocs
 markdown_extensions:
