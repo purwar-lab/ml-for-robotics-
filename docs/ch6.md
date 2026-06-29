@@ -111,10 +111,10 @@ In the code above, the weights are hand-picked numbers. In a real network, train
 ---
 
 A single neuron draws one straight line. That is its only tool. Some problems can be solved with a straight line. Others cannot. This experiment shows you both --- and the moment you add a second layer, the impossible becomes trivial.
-[Open in Colab →](https://playground.tensorflow.org)
+[Open in Playground →](https://playground.tensorflow.org)
 
 ### Part 1 --- Set up the impossible problem
-Open Playground: https://playground.tensorflow.org
+Open Playground: [playground.tensorflow.org](https://playground.tensorflow.org)
 
 - **Dataset:** click the XOR dataset. It is the checkerboard pattern: orange top-right and bottom-left, blue top-left and bottom-right.
 - **Features:** make sure only `X1` and `X2` are checked.

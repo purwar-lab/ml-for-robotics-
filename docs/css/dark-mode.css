@@ -81,28 +81,42 @@ html.dark-mode .wy-menu-vertical li a:hover {
 }
 
 html.dark-mode .wy-menu-vertical li.current {
-  background: transparent;
+  background: var(--bg-card);
 }
 
-html.dark-mode .wy-menu-vertical li.current a {
+html.dark-mode .wy-menu-vertical li.current > a,
+html.dark-mode .wy-menu-vertical li.on a {
   background: var(--bg-card);
   border-color: var(--accent);
   color: var(--fg-heading);
 }
 
-html.dark-mode .wy-menu-vertical li.toctree-l1.current > a {
-  background: var(--bg-card);
-  color: var(--fg-heading);
-  border-color: var(--accent);
+html.dark-mode .wy-menu-vertical li.current > a:hover,
+html.dark-mode .wy-menu-vertical li.on a:hover {
+  background: var(--border);
 }
 
-html.dark-mode .wy-menu-vertical li.toctree-l2 a {
+html.dark-mode .wy-menu-vertical li.toctree-l2 a,
+html.dark-mode .wy-menu-vertical li.toctree-l3 a,
+html.dark-mode .wy-menu-vertical li.toctree-l4 a {
   color: var(--fg-muted);
 }
 
-html.dark-mode .wy-menu-vertical li.toctree-l2.current > a {
-  background: var(--bg-card);
-  color: var(--fg-heading);
+html.dark-mode .wy-menu-vertical li.toctree-l2.current > a,
+html.dark-mode .wy-menu-vertical li.toctree-l2.current li.toctree-l3 > a {
+  background: var(--bg);
+  color: var(--fg);
+}
+
+html.dark-mode .wy-menu-vertical li.toctree-l3.current > a,
+html.dark-mode .wy-menu-vertical li.toctree-l3.current li.toctree-l4 > a {
+  background: var(--bg-alt);
+  color: var(--fg);
+}
+
+html.dark-mode .wy-menu-vertical li button.toctree-expand,
+html.dark-mode .wy-menu-vertical li.current > a button.toctree-expand {
+  color: var(--fg-muted);
 }
 
 html.dark-mode .wy-nav-content-wrap {
