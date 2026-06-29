@@ -24,6 +24,8 @@ theme: readthedocs
 markdown_extensions:
   - admonition
   - tables
+  - pymdownx.snippets:
+      base_path: [docs]
 extra_css:
   - css/dark-mode.css
 extra_javascript:
