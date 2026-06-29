@@ -502,7 +502,19 @@ If `All dependencies present.` prints, move on.
 ---
 
 Project 1 becomes your robot when you fill in the configuration block at the top of `obj_track_adv.py`. Every value comes from a previous project or from one calibration step you perform now.
-Constant Source What to enter ESP_IP Exercise D, PD.2 The IP printed by the Arduino Serial Monitor when robot_udp boots. If you lost it, re-upload Exercise D's sketch and read Serial Monitor again. UDP_CMD_PORT = 5001 Exercise D, PD.0 Leave as 5001 . It must match CMD_PORT in the Arduino sketch. UDP_TELEM_PORT = 5002 Exercise D, PD.0 Leave as 5002 . It must match TELEM_PORT in the Arduino sketch. TARGET_OBJECT Exercise A, PA.3 The exact Roboflow class name you trained, such as "ball" . Capitalization and spelling must match. TARGET_AREA Calibrate now The pixel area of the bounding box when the robot is at the distance you want it to hold. PID gains P1.4 Leave defaults for the first run. Tune only after the staged tests work. MAX_SPEED First-run safety Start at 25 , not 30 . Slower is safer for the first real robot test. MAX_ACCEL Exercise C ramping concept Keep at 2 so motor commands change gradually. mobile_ip Exercise B, PB.3 The IP shown in IP Webcam or Simple IP Camera when the stream is active.
+
+| Constant | Source | What to enter |
+|---|---|---|
+| `ESP_IP` | Exercise D, PD.2 | The IP printed by the Arduino Serial Monitor when robot_udp boots. If you lost it, re-upload Exercise D's sketch and read Serial Monitor again. |
+| `UDP_CMD_PORT = 5001` | Exercise D, PD.0 | Leave as `5001`. It must match `CMD_PORT` in the Arduino sketch. |
+| `UDP_TELEM_PORT = 5002` | Exercise D, PD.0 | Leave as `5002`. It must match `TELEM_PORT` in the Arduino sketch. |
+| `TARGET_OBJECT` | Exercise A, PA.3 | The exact Roboflow class name you trained, such as `"ball"`. Capitalization and spelling must match. |
+| `TARGET_AREA` | Calibrate now | The pixel area of the bounding box when the robot is at the distance you want it to hold. |
+| PID gains | P1.4 | Leave defaults for the first run. Tune only after the staged tests work. |
+| `MAX_SPEED` | First-run safety | Start at `25`, not `30`. Slower is safer for the first real robot test. |
+| `MAX_ACCEL` | Exercise C ramping concept | Keep at `2` so motor commands change gradually. |
+| `mobile_ip` | Exercise B, PB.3 | The IP shown in IP Webcam or Simple IP Camera when the stream is active. |
+
 
 ### Calibrate TARGET_AREA
 Run detect_stream.py from Exercise B. Hold your target object at the distance you want the robot to maintain, usually 40 to 60 cm in front of the phone. Read the area value from your PA.9 debug output. If your script does not print area yet, temporarily add the snippet below. Set TARGET_AREA to the area value at that distance.
