@@ -32,3 +32,4 @@ extra_css:
 extra_javascript:
   - js/dark-mode.js
   - js/copy-code.js
+  - js/width-toggle.js
