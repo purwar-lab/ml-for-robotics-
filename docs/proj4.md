@@ -40,8 +40,6 @@ Most hobby servos rotate from 0 to 180 degrees. This exercise clamps pan to `10.
 ---
 
 A pan-tilt mechanism is two servo motors mounted at 90 degrees to each other. One controls left-right pan. The other controls up-down tilt.
-Top viewleft**Pan servo**rightThe pan axis rotates the camera horizontally.
-Side viewup**Tilt servo**downThe tilt axis raises and lowers the camera.
 
 ### Home Position
 `PAN_HOME = 90` points straight ahead. `TILT_HOME = 40` points slightly downward, useful when the ball is on a table or floor.
@@ -85,17 +83,24 @@ pan_and_tilt.py
 YOLO ball tracker for a fixed pan-tilt camera rig.
 
 Architecture:
-  - A phone streams camera frames over WiFi.
-  - YOLO detects the target object in each frame.
-  - One PID controls pan from horizontal image error.
-  - One PID controls tilt from vertical image error.
-  - Each PID outputs degrees per frame, which are added to the current angle.
-  - Python sends UDP packets as SERVO,<pan>,<tilt> to the Arduino.
-  - The Arduino replies with SERVO_ACK,<pan>,<tilt> for the HUD.
+
+- A phone streams camera frames over WiFi.
+- YOLO detects the target object in each frame.
+- One PID controls pan from horizontal image error.
+- One PID controls tilt from vertical image error.
+- Each PID outputs degrees per frame, which are added to the current angle.
+- Python sends UDP packets as `SERVO,<pan>,<tilt>` to the Arduino.
+- The Arduino replies with `SERVO_ACK,<pan>,<tilt>` for the HUD.
 
 Place this file in the same folder as shared.py and best.pt.
-"""
 
+### Complete Python file
+Loads from `pan_and_tilt.py`
+
+<details>
+<summary>Click to expand</summary>
+
+```
 import socket
 import threading
 import time
@@ -109,40 +114,29 @@ from shared import PID, MobileVideoStream, RobotState
 ## Configuration - fill these in for your setup
 
 ### Network
-```
 ESP_IP = "192.168.x.x"       # Arduino IP from Serial Monitor
 MOBILE_IP = "192.168.x.x"    # Phone IP from IP Webcam or Simple IP Camera
 UDP_CMD_PORT = 5001
 UDP_TELEM_PORT = 5002
-```
 
 ### Vision
-```
 TARGET_OBJECT = "ball"
-```
 
 ### Servo physical limits in degrees
-```
 PAN_MIN, PAN_MAX = 10, 170
 TILT_MIN, TILT_MAX = 30, 150
 PAN_HOME = 90
 TILT_HOME = 40
-```
 
 ### Flip these if the camera moves the wrong direction on that axis.
-```
 PAN_INVERT = False
 TILT_INVERT = False
-```
 
 ### Ignore tiny image errors near center to prevent buzzing.
-```
 ANGLE_DEAD_ZONE_H = 0.03
 ANGLE_DEAD_ZONE_V = 0.01
-```
 
 ### PID gains for velocity-mode output in degrees per frame.
-```
 PAN_KP = 8.0
 PAN_KI = 0.0
 PAN_KD = 2.0
@@ -154,20 +148,16 @@ TILT_KI = 0.0
 TILT_KD = 1.5
 MAX_TILT_SPEED = 3.0
 MAX_TILT_INTEGRAL = 0.3
-```
 
 ### State machine
-```
 ACQUIRE_FRAMES = 5
 LOST_TIMEOUT = 1.2
 SEARCH_PAN_SPEED = 1.5
 SEARCH_TILT_SPEED = 0.0
 CMD_INTERVAL = 0.03
-```
 
 ### Commander - sends SERVO commands to the
 
-```
 class ServoCommander:
     """Sends UDP servo commands to the Arduino."""
 
@@ -191,11 +181,9 @@ class ServoCommander:
         """Ask the Arduino to home the rig before the Python script exits."""
         self._send("STOP")
         self._sock.close()
-```
 
 ### Telemetry - receives optional SERVO_ACK packets from the
 
-```
 class ServoTelemetry:
     """
     Receives SERVO_ACK,pan,tilt packets from the Arduino.
@@ -233,12 +221,10 @@ class ServoTelemetry:
     def stop(self):
         self.running = False
         self._sock.close()
-```
 
 
 ### Pan-tilt tracker
 
-```
 class PanTiltTracker:
     """YOLO-based target tracker that drives two independent servo axes."""
 
@@ -411,11 +397,9 @@ class PanTiltTracker:
         self.tilt_angle = float(TILT_HOME)
         self.pid_pan.reset()
         self.pid_tilt.reset()
-```
 
 ### Visualization
 
-```
 def draw_overlay(frame, debug, pan, tilt, telem, scale_x=1.0, scale_y=1.0):
     h, w = frame.shape[:2]
     state_color = PanTiltTracker.STATE_COLORS.get(debug["state"], (255, 255, 255))
@@ -466,11 +450,9 @@ def draw_overlay(frame, debug, pan, tilt, telem, scale_x=1.0, scale_y=1.0):
             color,
             2 if bold else 1,
         )
-```
 
 ### Main loop
 
-```
 def main():
     stream_url = f"http://{MOBILE_IP}:8080/video"
     print(f"Video stream : {stream_url}")
@@ -574,12 +556,15 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 ```
+</details>
+
+---
 
 ### Complete Arduino sketch 
 Loads from `pan_tilt_arduino.ino`
-
+<details>
+<summary>Click to expand</summary>
 ```
 #include <Servo.h>
 #include <WiFiS3.h>
@@ -731,6 +716,7 @@ void loop() {
 }
 ```
 
+</details>
 ---
 
 ## The Arduino Sketch: Servos Over WiFi
