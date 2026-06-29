@@ -20,11 +20,6 @@
 .dark-mode-toggle:hover {
   transform: scale(1.1);
 }
-/* NOTE: Centers content */
-/* .wy-nav-content { */
-/*   margin-left: auto; */
-/*   margin-right: auto; */
-/* } */
 
 .wy-table-responsive table td,
 .wy-table-responsive table th {

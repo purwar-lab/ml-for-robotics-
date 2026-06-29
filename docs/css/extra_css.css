@@ -1,0 +1,14 @@
+/* NOTE: Centers content */
+/* .wy-nav-content { */
+/*   margin-left: auto; */
+/*   margin-right: auto; */
+/* } */
+
+/* Allow wrapping at spaces but never break mid-word or hyphenate */
+.wy-table-responsive table td,
+.wy-table-responsive table th {
+    word-break: normal;
+    overflow-wrap: normal;
+    hyphens: none;
+    white-space: normal;
+}

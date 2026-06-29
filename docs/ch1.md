@@ -181,7 +181,7 @@ shared = room_a_objects & room_b_objects
 print(f"Objects in both rooms: {shared}")
 ```
 | Line | What it does |
-| --- | --- |
+|:---|---|
 | `objects_seen = {"chair", "table", "door", "chair", "wall"}` | Creates a set. Duplicate values are automatically kept only once. |
 | `objects_seen.add("human")` | Adds one new value to the set. |
 | `len(objects_seen)` | Counts how many unique objects are in the set. |
@@ -211,8 +211,9 @@ for key, value in robot_state.items():
     print(f"  {key}: {value}")
 ```
 When you call `robot_state.items()`, Python gives you back each key-value pair as a small tuple: `("name", "ARIA")`, `("battery", 87)`, and so on. The line `for key, value in robot_state.items():` uses tuple unpacking. Each pair is split into `key` and `value` automatically on every loop iteration.
+
 | Line | What it does |
-| --- | --- |
+|:-|-|
 | `robot_state = { ... }` | Creates a dictionary. Each entry has a key on the left and a value on the right. |
 | `robot_state['battery']` | Looks up the value stored under the key `"battery"`. This crashes if the key does not exist. |
 | `robot_state["battery"] -= 5` | Subtracts 5 from the existing battery value and stores the result back in the dictionary. |

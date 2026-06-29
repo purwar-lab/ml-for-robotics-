@@ -28,6 +28,7 @@ markdown_extensions:
       base_path: [docs]
 extra_css:
   - css/dark-mode.css
+  - css/extra_css.css
 extra_javascript:
   - js/dark-mode.js
   - js/copy-code.js
