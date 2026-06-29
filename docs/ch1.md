@@ -730,6 +730,7 @@ After running that cell, those packages are available for the rest of your Colab
 !!! tip "Most common packages are already installed"
     Most packages come pre-installed in Google Colab. You only need `!pip install` for packages that are less common. If you try to import something and see `ModuleNotFoundError`, that is your signal to run `!pip install package-name` first.
 The install name and the import name are sometimes different. Here are the package names used in this course.
+
 | What we call it | pip install command | import statement |
 |:--|:--|:--|
 | NumPy | `!pip install numpy` | `import numpy as np` |
@@ -739,6 +740,7 @@ The install name and the import name are sometimes different. Here are the packa
 | OpenCV | `!pip install opencv-python` | `import cv2` |
 | TensorFlow | `!pip install tensorflow` | `import tensorflow as tf` |
 | OpenAI Gym | `!pip install gymnasium` | `import gymnasium as gym` |
+
 **Note:** The install name `scikit-learn` is different from the import name `sklearn`. This is the most common source of confusion. Always look up the correct import name in the library's official documentation.
 NumPy Arrays and math Pandas Data tables Matplotlib Plots and charts Scikit-learn Classic ML TensorFlow/Keras Neural networks
 Standard ML import block
@@ -792,7 +794,10 @@ The variable `robot_log` now contains 30 minutes of sensor data. Your job is to 
 !!! tip "Exercise"
     Write analysis code that does the following: count total entries and sensor errors, filter out `distance == -1` entries, find the highest motor temperature and its task, calculate average battery drain per minute, use a set to find unique tasks, and print a formatted report using f-strings.
 !!! tip "Self-check"
-    [ ] Did you use a function? [ ] Did you use a list comprehension? [ ] Did you use a dictionary for the summary? [ ] Is your output clearly formatted?
+    - Did you use a function?
+    - Did you use a list comprehension?
+    - Did you use a dictionary for the summary?
+    - Is your output clearly formatted?
 Show Solution
 
 

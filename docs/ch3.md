@@ -555,10 +555,12 @@ print("Logistic Regression trained.")
 
 *Expected output:* `Logistic Regression trained.`
 **Cell 12** evaluates that model and draws a confusion matrix : a 2×2 grid that shows exactly which types of mistakes it made.
+
 |  | **Predicted Normal** | **Predicted Failure** |
 |:--|:--|:--|
 | **Was actually Normal** | True Negative ✓ | False Positive ✗ |
 | **Was actually a Failure** | False Negative ✗ *(the dangerous mistake)* | True Positive ✓ |
+
 Cell 12: Evaluate Logistic Regression
 ```python
 print(classification_report(y_test, log_pred))

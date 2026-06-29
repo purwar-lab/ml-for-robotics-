@@ -1105,12 +1105,14 @@ model.fit(x, y, epochs=3000, verbose=0)
     Keras does everything in `sin.ipynb`'s training loop automatically. The architecture is the same. The Adam optimizer is the same. The MSE loss is the same. Keras hides the implementation so you can focus on the design rather than the math.
     Now that you have implemented Adam by hand and watched the gradient flow backward through the layers, you know what Keras is doing under the hood. That understanding separates someone who uses Keras from someone who understands it.
 [Open in Colab →](https://colab.research.google.com/github/purwar-lab/ml-for-robotics-/blob/main/notebooks/ch6-first-network.ipynb)
+
 | Keras piece | Manual NumPy equivalent |
 |:--|:--|
 | `Dense(20, activation="relu")` | `W1`, `b1`, `np.dot`, and `relu` |
 | `loss="mse"` | `mse_loss(y, a3)` |
 | `Adam(0.001)` | The full Adam moment, bias-correction, and update block from lesson 6.7 |
 | `model.fit(...)` | Forward pass, loss, backpropagation, update, repeat |
+
 Cell 1: Generate sin(x) data
 ```python
 import numpy as np
