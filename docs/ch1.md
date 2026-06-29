@@ -93,7 +93,7 @@ print(type(is_obstacle))
 print(f"{robot_name} sees an obstacle at {distance:.1f}m: {is_obstacle}")
 ```
 | Line | What it does |
-| | |
+|:--|:--|
 | `distance = 2.45` | Creates a variable named `distance` and stores a decimal number, which Python calls a `float`. |
 | `is_obstacle = True` | Stores a boolean value. Booleans are either `True` or `False`. |
 | `robot_name = "ARIA"` | Stores text as a string. Strings are wrapped in quotes. |
@@ -138,7 +138,7 @@ print(f"Total readings: {len(sensor_readings)}")
 print(f"Middle slice: {sensor_readings[1:3]}")
 ```
 | Line | What it does |
-| | |
+|:--|:--|
 | `sensor_readings = [1.2, 0.9, 1.5, 2.1, 0.3]` | Creates a list. Square brackets `[ ]` tell Python this is a list, and commas separate the values. |
 | `sensor_readings.append(1.8)` | `.append()` is a list method. It adds one item to the end of the existing list. |
 | `sensor_readings[-1]` | Uses a negative index. `-1` means the last item, `-2` means the second-to-last item, and so on. |
@@ -159,7 +159,7 @@ x, y = home_position           # tuple unpacking
 print(f"Home is at x={x}, y={y}")
 ```
 | Line | What it does |
-| | |
+|:--|:--|
 | `home_position = (0.0, 0.0)` | Creates a tuple. Parentheses `( )` group values that should stay together. |
 | `wheel_diameter = (0.12,)` | Creates a one-item tuple. The comma is required; without it, Python treats the parentheses like normal grouping. |
 | `x, y = home_position` | Uses tuple unpacking. Python assigns the first value to `x` and the second value to `y`. |
@@ -183,7 +183,7 @@ shared = room_a_objects & room_b_objects
 print(f"Objects in both rooms: {shared}")
 ```
 | Line | What it does |
-|---|---|
+|:--|:--|
 | `objects_seen = {"chair", "table", "door", "chair", "wall"}` | Creates a set. Duplicate values are automatically kept only once. |
 | `objects_seen.add("human")` | Adds one new value to the set. |
 | `len(objects_seen)` | Counts how many unique objects are in the set. |
@@ -215,7 +215,7 @@ for key, value in robot_state.items():
 When you call `robot_state.items()`, Python gives you back each key-value pair as a small tuple: `("name", "ARIA")`, `("battery", 87)`, and so on. The line `for key, value in robot_state.items():` uses tuple unpacking. Each pair is split into `key` and `value` automatically on every loop iteration.
 
 | Line | What it does |
-|:-|-|
+|:--|:--|
 | `robot_state = { ... }` | Creates a dictionary. Each entry has a key on the left and a value on the right. |
 | `robot_state['battery']` | Looks up the value stored under the key `"battery"`. This crashes if the key does not exist. |
 | `robot_state["battery"] -= 5` | Subtracts 5 from the existing battery value and stores the result back in the dictionary. |
@@ -259,7 +259,7 @@ if current_zone in safe_zones:
     print(f"{current_zone} is a safe zone. Power down.")
 ```
 | Line | What it does |
-| : | : |
+|:--|:--|
 | `battery = 23` | Stores the current battery level as an integer. |
 | `distance_to_obstacle = 0.4` | Stores a sensor reading as a float in meters. |
 | `if battery < 10:` | Starts the first decision branch. The indented line below it runs only if this condition is true. |
@@ -310,7 +310,7 @@ for time, reading in zip(timestamps, sensor_log):
     print(f"  {time}: {reading:.1f}m")
 ```
 | Line | What it does |
-| | |
+|:--|:--|
 | `sensor_log = [...]` | Stores the readings in a list so the loop can visit them one at a time. |
 | `timestamps = [...]` | Stores matching time labels in a second list. |
 | `for i, reading in enumerate(sensor_log):` | `enumerate()` returns two values each time: the index and the reading. Python unpacks them into `i` and `reading`. |
@@ -333,7 +333,7 @@ else:
     print(f"Battery too low! Only traveled {distance_traveled:.1f}m")
 ```
 | Line | What it does |
-| | |
+|:--|:--|
 | `battery = 100` | Starts the simulated battery at 100 percent. |
 | `while battery > 20:` | Repeats the indented block as long as the condition remains true. |
 | `battery -= 5` | Subtracts 5 from the battery each loop. This moves the loop toward stopping. |
@@ -382,7 +382,7 @@ in_cm = [r * 100 for r in clean_readings_short]
 print("In cm:", in_cm)
 ```
 | Line | What it does |
-| | |
+|:--|:--|
 | `clean_readings_long = []` | Creates an empty list that the long loop will fill. |
 | `for r in raw_readings:` | Visits each raw reading one at a time. |
 | `if r > 0:` | Filters out invalid negative readings. |
@@ -462,7 +462,7 @@ print(f"Danger events: {result['danger_count']}")
 ```
 
 | Line | What it does |
-|--|--|
+|:--|:--|
 | `def analyze_sensor_data(...):` | Defines a reusable function with three parameters. `danger_threshold` and `unit` have default values. |
 | `"""Analyze ..."""` | Documents the function with a docstring. Python ignores it during normal execution, but tools can display it as help text. |
 | `if not readings:` | Checks for an empty list. Empty lists count as false in Python. |
@@ -502,7 +502,7 @@ print(get_battery_warning(8))
 print(get_battery_warning(50))
 ```
 | Line | What it does |
-| : | : |
+|:--|:--|
 | `# This is a single-line comment` | Starts a comment. Python skips the rest of the line. |
 | `distance = 2.45   # ...` | Stores a number, then adds a human note after the code. |
 | `""" ... """` | Creates a multi-line string. At the top of a function, this becomes a docstring. |
@@ -539,7 +539,7 @@ print(f"Full result tuple: {result}")     # ('OK', False)
 print(f"Just the status: {result[0]}")    # OK
 ```
 | Line | What it does |
-| : | : |
+|:--|:--|
 | `return status, is_overheating` | Returns two values. Python wraps them in a tuple automatically, such as `("WARNING", True)`. |
 | `motor_status, overheating = analyze_motor(...)` | Uses tuple unpacking. Python splits the tuple and assigns the first value to `motor_status` and the second to `overheating`. |
 | `result = analyze_motor(65, 2800)` | Stores the whole returned tuple in one variable. |
@@ -566,7 +566,7 @@ set_robot_speed(1.5, silent=True, unit="mph")
 # DEFAULT VALUES: if you do not pass an argument, Python uses the default.
 ```
 | Line | What it does |
-| : | : |
+|:--|:--|
 | `speed` | Required parameter. The caller must provide this. Omitting it causes a `TypeError`. |
 | `unit="m/s"` | Optional parameter with a default value. If the caller does not pass it, Python uses `"m/s"`. |
 | `silent=False` | Another optional parameter. It defaults to `False`. |
@@ -597,7 +597,7 @@ def configure_robot(**kwargs):
 configure_robot(speed=1.5, task="mapping", battery=87)
 ```
 | Line | What it does |
-| : | : |
+|:--|:--|
 | `def print_all_readings(*args):` | Collects any number of extra positional arguments into a tuple named `args`. |
 | `for reading in args:` | Loops through every value that was passed in. |
 | `def configure_robot(**kwargs):` | Collects any number of named arguments into a dictionary named `kwargs`. |
@@ -662,7 +662,7 @@ rover.charge()                     # Rover is fully charged
 print(rover.battery)               # 100
 ```
 | Line | What it does |
-| : | : |
+|:--|:--|
 | `class Robot:` | Defines a new class (a blueprint). By convention class names use CapitalizedWords. |
 | `def __init__(self, name, battery=100):` | The constructor. Python runs it automatically every time you create an object. `battery` has a default value. |
 | `self.name = name` | Stores data *on the object* as an attribute. `self` is the object being built. |
@@ -731,7 +731,7 @@ After running that cell, those packages are available for the rest of your Colab
     Most packages come pre-installed in Google Colab. You only need `!pip install` for packages that are less common. If you try to import something and see `ModuleNotFoundError`, that is your signal to run `!pip install package-name` first.
 The install name and the import name are sometimes different. Here are the package names used in this course.
 | What we call it | pip install command | import statement |
-| : | : | : |
+|:-:|:-:|:-:|
 | NumPy | `!pip install numpy` | `import numpy as np` |
 | Pandas | `!pip install pandas` | `import pandas as pd` |
 | Matplotlib | `!pip install matplotlib` | `import matplotlib.pyplot as plt` |

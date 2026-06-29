@@ -374,7 +374,7 @@ void loop() {
 }
 ```
 | Part | What it does |
-| : | : |
+|:--|:--|
 | `WiFiUDP udp;` and `udp.begin(UDP_PORT)` | Creates the UDP listener and opens port `5005` so the Arduino can receive packets. |
 | `udp.parsePacket()` | In `loop()`, checks whether a packet has arrived. Returns its size, or 0 if nothing is waiting. |
 | `udp.read(packet, ...)` then `packet[len] = '\0'` | Copies the bytes into a buffer and adds a string terminator so it can be treated as text. |
@@ -434,7 +434,7 @@ off_button.pack(pady=5)
 root.mainloop()
 ```
 | Line | What it does |
-| : | : |
+|:--|:--|
 | `socket.socket(socket.AF_INET, socket.SOCK_DGRAM)` | Creates a UDP socket. `SOCK_DGRAM` means UDP (datagrams); `SOCK_STREAM` would be TCP. |
 | `sock.settimeout(1.0)` | Waits at most one second for a reply, so the program never freezes if a packet is lost. |
 | `sock.sendto(command.encode(), (ARDUINO_IP, ARDUINO_PORT))` | Sends the command string (converted to bytes) to the Arduino's address and port. |
@@ -605,7 +605,7 @@ stop_button.pack(pady=10)
 root.mainloop()
 ```
 | Line | What it does |
-| : | : |
+|:--|:--|
 | `def send(command):` | Sends one UDP packet. Note there is no `recvfrom` here : this is fire-and-forget (see the note below). |
 | `def servo_changed(value):` | The slider's callback. tkinter passes the slider's current value in automatically; we convert it to `int` and send `S 10 angle`. |
 | `left_motor(speed)` / `right_motor(speed)` | Build one `M` command for a wheel from its three pins plus a speed. |

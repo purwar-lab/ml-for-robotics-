@@ -69,7 +69,7 @@ Learn through actions and rewards. Example: a robot learns a navigation policy b
 
 ### When to Use Which
 | Question | Use | Robotics Example |
-|----------|-----|-----------------|
+|:--|:-:|:--|
 | Do you have labeled answers? | Supervised learning | Predict failure from known historical failures. |
 | Do you have raw data but no labels? | Unsupervised learning | Cluster sensor behavior into normal and unusual modes. |
 | Does the system learn by acting? | Reinforcement learning | Teach a robot to navigate a maze. |

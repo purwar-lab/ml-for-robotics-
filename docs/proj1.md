@@ -135,7 +135,7 @@ If `All dependencies present.` prints, move on.
 Project 1 becomes your robot when you fill in the configuration block at the top of `obj_track_advpid.py`. Every value comes from a previous project or from one calibration step you perform now.
 
 | Constant | Source | What to enter |
-|---|---|---|
+|:-:|:-:|:--|
 | `STREAM_URL` | Exercise B, PB.3 | The full stream URL shown in IP Webcam or Simple IP Camera when the stream is active. Android: `http://<phone-ip>:8080/video`. iPhone: `http://<phone-ip>:8080/live`. |
 | `ARDUINO_IP` | Exercise D, PD.2 | The IP printed by the Arduino Serial Monitor when robot_udp boots. If you lost it, re-upload Exercise D's sketch and read Serial Monitor again. |
 | `CMD_PORT = 5001` | Exercise D, PD.0 | Leave as `5001`. It must match `CMD_PORT` in the Arduino sketch. |
