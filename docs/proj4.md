@@ -55,21 +55,25 @@ If the camera moves the wrong way, change the matching Python flag: `PAN_INVERT`
 
 ## Get the Code
 
-[Download](original/shared.py)
+[shared.py](original/shared.py)
 
-[Download](original/pan_and_tilt.py)
+[pan_and_tilt.py](original/pan_and_tilt.py)
 
-[Download](original/pan_tilt_arduino.ino)
+[pan_tilt_arduino.ino](original/pan_tilt_arduino.ino)
 
-[Download](original/test_servos.py)
+[test_servos.py](original/test_servos.py)
 
 ---
 
 Place these files in the same folder as `shared.py` and `best.pt`. Open the Arduino sketch in Arduino IDE and upload it to the UNO R4 WiFi.
-shared.pyAlready used in Project 1. Keep it beside the tracker script.`shared.py`
-pan_and_tilt.pyThe Python YOLO tracker and servo commander.`pan_and_tilt.py`
-pan_tilt_arduino.inoThe Arduino servo-over-WiFi sketch.`pan_tilt_arduino.ino`
-test_servos.pyA quick command-only test before running YOLO.`test_servos.py`
+
+`shared.py` Already used in Project 1. Keep it beside the tracker script.
+
+`pan_and_tilt.py` The Python YOLO tracker and servo commander.
+
+`pan_tilt_arduino.ino` The Arduino servo-over-WiFi sketch.
+
+`test_servos.py` A quick command-only test before running YOLO.
 
 ### Values You Must Fill In
 File Variable Meaning pan_and_tilt.py ESP_IP Arduino IP from Serial Monitor. pan_and_tilt.py MOBILE_IP Phone camera app IP address. pan_and_tilt.py TARGET_OBJECT Your YOLO class name, usually ball . pan_and_tilt.py PAN_INVERT , TILT_INVERT Set to True only if an axis moves backward. pan_tilt_arduino.ino SSID , PASSWORD Your WiFi network name and password.
@@ -573,7 +577,8 @@ if __name__ == "__main__":
 
 ```
 
-### Complete Arduino sketch - loads from `pan_tilt_arduino.ino` Complete pan_tilt_arduino.inoArduino
+### Complete Arduino sketch 
+Loads from `pan_tilt_arduino.ino`
 
 ```
 #include <Servo.h>
