@@ -14,7 +14,7 @@ Approach YOLO in Project 1 OpenCV classical vision in Project 2 Input Any image 
 !!! tip "Industrial robotics uses both"
     Factory robots often use classical vision for measurement, barcode reading, scratch detection, and line following because the environment is controlled. Neural networks are used when the visual world is messy. Your floor track is controlled, so classical vision is the right engineering choice.
 
-<video controls width="100%"><source src="../original/lane_follower.mp4" type="video/mp4"></video>
+<video controls height="100%"><source src="../original/lane_follower.mp4" type="video/mp4"></video>
 
 
 ### By the End of This Project

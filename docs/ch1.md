@@ -13,6 +13,7 @@
 
 ### Why Python & Setting Up Colab
 **Concept.** Python is the default language of machine learning because the syntax is readable and the ecosystem is huge. NumPy, Pandas, scikit-learn, TensorFlow, PyTorch, OpenCV, and nearly every robotics ML example you find online will have Python support.
+
 **C++**
 Same idea in C++
 ```cpp
@@ -22,6 +23,7 @@ int main() {
   return 0;
 }
 ```
+
 **Python**
 Your first Python cell
 ```python

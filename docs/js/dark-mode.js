@@ -1,6 +1,13 @@
 (function() {
   var STORAGE_KEY = 'mkdocs-dark-mode';
   var html = document.documentElement;
+  var HLJS_LIGHT = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css';
+  var HLJS_DARK  = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css';
+
+  function setHljsTheme(dark) {
+    var link = document.querySelector('link[href*="highlight.js"]');
+    if (link) link.href = dark ? HLJS_DARK : HLJS_LIGHT;
+  }
 
   function setDark(enabled) {
     if (enabled) {
@@ -8,6 +15,7 @@
     } else {
       html.classList.remove('dark-mode');
     }
+    setHljsTheme(enabled);
     try {
       localStorage.setItem(STORAGE_KEY, enabled ? '1' : '0');
     } catch(e) {}
@@ -26,11 +34,11 @@
   var btn = document.createElement('button');
   btn.className = 'dark-mode-toggle';
   btn.setAttribute('aria-label', 'Toggle dark mode');
-  btn.innerHTML = html.classList.contains('dark-mode') ? '\u2600' : '\u263E';
+  btn.innerHTML = html.classList.contains('dark-mode') ? '☀' : '☾';
   btn.addEventListener('click', function() {
     var isDark = !html.classList.contains('dark-mode');
     setDark(isDark);
-    btn.innerHTML = isDark ? '\u2600' : '\u263E';
+    btn.innerHTML = isDark ? '☀' : '☾';
   });
   document.body.appendChild(btn);
 })();

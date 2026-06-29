@@ -4,7 +4,7 @@
 
 ## What Is a Neural Network?
 
-<video controls width="100%"><source src="../original/tf_playground.mp4" type="video/mp4"></video>
+<video controls height="100%"><source src="../original/tf_playground.mp4" type="video/mp4"></video>
 
 ---
 
