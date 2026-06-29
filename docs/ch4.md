@@ -11,7 +11,7 @@
 
 
 ### What Is Unsupervised Learning?
-In supervised learning every row has a label --- someone already answered the question for each example. A human looked at 10,000 sensor readings and wrote "failure" or "normal" next to each one. That labeling is expensive, slow, and sometimes impossible.
+In supervised learning every row has a label : someone already answered the question for each example. A human looked at 10,000 sensor readings and wrote "failure" or "normal" next to each one. That labeling is expensive, slow, and sometimes impossible.
 Unsupervised learning works without labels. You give the algorithm raw data and ask it to find structure on its own: groups of similar rows, patterns that repeat, dimensions that capture the most variation. Nobody told the algorithm what to look for. It discovers it.
 **Supervised Learning**
 **Data:** rows WITH labels.
@@ -22,7 +22,7 @@ The algorithm is told what the answer looks like.
 **Data:** rows WITHOUT labels.
 **Question:** what structure exists in this data?
 **Example:** sensor readings → how many natural groups?
-The algorithm is told nothing --- it finds structure itself.
+The algorithm is told nothing : it finds structure itself.
 !!! tip "Robotics connection"
     A robot mapping an unknown building has no labeled floor plan. It must group sensor readings into wall, open space, and obstacle without anyone teaching it those categories. That is unsupervised learning in the real world.
 
@@ -36,8 +36,8 @@ The algorithm is told nothing --- it finds structure itself.
 ### Concept: Clustering & Dimensionality Reduction
 
 #### Clustering
-Clustering divides a dataset into groups where rows inside each group are more similar to each other than to rows in other groups. The algorithm does not know what the groups represent --- that interpretation is your job as the engineer.
-Three clusters found automatically --- the algorithm groups similar points together without being told what the groups mean. Labeling each cluster (normal, imbalanced, loose) is the engineer's job, not the algorithm's.
+Clustering divides a dataset into groups where rows inside each group are more similar to each other than to rows in other groups. The algorithm does not know what the groups represent : that interpretation is your job as the engineer.
+Three clusters found automatically : the algorithm groups similar points together without being told what the groups mean. Labeling each cluster (normal, imbalanced, loose) is the engineer's job, not the algorithm's.
 A vibrating motor shaft might produce three distinct patterns of sensor readings: one when balanced correctly, one with a slight imbalance, and one with a loose bearing. Clustering discovers these three modes automatically even if no one ever labeled which readings belonged to which state.
 Run to see three vibration modes that K-Means will learn to separate
 ```python
@@ -75,12 +75,12 @@ plt.show()
 Principal Component Analysis (PCA) is not a clustering algorithm. It is a dimensionality reduction technique: it compresses many features into fewer dimensions while preserving as much variation as possible.
 ![pca_plot3_3d_to_2d.png](original/pca_plot3_3d_to_2d.png)
 
-PCA projects high-dimensional data onto fewer dimensions. Three features compressed to two --- the two directions that capture the most variation in the original data are kept, the rest is discarded.
+PCA projects high-dimensional data onto fewer dimensions. Three features compressed to two : the two directions that capture the most variation in the original data are kept, the rest is discarded.
 Imagine your feature table has 10 columns. You cannot plot 10 dimensions. PCA finds the two directions in that 10-dimensional space that capture the most variation and projects everything onto those two axes. The result is a 2D scatter plot you can actually look at.
 PCA does not label the axes for you. The first principal component is the direction of greatest variance in your data. It might correspond roughly to overall vibration intensity or frequency content, but you interpret that from the data, not from PCA.
 ![pca_plot1_variance_directions.png](original/pca_plot1_variance_directions.png)
 
-PC1 points in the direction of greatest variance in the data. PC2 points perpendicular to PC1, capturing the next largest spread. Neither axis is labeled automatically --- you read the data to decide what each principal component represents.
+PC1 points in the direction of greatest variance in the data. PC2 points perpendicular to PC1, capturing the next largest spread. Neither axis is labeled automatically : you read the data to decide what each principal component represents.
 Run to see PCA projecting 4 features into 2D
 ```python
 import numpy as np
@@ -223,7 +223,7 @@ plt.show()
 ```
 
 #### Elbow Method
-K-Means requires you to choose K before running --- but how do you know the right number? The elbow method gives a data-driven answer.
+K-Means requires you to choose K before running : but how do you know the right number? The elbow method gives a data-driven answer.
 Run K-Means for K=1 through 10. For each K record the inertia: the total squared distance from every point to its centroid. As K increases, inertia always decreases. The useful question is: where does adding another cluster stop helping significantly?
 The elbow is where the curve bends. Beyond that point, extra clusters reduce inertia only slightly and add complexity without insight.
 Run to see the elbow method on sample data
@@ -272,7 +272,7 @@ for k, inertia in zip(ks, inertias):
     print(f"  K={k:2d}: {bar} {inertia:.0f}")
 ```
 !!! warning "The elbow is not always obvious"
-    On real data the elbow is often a gentle curve rather than a sharp bend. If you cannot see a clear elbow, try silhouette score as a second opinion --- it measures how well-separated the clusters are. Higher silhouette score is better.
+    On real data the elbow is often a gentle curve rather than a sharp bend. If you cannot see a clear elbow, try silhouette score as a second opinion : it measures how well-separated the clusters are. Higher silhouette score is better.
 
 #### DBSCAN: When Clusters Are Not Round
 K-Means assumes clusters are roughly round and requires you to specify K in advance. DBSCAN (Density-Based Spatial Clustering of Applications with Noise) has neither limitation. It defines a cluster as a dense region of points and marks sparse points as noise (`-1`) rather than forcing them into a cluster.
@@ -289,7 +289,7 @@ DBSCAN is powerful when clusters have irregular shapes, when outliers need to be
 **Dataset:** [Screw Machine / Rotating Shaft Vibration Data](https://www.kaggle.com/datasets/jishnukoliyadan/vibration-analysis-on-rotating-shaft). If the Kaggle file changes, the fallback is synthetic vibration data representing normal, imbalanced, and loose modes.
 
 ### What you are building
-A CNC machine generates vibration data continuously. Over time the shaft develops faults --- imbalance, loose bearings, misalignment. Each fault produces a different vibration pattern. The goal of this project is to cluster those patterns automatically without any labeled examples. An engineer can then look at each cluster and give it a name: normal, imbalanced, or loose.
+A CNC machine generates vibration data continuously. Over time the shaft develops faults : imbalance, loose bearings, misalignment. Each fault produces a different vibration pattern. The goal of this project is to cluster those patterns automatically without any labeled examples. An engineer can then look at each cluster and give it a name: normal, imbalanced, or loose.
 This is real-world unsupervised learning. The dataset comes from a rotating shaft instrumented with a vibration sensor. You will extract statistical features from the raw signal, run K-Means to find natural groupings, and use PCA to visualize whether the clusters correspond to real physical operating modes.
 1. Download the vibration dataset from Kaggle
 2. Plot the raw signal to understand what you are working with
@@ -301,7 +301,7 @@ This is real-world unsupervised learning. The dataset comes from a rotating shaf
 8. Interpret what each cluster means physically
 [Open in Colab →](https://colab.research.google.com/github/purwar-lab/ml-for-robotics-/blob/main/notebooks/ch4-vibration-project.ipynb)
 !!! info ""
-    All ten cells run in Google Colab --- click Open in Colab above to open the pre-filled notebook and run top to bottom.
+    All ten cells run in Google Colab : click Open in Colab above to open the pre-filled notebook and run top to bottom.
 This cell installs the Kaggle library and uses your API token to download the vibration dataset directly into Colab.
 Cell 1: Kaggle download — expect: dataset files extracted
 ```python
@@ -318,7 +318,7 @@ os.chmod("/root/.kaggle/kaggle.json", 0o600)
 !kaggle datasets download -d jishnukoliyadan/vibration-analysis-on-rotating-shaft
 !unzip -o vibration-analysis-on-rotating-shaft.zip -d vibration_data
 ```
-Load the downloaded CSV, or generate synthetic vibration data automatically if the download failed --- the analysis works either way.
+Load the downloaded CSV, or generate synthetic vibration data automatically if the download failed : the analysis works either way.
 Cell 2: Load data — expect: table with time and vibration columns
 ```python
 import numpy as np
@@ -340,7 +340,7 @@ else:
 display(df.head())
 print(df.shape)
 ```
-Plot the raw signal before processing anything --- a flat line or missing data shows up immediately in a waveform plot.
+Plot the raw signal before processing anything : a flat line or missing data shows up immediately in a waveform plot.
 Cell 3: Plot signal — expect: waveform chart
 ```python
 signal_col = "vibration" if "vibration" in df.columns else df.select_dtypes("number").columns[-1]
@@ -357,7 +357,7 @@ ax.spines[:].set_color('#30363d')
 plt.tight_layout()
 plt.show()
 ```
-K-Means works on numbers, not raw waves --- this cell extracts four statistical features from each 256-sample window.
+K-Means works on numbers, not raw waves : this cell extracts four statistical features from each 256-sample window.
 Cell 4: Feature engineering — expect: table with mean, std, max, fft_peak
 ```python
 values = df[signal_col].dropna().to_numpy()
@@ -409,7 +409,7 @@ ax.spines[:].set_color('#30363d')
 plt.tight_layout()
 plt.show()
 ```
-Fit K-Means with K=3 and assign every window to a cluster --- then look at the average feature values per cluster.
+Fit K-Means with K=3 and assign every window to a cluster : then look at the average feature values per cluster.
 Cell 7: Fit K-Means — expect: table of mean values per cluster
 ```python
 kmeans = KMeans(n_clusters=3, random_state=42, n_init="auto")
@@ -450,7 +450,7 @@ display(summary)
 for cluster_id, row in feature_df.groupby("cluster").mean().iterrows():
     print(f"Cluster {cluster_id}: std={row['std']:.3f}, fft_peak={row['fft_peak']:.1f}")
 ```
-Try DBSCAN as an alternative --- it finds clusters without needing K specified in advance and marks outliers as -1.
+Try DBSCAN as an alternative : it finds clusters without needing K specified in advance and marks outliers as -1.
 Cell 10: DBSCAN — expect: scatter plot, some points labeled -1
 ```python
 from sklearn.cluster import DBSCAN

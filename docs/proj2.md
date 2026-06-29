@@ -9,7 +9,7 @@
 
 In Project 1 you used YOLO, a neural network, to find an object in an image. YOLO learned from thousands of labeled examples. Project 2 uses classical computer vision instead: direct mathematical operations on pixels.
 Classical computer vision does not learn. It applies rules such as grayscale conversion, blurring, thresholding, morphology, and row scanning. For a controlled problem like following tape on the floor, those rules are faster, smaller, and easier to debug than a trained model.
-The robot follows black tape on the floor using only pixel math --- no trained model, no GPU required.
+The robot follows black tape on the floor using only pixel math : no trained model, no GPU required.
 Approach YOLO in Project 1 OpenCV classical vision in Project 2 Input Any image with the trained object visible. A controlled image where the line contrasts with the floor. What it detects Objects it was trained to recognize. Specific pixel patterns: dark line, light floor, or the inverse. Speed Usually 15-30 fps on CPU. Often 60-120 fps on CPU. Training Required. Not required. Data collection Required: many labeled images. Not required. Common failure Object looks different from training data. Lighting or floor color changes too much. Files needed A model file such as best.pt . No model file, only code.
 !!! tip "Industrial robotics uses both"
     Factory robots often use classical vision for measurement, barcode reading, scratch detection, and line following because the environment is controlled. Neural networks are used when the visual world is messy. Your floor track is controlled, so classical vision is the right engineering choice.
@@ -56,10 +56,10 @@ class LaneFollower:
 def draw_debug(...):
     ...
 ```
-`shared.py` is unchanged. The vision module swapped. Everything else --- the camera, the UDP, the state machine, the PID, the main loop structure --- is identical.
+`shared.py` is unchanged. The vision module swapped. Everything else : the camera, the UDP, the state machine, the PID, the main loop structure : is identical.
 
 ### Full Code
-This is the complete file for reference. Do not try to read it all now --- it will not make sense yet. As you work through each lesson, come back here to find the exact section being explained. By the end of the project every line will be familiar.
+This is the complete file for reference. Do not try to read it all now : it will not make sense yet. As you work through each lesson, come back here to find the exact section being explained. By the end of the project every line will be familiar.
 Complete lane_follower_adv.pyCopy or download
 ```python
 from shared import PID, MobileVideoStream, Commander, Telemetry, RobotState, ramp
@@ -648,15 +648,15 @@ Value Your value Source ESP_IP "____________" Exercise D Serial Monitor BINARY_T
 
 ---
 
-All four image processing steps --- thresholding, ROI cropping, morphological cleaning, and row scanning --- live inside a single function called `detect_lane()`. It takes one camera frame as input and returns the detected line position. Read it as one piece, not four separate ideas.
+All four image processing steps : thresholding, ROI cropping, morphological cleaning, and row scanning : live inside a single function called `detect_lane()`. It takes one camera frame as input and returns the detected line position. Read it as one piece, not four separate ideas.
 Reminder: what is in shared.py
 
-`PID` --- the controller used for steering
-`MobileVideoStream` --- phone camera thread
-`Commander` --- sends UDP motor commands
-`Telemetry` --- receives encoder data
-`RobotState` --- STOPPED / SEARCHING / ACQUIRING / TRACKING
-`ramp()` --- acceleration limiter
+`PID` : the controller used for steering
+`MobileVideoStream` : phone camera thread
+`Commander` : sends UDP motor commands
+`Telemetry` : receives encoder data
+`RobotState` : STOPPED / SEARCHING / ACQUIRING / TRACKING
+`ramp()` : acceleration limiter
 
 These are unchanged from Project 1. If anything in `lane_follower_adv.py` references one of these names, it is using the version from `shared.py`.
 Complete detect_lane() function

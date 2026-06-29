@@ -8,9 +8,9 @@
 
 ---
 
-In Project 1 you trained your own YOLO model from scratch: 150 images, Roboflow labels, 15 minutes of Colab training. That gave you a model that detects exactly what you chose. In Project 2 you used no model at all, just pixel math. In Project 3 you use a third approach: a pre-trained model built by Google for one specific task --- controlling a robot with nothing but your hands.
+In Project 1 you trained your own YOLO model from scratch: 150 images, Roboflow labels, 15 minutes of Colab training. That gave you a model that detects exactly what you chose. In Project 2 you used no model at all, just pixel math. In Project 3 you use a third approach: a pre-trained model built by Google for one specific task : controlling a robot with nothing but your hands.
 MediaPipe reads your hand landmarks in real time and translates
-    gestures into robot commands over WiFi --- no model training required.
+    gestures into robot commands over WiFi : no model training required.
 MediaPipe is a collection of ready-made ML pipelines for common computer vision tasks. Hand tracking, face detection, pose estimation, object detection: all available as Python imports with no training required. You do not collect data, you do not train, you do not export weights. You install the library and call three lines of code.
 Approach Project 1 YOLO Project 2 Classical Project 3 MediaPipe Model You trained it No model Google pre-trained What it detects Your custom object Bright/dark contrast Human hands, always Setup time Exercise A, about 1 hour Zero pip install plus 3 lines Flexibility Anything you label Controlled scenes Hands only Speed on CPU 15-30 fps 60+ fps 25-30 fps
 !!! tip "Task-specific pre-trained model"
@@ -89,7 +89,7 @@ Two-hand command logic
 ```
 
 ```
-Left hand Right hand Command OPEN OPEN FORWARD CLOSED CLOSED BACKWARD CLOSED OPEN TURN RIGHT OPEN CLOSED TURN LEFT One hand --- STOP
+Left hand Right hand Command OPEN OPEN FORWARD CLOSED CLOSED BACKWARD CLOSED OPEN TURN RIGHT OPEN CLOSED TURN LEFT One hand : STOP
 !!! warning "Why require both hands?"
     If only one hand is required, any accidental hand entering the frame triggers a command. Requiring both hands creates a deliberate activation gesture. The robot only moves when you consciously hold both hands up.
 !!! info "Live webcam test runs in VS Code, not Colab"

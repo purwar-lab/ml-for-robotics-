@@ -129,7 +129,7 @@ import requests
 import time
 from ultralytics import YOLO
 
-# -- CONFIGURATION ----------------------------------------------------
+# -- CONFIGURATION----------------------------------------------------
 # Paste your phone stream URL here
 # Android (IP Webcam):      "http://192.168.x.x:8080/video"
 # iOS (Simple IP Camera): "http://192.168.x.x:8080/live"
@@ -227,7 +227,7 @@ if __name__ == "__main__":
     main()
 ```
 
-### Step 1 --- Edit The STREAM_URL Line
+### Step 1 : Edit The STREAM_URL Line
 Change `YOUR_PHONE_IP` to the IP address shown in your phone app.
 STREAM_URL examples
 ```bash
@@ -235,10 +235,10 @@ Android: STREAM_URL = "http://192.168.1.47:8080/video"
 iOS:  STREAM_URL = "http://192.168.1.52:8080/live"
 ```
 
-### Step 2 --- Make Sure best.pt Is In The Same Folder
+### Step 2 : Make Sure best.pt Is In The Same Folder
 Your trained model file from Exercise A must be in the `my-detector` folder alongside `detect_stream.py`. If you named it something else like `ball_detector.pt`, update the `MODEL_PATH` line accordingly.
 
-### Step 3 --- Run The Script
+### Step 3 : Run The Script
 In the VS Code terminal with the virtual environment active:
 Run detect_stream.py
 ```bash
@@ -305,7 +305,7 @@ This is identical to what you wrote in Exercise A's `detect_webcam.py`. The only
 
 ---
 
-Project 1's robot uses a class called `MobileVideoStream` (in a file named `shared.py`) to pull frames from the phone. You have not started Project 1 yet, so here is that exact class printed below. Read through it now --- you will recognize every concept from this exercise. When you reach Project 1, this file will already be familiar instead of new.
+Project 1's robot uses a class called `MobileVideoStream` (in a file named `shared.py`) to pull frames from the phone. You have not started Project 1 yet, so here is that exact class printed below. Read through it now : you will recognize every concept from this exercise. When you reach Project 1, this file will already be familiar instead of new.
 MobileVideoStream (from Project 1's shared.py)
 ```python
 class MobileVideoStream:

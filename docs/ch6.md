@@ -9,12 +9,12 @@
 ---
 
 In Chapter 3 you trained a Random Forest to predict machine failure. The Random Forest learned a set of if-then rules from the data. Clear, interpretable, fast to train. For many problems it is the right tool and you should use it.
-A neural network learns differently. Instead of rules, it learns numbers --- thousands or millions of adjustable numbers called weights. Training is the process of tuning those numbers until the network's output matches the correct answer. The rules are never written down explicitly. The pattern lives entirely in the weights.
-Think of learning to ride a bike. A rulebook says: lean left to turn left, pedal faster to accelerate, squeeze brakes to stop. A neural network is more like your body after hours of practice --- it just knows, without being able to explain every adjustment it makes. That inability to explain is both the power and the limitation.
-A chain of matrix multiplications and simple math functions. That is all. The word "neural" is a metaphor. There is no brain, no understanding, no consciousness --- just math that happens to learn patterns from examples.
-Use neural networks when the relationship between inputs and outputs is too complex for simple rules --- images, audio, text, complex sensor combinations. For clean tabular data like the Chapter 3 failure dataset, Random Forest is simpler and often just as accurate. You will return to this question in lesson 6.12.
+A neural network learns differently. Instead of rules, it learns numbers : thousands or millions of adjustable numbers called weights. Training is the process of tuning those numbers until the network's output matches the correct answer. The rules are never written down explicitly. The pattern lives entirely in the weights.
+Think of learning to ride a bike. A rulebook says: lean left to turn left, pedal faster to accelerate, squeeze brakes to stop. A neural network is more like your body after hours of practice : it just knows, without being able to explain every adjustment it makes. That inability to explain is both the power and the limitation.
+A chain of matrix multiplications and simple math functions. That is all. The word "neural" is a metaphor. There is no brain, no understanding, no consciousness : just math that happens to learn patterns from examples.
+Use neural networks when the relationship between inputs and outputs is too complex for simple rules : images, audio, text, complex sensor combinations. For clean tabular data like the Chapter 3 failure dataset, Random Forest is simpler and often just as accurate. You will return to this question in lesson 6.12.
 !!! tip "What comes next"
-    You will build intuition for neural networks in the next few lessons using a free interactive tool called TensorFlow Playground --- no code required yet.
+    You will build intuition for neural networks in the next few lessons using a free interactive tool called TensorFlow Playground : no code required yet.
 
 ---
 
@@ -23,15 +23,15 @@ Use neural networks when the relationship between inputs and outputs is too comp
 
 ---
 
-TensorFlow Playground is a neural network that runs live in your browser. You set the architecture, hit play, and watch the network train in real time. The decision boundary --- the boundary between classes --- updates every few milliseconds as the network learns. This makes concepts that are invisible in code completely visible.
+TensorFlow Playground is a neural network that runs live in your browser. You set the architecture, hit play, and watch the network train in real time. The decision boundary : the boundary between classes : updates every few milliseconds as the network learns. This makes concepts that are invisible in code completely visible.
 [Open in Colab →](https://playground.tensorflow.org)
 
 ### What you are looking at
 TensorFlow Playground shows the dataset, input features, network layers, output boundary, and loss graph in one live interface.
 - **Data panel (left):** choose your dataset and how noisy it is.
 - **Features (above network):** which input columns the network sees.
-- **Hidden layers (center):** the heart of the network --- add layers and neurons by clicking + and -.
-- **Output panel (right):** the decision boundary --- blue = predicted class 1, orange = predicted class -1. Darker color = higher confidence.
+- **Hidden layers (center):** the heart of the network : add layers and neurons by clicking + and -.
+- **Output panel (right):** the decision boundary : blue = predicted class 1, orange = predicted class -1. Darker color = higher confidence.
 - **Loss graph (top right):** how wrong the network is over time.
 - **Training controls (top):** learning rate, activation, batch size, and the play/pause/reset buttons.
 
@@ -39,7 +39,7 @@ TensorFlow Playground shows the dataset, input features, network layers, output 
 Do these steps before reading any further:
 Open Playground at the link above. Select the Circle dataset. Look for four small icons below "DATA" on the left — pick the one showing two concentric circles. Click the play button ▶ at the top left. Watch for 10 seconds. Click the reset button ↺ and watch again from the start.
 !!! tip "Write your answer before moving on"
-    What shape is the decision boundary trying to form? Is it a straight line or a curve? Does it succeed? Write down what you see --- you will compare this to what a single neuron can do in the next lesson.
+    What shape is the decision boundary trying to form? Is it a straight line or a curve? Does it succeed? Write down what you see : you will compare this to what a single neuron can do in the next lesson.
 
 ---
 
@@ -48,7 +48,7 @@ Open Playground at the link above. Select the Circle dataset. Look for four smal
 
 ---
 
-Before understanding a network of hundreds of neurons, understand one. A single neuron is just arithmetic --- three steps, no mystery.
+Before understanding a network of hundreds of neurons, understand one. A single neuron is just arithmetic : three steps, no mystery.
 **The exam scorer**
 
 Imagine scoring a student's performance using three things: homework (weight 0.5), exam score (weight 0.4), attendance (weight 0.1). You multiply each by its weight, add them up, and get a score. A neuron does exactly this — it is a weighted sum of its inputs. The only extra step is squashing the result through a function so it stays in a useful range.
@@ -101,7 +101,7 @@ print(f"Interpretation: {a*100:.1f}% confidence of abnormality")
 ### Weights are not set by you
 In the code above, the weights are hand-picked numbers. In a real network, training finds these numbers automatically by trying to minimize the loss. The network starts with random weights and adjusts them thousands of times until the output is correct. You will see this process in lesson 6.6.
 !!! tip "TensorFlow Playground connection"
-    Every connection between neurons in TensorFlow Playground is one weight --- hover over any connection and you can see its current value updating as the network trains.
+    Every connection between neurons in TensorFlow Playground is one weight : hover over any connection and you can see its current value updating as the network trains.
 
 ---
 
@@ -110,10 +110,10 @@ In the code above, the weights are hand-picked numbers. In a real network, train
 
 ---
 
-A single neuron draws one straight line. That is its only tool. Some problems can be solved with a straight line. Others cannot. This experiment shows you both --- and the moment you add a second layer, the impossible becomes trivial.
+A single neuron draws one straight line. That is its only tool. Some problems can be solved with a straight line. Others cannot. This experiment shows you both : and the moment you add a second layer, the impossible becomes trivial.
 [Open in Playground →](https://playground.tensorflow.org)
 
-### Part 1 --- Set up the impossible problem
+### Part 1: Set up the impossible problem
 Open Playground: [playground.tensorflow.org](https://playground.tensorflow.org)
 
 - **Dataset:** click the XOR dataset. It is the checkerboard pattern: orange top-right and bottom-left, blue top-left and bottom-right.
@@ -125,7 +125,7 @@ Open Playground: [playground.tensorflow.org](https://playground.tensorflow.org)
 !!! tip "Question"
     What accuracy does it reach? Does the boundary ever successfully separate the orange from the blue? Why do you think a straight line cannot solve this problem? Think geometrically: is there any straight line that puts all orange on one side and all blue on the other?
 
-### Part 2 --- Add one hidden layer
+### Part 2: Add one hidden layer
 
 - Click ↺ to reset.
 - Add one hidden layer with 2 neurons: click `+` next to Hidden Layers, then set the layer to 2 neurons.
@@ -133,10 +133,10 @@ Open Playground: [playground.tensorflow.org](https://playground.tensorflow.org)
 - Click ▶ to train.
 - Watch until the test loss drops below `0.05`.
 !!! tip "Question"
-    How long did it take? What does the decision boundary look like now? The two neurons together created a boundary that one neuron could not. Watch the two neurons on the left --- each one is drawing its own line. Their combination creates the curved boundary you see on the right.
+    How long did it take? What does the decision boundary look like now? The two neurons together created a boundary that one neuron could not. Watch the two neurons on the left : each one is drawing its own line. Their combination creates the curved boundary you see on the right.
 
 ### Why layers work
-Each neuron in the hidden layer learns a different view of the data --- one might learn "is this point in the top half?" while another learns "is this point in the right half?" Neither answer alone is enough. But combined, they can describe "top-right AND bottom-left," which is exactly what XOR needs.
+Each neuron in the hidden layer learns a different view of the data : one might learn "is this point in the top half?" while another learns "is this point in the right half?" Neither answer alone is enough. But combined, they can describe "top-right AND bottom-left," which is exactly what XOR needs.
 This is why deep networks can learn complex patterns. Each layer transforms the data into a new representation. By the final layer a pattern that was impossible to separate has been transformed into something simple. The network learned to see the data differently at each stage.
 !!! tip "Challenge"
     After solving XOR with 2 neurons in one layer, try to solve the spiral dataset, the hardest one with two interleaved spirals. How many hidden layers and neurons does it take? Can you solve it with just 1 hidden layer?
@@ -148,14 +148,14 @@ This is why deep networks can learn complex patterns. Each layer transforms the 
 
 ---
 
-Lesson 6.3 showed the problem empirically --- one neuron fails on XOR, a hidden layer fixes it. This lesson explains why mathematically without requiring calculus.
+Lesson 6.3 showed the problem empirically : one neuron fails on XOR, a hidden layer fixes it. This lesson explains why mathematically without requiring calculus.
 **The committee vote**
 
 One judge scores a gymnastics routine: 7.2. That is a single number capturing a complex performance. Three judges each notice different things — difficulty, execution, artistry. Their combined scores are richer than any single judge's opinion. A hidden layer is a committee of neurons, each noticing a different aspect of the input. Their combined output gives the next layer richer information to work with.
 
 ### What a layer actually does to data
 Each layer takes the outputs from the previous layer and transforms them. The first hidden layer transforms raw input features into a new representation. The second layer transforms that representation into an even more abstract one. By the final layer the data has been transformed enough that a single neuron can make the final decision.
-In Playground you can see this happening. Click on any neuron in a hidden layer during training. The small square inside it shows what that neuron has learned to detect --- a gradient of orange and blue showing which parts of the input space activate it strongly. Each neuron is a feature detector. Together they decompose the problem into parts that the output neuron can combine.
+In Playground you can see this happening. Click on any neuron in a hidden layer during training. The small square inside it shows what that neuron has learned to detect : a gradient of orange and blue showing which parts of the input space activate it strongly. Each neuron is a feature detector. Together they decompose the problem into parts that the output neuron can combine.
 !!! tip "Try this before running"
     Before running, predict the parameter count for a network with `2 inputs -> 3 neurons -> 3 neurons -> 1 output`. Then run `count_params([2, 3, 3, 1])` to check.
 count_network_parameters.py
@@ -203,8 +203,8 @@ You have seen what a network is and that adding layers helps. Now: how does a ne
 
 You are blindfolded on a hilly landscape trying to find the lowest valley. You cannot see anything but you can feel the slope under your feet. Each step you take one step in the downhill direction. After enough steps you reach a valley. This is gradient descent — navigating a landscape you cannot see by following the local slope downward.
 
-### The loss --- your altitude
-The height in the hiking analogy is the loss. It measures how wrong the network is right now. When predictions are far from the true labels, loss is high. When predictions are close, loss is low. Training is the process of walking downhill on the loss surface until you reach a valley --- a set of weights where the network is as accurate as possible.
+### The loss : your altitude
+The height in the hiking analogy is the loss. It measures how wrong the network is right now. When predictions are far from the true labels, loss is high. When predictions are close, loss is low. Training is the process of walking downhill on the loss surface until you reach a valley : a set of weights where the network is as accurate as possible.
 
 ### The five steps of training
 
@@ -218,7 +218,7 @@ The height in the hiking analogy is the loss. It measures how wrong the network 
 
 **Repeat** — Do this for every batch in the training set. One complete pass through all training data = one epoch. Typical networks train for 10 to 500 epochs.
 !!! tip "Try this before running"
-    Before running, predict --- what shape will the loss curve have over 50 epochs? Flat? Always going down? Bumpy? Sketch your prediction on paper, then run.
+    Before running, predict : what shape will the loss curve have over 50 epochs? Flat? Always going down? Bumpy? Sketch your prediction on paper, then run.
 healthy_training_curve.py
 ```python
 import numpy as np
@@ -244,7 +244,7 @@ plt.tight_layout()
 plt.show()
 ```
 !!! tip "Question"
-    The curve has small random wiggles but a clear downward trend. The wiggles come from randomness in which training examples each batch contains. What do you think would happen to the wiggles if you used all training data in every batch instead of small random batches? Would they get bigger or smaller? Answer: smaller --- but each step would be much slower to compute.
+    The curve has small random wiggles but a clear downward trend. The wiggles come from randomness in which training examples each batch contains. What do you think would happen to the wiggles if you used all training data in every batch instead of small random batches? Would they get bigger or smaller? Answer: smaller : but each step would be much slower to compute.
 
 ---
 
@@ -253,10 +253,10 @@ plt.show()
 
 ---
 
-Lesson 6.5 described gradient descent in words. Now watch it happen. Playground shows the loss graph updating in real time and the decision boundary changing as weights shift. You will run three experiments --- each breaks one thing and shows exactly why that setting matters.
+Lesson 6.5 described gradient descent in words. Now watch it happen. Playground shows the loss graph updating in real time and the decision boundary changing as weights shift. You will run three experiments : each breaks one thing and shows exactly why that setting matters.
 [Open in Colab →](https://playground.tensorflow.org)
 
-### Experiment 1 --- A healthy training run
+### Experiment 1 : A healthy training run
 Set up this exact configuration:
 
 - **Dataset:** Circle, the two concentric rings.
@@ -270,33 +270,33 @@ Set up this exact configuration:
 !!! tip "Watch three things simultaneously"
     Each of these is showing you a different view of the same process.
 
-### Experiment 2 --- Learning rate too high
+### Experiment 2 : Learning rate too high
 
 - Click ↺ to reset.
 - Change only the learning rate to `3`. That is 100x larger than the healthy run.
 - Click ▶ and watch for 10 seconds.
 !!! tip "Question"
-    What happens to the loss graph? Does it decrease smoothly or oscillate wildly? What does the decision boundary look like? This is the hiking analogy --- taking steps so large you leap over the valley and land on the other side.
+    What happens to the loss graph? Does it decrease smoothly or oscillate wildly? What does the decision boundary look like? This is the hiking analogy : taking steps so large you leap over the valley and land on the other side.
 
-### Experiment 3 --- Learning rate too low
+### Experiment 3 : Learning rate too low
 
 - Click ↺ to reset.
 - Change only the learning rate to `0.0001`. That is 300x smaller than the healthy run.
 - Click ▶ and watch for 30 seconds.
 !!! tip "Question"
-    How far does the loss decrease after 30 seconds compared to Experiment 1? The network is learning --- just extremely slowly. This is why `0.0001` is rarely used as a starting learning rate.
+    How far does the loss decrease after 30 seconds compared to Experiment 1? The network is learning : just extremely slowly. This is why `0.0001` is rarely used as a starting learning rate.
 
-### Experiment 4 --- Batch size effect
+### Experiment 4 : Batch size effect
 
 - Click ↺ to reset and restore learning rate to `0.3`.
 - Change batch size to `1`. The network now trains from one example at a time.
 - Click ▶ and watch the loss graph specifically.
 !!! tip "Question"
-    The loss graph is now much noisier. Why? Each step is based on only one example instead of 10. One example gives a noisy estimate of the true gradient. How does this compare to the hiking analogy --- is this like taking careful measured steps or like stumbling in a random direction each time?
+    The loss graph is now much noisier. Why? Each step is based on only one example instead of 10. One example gives a noisy estimate of the true gradient. How does this compare to the hiking analogy : is this like taking careful measured steps or like stumbling in a random direction each time?
 !!! tip "What you just learned"
-    Learning rate and batch size both affect how gradient descent walks down the loss surface. Learning rate controls step size. Batch size controls how accurately the slope is measured at each step. Neither has a universally correct value --- they depend on your specific problem, dataset size, and architecture.
+    Learning rate and batch size both affect how gradient descent walks down the loss surface. Learning rate controls step size. Batch size controls how accurately the slope is measured at each step. Neither has a universally correct value : they depend on your specific problem, dataset size, and architecture.
 !!! tip "Transition"
-    The next lesson moves from Playground to a real experiment: training a network from scratch in Python to learn the sin function. You will control all three knobs --- learning rate, epochs, and architecture --- and watch the effect directly in the training curves and the learned function shape.
+    The next lesson moves from Playground to a real experiment: training a network from scratch in Python to learn the sin function. You will control all three knobs : learning rate, epochs, and architecture : and watch the effect directly in the training curves and the learned function shape.
 
 ---
 
@@ -454,7 +454,7 @@ epochs = 5000       # Number of training epochs
 loss_history = []
 
 for epoch in range(1, epochs + 1): # Start epoch from 1 for Adam bias correction
-    # ---- Forward Pass ----
+    # -: Forward Pass ----
     z1 = np.dot(x, W1) + b1        # Linear combination for first hidden layer
     a1 = relu(z1)                 # Activation using relu
     z2 = np.dot(a1, W2) + b2        # Linear combination for second hidden layer
@@ -462,11 +462,11 @@ for epoch in range(1, epochs + 1): # Start epoch from 1 for Adam bias correction
     z3 = np.dot(a2, W3) + b3        # Linear combination for output layer
     a3 = linear(z3)               # Output (prediction)
 
-    # ---- Compute Loss ----
+    # -: Compute Loss ----
     loss = mse_loss(y, a3) # Use a3 for loss computation
     loss_history.append(loss)
 
-    # ---- Backward Pass ----
+    # -: Backward Pass ----
     # Compute gradient of loss with respect to output predictions
     d_loss_a3 = 2 * (a3 - y) / len(x)
 
@@ -485,7 +485,7 @@ for epoch in range(1, epochs + 1): # Start epoch from 1 for Adam bias correction
     dW1 = np.dot(x.T, delta1)
     db1 = np.sum(delta1, axis=0, keepdims=True)
 
-    # ---- Update parameters using Adam ----
+    # -: Update parameters using Adam ----
     # Update W1
     m_W1 = beta1 * m_W1 + (1 - beta1) * dW1
     v_W1 = beta2 * v_W1 + (1 - beta2) * (dW1 ** 2)

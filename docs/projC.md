@@ -17,11 +17,11 @@ Item Quantity Notes Arduino UNO R4 WiFi 1 The microcontroller brain that runs th
 
 ### System Diagram
 Three separate things move through this system. Follow each one on its own row below.
-**1. Command path** --- your code travels from the laptop down to the wheels:
+**1. Command path** : your code travels from the laptop down to the wheels:
 Laptop USB: upload sketch + serial monitor → Arduino UNO R4 WiFi runs control, counts ticks → Motor Shield TB6612FNG driver + regulator → Left + Right Motors wheels turn
-**2. Feedback path** --- the encoders report wheel motion back to the Arduino:
+**2. Feedback path** : the encoders report wheel motion back to the Arduino:
 Encoders on each motor generate pulses as wheels turn → Arduino UNO R4 WiFi interrupts count the pulses
-**3. Power path** --- kept separate from the logic; the battery only feeds the motors:
+**3. Power path** : kept separate from the logic; the battery only feeds the motors:
 Battery 6V motor power only → Motor Shield powers the motors
 
 ### What You Will Learn

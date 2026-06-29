@@ -93,7 +93,7 @@ print(type(is_obstacle))
 print(f"{robot_name} sees an obstacle at {distance:.1f}m: {is_obstacle}")
 ```
 | Line | What it does |
-| --- | --- |
+| | |
 | `distance = 2.45` | Creates a variable named `distance` and stores a decimal number, which Python calls a `float`. |
 | `is_obstacle = True` | Stores a boolean value. Booleans are either `True` or `False`. |
 | `robot_name = "ARIA"` | Stores text as a string. Strings are wrapped in quotes. |
@@ -138,7 +138,7 @@ print(f"Total readings: {len(sensor_readings)}")
 print(f"Middle slice: {sensor_readings[1:3]}")
 ```
 | Line | What it does |
-| --- | --- |
+| | |
 | `sensor_readings = [1.2, 0.9, 1.5, 2.1, 0.3]` | Creates a list. Square brackets `[ ]` tell Python this is a list, and commas separate the values. |
 | `sensor_readings.append(1.8)` | `.append()` is a list method. It adds one item to the end of the existing list. |
 | `sensor_readings[-1]` | Uses a negative index. `-1` means the last item, `-2` means the second-to-last item, and so on. |
@@ -159,7 +159,7 @@ x, y = home_position           # tuple unpacking
 print(f"Home is at x={x}, y={y}")
 ```
 | Line | What it does |
-| --- | --- |
+| | |
 | `home_position = (0.0, 0.0)` | Creates a tuple. Parentheses `( )` group values that should stay together. |
 | `wheel_diameter = (0.12,)` | Creates a one-item tuple. The comma is required; without it, Python treats the parentheses like normal grouping. |
 | `x, y = home_position` | Uses tuple unpacking. Python assigns the first value to `x` and the second value to `y`. |
@@ -183,7 +183,7 @@ shared = room_a_objects & room_b_objects
 print(f"Objects in both rooms: {shared}")
 ```
 | Line | What it does |
-|:---|---|
+|---|---|
 | `objects_seen = {"chair", "table", "door", "chair", "wall"}` | Creates a set. Duplicate values are automatically kept only once. |
 | `objects_seen.add("human")` | Adds one new value to the set. |
 | `len(objects_seen)` | Counts how many unique objects are in the set. |
@@ -259,7 +259,7 @@ if current_zone in safe_zones:
     print(f"{current_zone} is a safe zone. Power down.")
 ```
 | Line | What it does |
-| --- | --- |
+| : | : |
 | `battery = 23` | Stores the current battery level as an integer. |
 | `distance_to_obstacle = 0.4` | Stores a sensor reading as a float in meters. |
 | `if battery < 10:` | Starts the first decision branch. The indented line below it runs only if this condition is true. |
@@ -310,7 +310,7 @@ for time, reading in zip(timestamps, sensor_log):
     print(f"  {time}: {reading:.1f}m")
 ```
 | Line | What it does |
-| --- | --- |
+| | |
 | `sensor_log = [...]` | Stores the readings in a list so the loop can visit them one at a time. |
 | `timestamps = [...]` | Stores matching time labels in a second list. |
 | `for i, reading in enumerate(sensor_log):` | `enumerate()` returns two values each time: the index and the reading. Python unpacks them into `i` and `reading`. |
@@ -333,7 +333,7 @@ else:
     print(f"Battery too low! Only traveled {distance_traveled:.1f}m")
 ```
 | Line | What it does |
-| --- | --- |
+| | |
 | `battery = 100` | Starts the simulated battery at 100 percent. |
 | `while battery > 20:` | Repeats the indented block as long as the condition remains true. |
 | `battery -= 5` | Subtracts 5 from the battery each loop. This moves the loop toward stopping. |
@@ -382,7 +382,7 @@ in_cm = [r * 100 for r in clean_readings_short]
 print("In cm:", in_cm)
 ```
 | Line | What it does |
-| --- | --- |
+| | |
 | `clean_readings_long = []` | Creates an empty list that the long loop will fill. |
 | `for r in raw_readings:` | Visits each raw reading one at a time. |
 | `if r > 0:` | Filters out invalid negative readings. |
@@ -433,6 +433,7 @@ def analyze_sensor_data(readings, danger_threshold=0.5):
 - **Function body.** The indented code that runs when the function is called.
 - **Return line.** Sends a value back to whoever called the function.
 Function: analyze robot sensor readings
+
 ```python
 def analyze_sensor_data(readings, danger_threshold=0.5, unit="m"):
     """
@@ -459,8 +460,9 @@ print(f"Max distance:  {result['max']:.2f}{result['unit']}")
 print(f"Average:       {result['average']:.2f}{result['unit']}")
 print(f"Danger events: {result['danger_count']}")
 ```
+
 | Line | What it does |
-| --- | --- |
+|--|--|
 | `def analyze_sensor_data(...):` | Defines a reusable function with three parameters. `danger_threshold` and `unit` have default values. |
 | `"""Analyze ..."""` | Documents the function with a docstring. Python ignores it during normal execution, but tools can display it as help text. |
 | `if not readings:` | Checks for an empty list. Empty lists count as false in Python. |
@@ -500,7 +502,7 @@ print(get_battery_warning(8))
 print(get_battery_warning(50))
 ```
 | Line | What it does |
-| --- | --- |
+| : | : |
 | `# This is a single-line comment` | Starts a comment. Python skips the rest of the line. |
 | `distance = 2.45   # ...` | Stores a number, then adds a human note after the code. |
 | `""" ... """` | Creates a multi-line string. At the top of a function, this becomes a docstring. |
@@ -537,7 +539,7 @@ print(f"Full result tuple: {result}")     # ('OK', False)
 print(f"Just the status: {result[0]}")    # OK
 ```
 | Line | What it does |
-| --- | --- |
+| : | : |
 | `return status, is_overheating` | Returns two values. Python wraps them in a tuple automatically, such as `("WARNING", True)`. |
 | `motor_status, overheating = analyze_motor(...)` | Uses tuple unpacking. Python splits the tuple and assigns the first value to `motor_status` and the second to `overheating`. |
 | `result = analyze_motor(65, 2800)` | Stores the whole returned tuple in one variable. |
@@ -564,7 +566,7 @@ set_robot_speed(1.5, silent=True, unit="mph")
 # DEFAULT VALUES: if you do not pass an argument, Python uses the default.
 ```
 | Line | What it does |
-| --- | --- |
+| : | : |
 | `speed` | Required parameter. The caller must provide this. Omitting it causes a `TypeError`. |
 | `unit="m/s"` | Optional parameter with a default value. If the caller does not pass it, Python uses `"m/s"`. |
 | `silent=False` | Another optional parameter. It defaults to `False`. |
@@ -595,7 +597,7 @@ def configure_robot(**kwargs):
 configure_robot(speed=1.5, task="mapping", battery=87)
 ```
 | Line | What it does |
-| --- | --- |
+| : | : |
 | `def print_all_readings(*args):` | Collects any number of extra positional arguments into a tuple named `args`. |
 | `for reading in args:` | Loops through every value that was passed in. |
 | `def configure_robot(**kwargs):` | Collects any number of named arguments into a dictionary named `kwargs`. |
@@ -620,7 +622,7 @@ configure_robot(speed=1.5, task="mapping", battery=87)
 
 
 ### Classes
-**Concept.** A function packages behavior. A **class** packages behavior *and* the data that behavior works on, so they travel together as one object. Every robot project later in this course is built from classes --- `Tracker`, `Commander`, `Telemetry`, and `MobileVideoStream` are all classes. This lesson teaches the basics so those files read like something you already understand.
+**Concept.** A function packages behavior. A **class** packages behavior *and* the data that behavior works on, so they travel together as one object. Every robot project later in this course is built from classes : `Tracker`, `Commander`, `Telemetry`, and `MobileVideoStream` are all classes. This lesson teaches the basics so those files read like something you already understand.
 
 #### Why Not Just Functions?
 Imagine controlling a robot with plain functions. Where does the robot's current battery level live? You would have to pass it into every function and hand the updated value back out again, every single time. A class fixes this: the object *remembers* its own data between calls, and its methods read and update that data directly.
@@ -660,23 +662,23 @@ rover.charge()                     # Rover is fully charged
 print(rover.battery)               # 100
 ```
 | Line | What it does |
-| --- | --- |
+| : | : |
 | `class Robot:` | Defines a new class (a blueprint). By convention class names use CapitalizedWords. |
 | `def __init__(self, name, battery=100):` | The constructor. Python runs it automatically every time you create an object. `battery` has a default value. |
 | `self.name = name` | Stores data *on the object* as an attribute. `self` is the object being built. |
-| `def drive(self, minutes):` | A method --- a function that belongs to the class. Its first parameter is always `self`. |
+| `def drive(self, minutes):` | A method : a function that belongs to the class. Its first parameter is always `self`. |
 | `self.battery -= minutes * 2` | Reads and updates the object's own attribute. No need to pass the battery in and out. |
 | `scout = Robot("Scout")` | Creates an object (an *instance*) from the blueprint. `__init__` runs here. |
 | `scout.drive(10)` | Calls a method on that object. Python passes `scout` in as `self` automatically. |
 | `scout.battery` | Reads an attribute back off the object. |
 
 #### Each Object Keeps Its Own Data
-`scout` and `rover` are built from the same class, but they are independent objects. Driving `scout` does not touch `rover`'s battery --- each instance carries its own attributes. That is the whole point: one blueprint, many objects, each with its own state.
+`scout` and `rover` are built from the same class, but they are independent objects. Driving `scout` does not touch `rover`'s battery : each instance carries its own attributes. That is the whole point: one blueprint, many objects, each with its own state.
 !!! tip "self is automatic"
-    You write `def drive(self, minutes)` with `self`, but you call `scout.drive(10)` without it. Python fills in `self` for you --- it is just the object on the left of the dot.
+    You write `def drive(self, minutes)` with `self`, but you call `scout.drive(10)` without it. Python fills in `self` for you : it is just the object on the left of the dot.
 
 #### The Pattern You Will See in Every Project
-Classes shine when an object must *remember* something between calls. A controller, a sensor stream, a network connection --- all of them hold state. Here is a tiny preview of the structure Project 1's PID controller uses.
+Classes shine when an object must *remember* something between calls. A controller, a sensor stream, a network connection : all of them hold state. Here is a tiny preview of the structure Project 1's PID controller uses.
 State that persists between calls
 ```python
 # This is the same pattern Project 1 uses for its PID controller:
@@ -699,7 +701,7 @@ print(controller.step(8))          # last_error is now 8
 ```
 Each call to `step()` remembers the previous error, because that value lives on the object. Plain functions cannot do this without extra bookkeeping.
 !!! tip "Where this goes"
-    In Project 1 you open `shared.py` and see `class Commander`, `class Telemetry`, and `class MobileVideoStream`. Each one bundles a socket or a thread together with the methods that use it --- exactly the pattern above, just with real hardware behind it.
+    In Project 1 you open `shared.py` and see `class Commander`, `class Telemetry`, and `class MobileVideoStream`. Each one bundles a socket or a thread together with the methods that use it : exactly the pattern above, just with real hardware behind it.
 !!! tip "Mini Exercise"
     Write a `Thermostat` class with a `target` attribute and a method `reading(temp)` that returns `"HEAT"`, `"COOL"`, or `"OK"` by comparing `temp` to `self.target`. Create two thermostats with different targets and confirm they behave independently.
 
@@ -729,7 +731,7 @@ After running that cell, those packages are available for the rest of your Colab
     Most packages come pre-installed in Google Colab. You only need `!pip install` for packages that are less common. If you try to import something and see `ModuleNotFoundError`, that is your signal to run `!pip install package-name` first.
 The install name and the import name are sometimes different. Here are the package names used in this course.
 | What we call it | pip install command | import statement |
-| --- | --- | --- |
+| : | : | : |
 | NumPy | `!pip install numpy` | `import numpy as np` |
 | Pandas | `!pip install pandas` | `import pandas as pd` |
 | Matplotlib | `!pip install matplotlib` | `import matplotlib.pyplot as plt` |

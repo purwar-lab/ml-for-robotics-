@@ -107,7 +107,7 @@ Roboflow is a web platform that handles the three hardest parts of building a cu
 !!! info "Why not just use a folder of images?"
     YOLO training expects a very specific folder structure: a train folder, a valid folder, a test folder, each containing an images subfolder and a labels subfolder, plus a `data.yaml` file listing your class names. Getting this right manually is tedious and error-prone. Roboflow builds that entire structure automatically and also gives you augmentation, version control, and a three-line download snippet that works directly in your Colab notebook.
 
-### Step 1 --- Create a free Roboflow account
+### Step 1 : Create a free Roboflow account
 Go to [roboflow.com](https://roboflow.com/). Click **Get Started** in the top right corner.
 Sign up with your Google account or an email address. Roboflow is free for public projects. You do not need to enter a credit card.
 After signing up you will be asked to choose between two plans.
@@ -116,10 +116,10 @@ After signing up you will be asked to choose between two plans.
 Choose the Public Plan to keep the project free.
 Choose the **Public Plan** by clicking **Continue with Public**. The public plan is completely free and has everything needed for this course. The only difference from the paid plan is your dataset will be publicly visible on Roboflow Universe, which is fine for a learning project.
 
-### Step 2 --- Skip the "What do you want to do with Roboflow" (or, choose the first two options) and skip Invite "Collaboartor" screen
+### Step 2 : Skip the "What do you want to do with Roboflow" (or, choose the first two options) and skip Invite "Collaboartor" screen
 Roboflow will ask if you want to invite collaborators to your workspace. You are working alone. Click **Skip** or continue without adding anyone.
 
-### Step 3 --- Create a new project (If you don't see this option, click on Roboflow icon to go to your portal)
+### Step 3 : Create a new project (If you don't see this option, click on Roboflow icon to go to your portal)
 You will land on a screen asking you to create a project.
 ![You will land on a screen asking you to create a project.](original/project_type.png)
 
@@ -128,14 +128,17 @@ Project Name: use a name describing what you are detecting. Examples: tennis-bal
 ![You should now see the main upload page with a drag-and-drop zone.](original/upload_data.png)
  The upload screen is where images, videos, and folders are added. This is where your images go. Keep this tab open in your browser and proceed to collect images in the next step. Step 6 — Collecting your images before uploading Before uploading anything you need images. Here is exactly how to collect good ones. What object to use Best choices A tennis ball, orange ball, any brightly colored ball, a colored traffic cone or marker, or a specific mug, bottle, or toy you own. Avoid first Your hand or face, multiple similar-looking objects, or anything that changes shape dramatically like cloth or paper. ⚙ Why a ball works well A ball is the classic choice for a reason. It looks roughly the same from every angle because it is spherical. A distinctive color separates it from most backgrounds. These two properties mean the model learns faster and needs fewer images than a complex multi-sided object. How many images to capture Target 150 images minimum . 200 to 300 gives noticeably better results. This sounds like a lot but it takes about 10 minutes with a phone. How to capture them Distances: take shots from 0.3m away, 1m away, 2m away, and 3m away. The tracker needs to work at all these distances. Angles: straight on, from the left, from the right, from above, and from slightly below. Objects look different from different angles. Backgrounds: use at least 4 different locations: kitchen floor, carpet, concrete, grass, table. This is the most important variation. Lighting: bright room with windows, dimmer room, artificial light, and slight shadow across the object. Real robots work in varied lighting. Partial views: place the object half behind another object in some shots. The model needs to recognize the object even when partially blocked. ⚠ Vary your backgrounds deliberately The single biggest beginner mistake is collecting all images in one location with one background color. The model will learn the background pattern instead of the object. It will detect perfectly in that room and fail completely everywhere else. Vary your backgrounds deliberately even if it feels unnecessary. Use your web camera. Take photos manually or record a short video and extract frames. Roboflow accepts both. For video extraction: record a 30-second video walking around the object from different angles and distances. Roboflow will extract one frame per second automatically, giving you 30 images from one recording. Do this in 5 different locations for 150 images total. Step 7 — Upload your images to Roboflow Return to the Roboflow upload tab in your browser. Drag and drop your image files or your video files directly into the upload area. You can upload everything at once.
 ![just_image.png](original/just_image.png)
- Uploaded images appear in the upload batch before saving. If you upload a video, Roboflow asks how many frames per second to extract.
+
+Uploaded images appear in the upload batch before saving. If you upload a video, Roboflow asks how many frames per second to extract.
+
 ![If you upload a video, Roboflow asks how many frames per second to extract.](original/fps_selections.png)
+
  For video uploads, choose a frame rate that produces enough varied images. For a 30-second walkthrough video choose as many frames per second as gives you around 80 images from one recording. For a longer video lower the rate to avoid too many nearly identical frames. Click Choose Frame Rate to confirm. Roboflow processes the video and saves each extracted frame as a separate image in your project. After uploading you will see all your images in a grid. Roboflow flags any images it cannot read.
+
 ![grid.png](original/grid.png)
- After processing, Roboflow shows extracted frames in a grid. Images marked Not Annotated in yellow have no labels yet. That is expected: you will label them in the next lesson. Press Save and Continue . You will then see the annotation part. Step 9 — Save and continue Click Save and Continue in the upper right corner. Roboflow uploads and processes all your images. Depending on how many you uploaded this takes 30 seconds to 2 minutes. When it finishes you will see the Annotate section of your project with your images ready to label. This is where the next lesson begins.
-Mark as Complete
-[Previous← PA.2 Setup](?lesson=projA-vscode)
-[NextPA.4 Labeling in Roboflow →](?lesson=projA-labeling)
+
+After processing, Roboflow shows extracted frames in a grid. Images marked Not Annotated in yellow have no labels yet. That is expected: you will label them in the next lesson. Press Save and Continue . You will then see the annotation part. Step 9 — Save and continue Click Save and Continue in the upper right corner. Roboflow uploads and processes all your images. Depending on how many you uploaded this takes 30 seconds to 2 minutes. When it finishes you will see the Annotate section of your project with your images ready to label. This is where the next lesson begins.
+
 
 ---
 
@@ -147,14 +150,14 @@ Mark as Complete
 A label is a rectangle you draw around your object in each image. This rectangle tells the model exactly where the object is and what it is called. The model learns by comparing its own predicted boxes to your labeled boxes during training. If your labels are sloppy the model learns sloppiness. If they are tight and consistent the model learns to detect accurately.
 There are two ways to label in Roboflow. The old way is to draw every box yourself by hand. The new way, which we will use, is to let Roboflow's AI label the entire batch automatically, then manually fix only the images it got wrong. This is 5 to 10 times faster and produces the same quality result.
 
-### Step 1 --- Open the annotation section
+### Step 1 : Open the annotation section
 In your Roboflow project click **Annotate** in the left sidebar. You will see three columns: **Unassigned**, **Annotating**, and **Dataset**.
 Images just uploaded with no labels yet.
 Images currently being worked on.
 Fully labeled images ready for training.
 All your uploaded images should appear in the Unassigned column.
 
-### Step 2 --- Use Auto-Label to annotate the entire batch
+### Step 2 : Use Auto-Label to annotate the entire batch
 Instead of opening images one by one, we will label everything at once using Roboflow's AI Auto-Label feature.
 Click **Auto-Label** at the top of the Unassigned column. A panel opens on the right side of the screen.
 Use Auto-Label Entire Batch to label the uploaded images at once.
@@ -164,6 +167,7 @@ Class Name: type the exact class name you used when creating the project. For ex
 Good description example for a ball: **A miniaturized basketball, small and orange with black lines, typically sitting on a flat surface.**
 Good description example for a cone: **A bright orange traffic cone, roughly triangular, about 30cm tall.**
 The more specific your description the better the AI performs. Mention color, shape, size, and any distinctive markings.
+
 ![ball.png](original/ball.png)
 
 Fill in the class name and a specific object description before generating test results.
@@ -173,10 +177,11 @@ Review the test results. If the boxes look correct on the preview images, click 
     Auto-labeling uses Roboflow's AI credits. A free account comes with 20 credits. Labeling one batch of 150 images uses 1 credit. You have more than enough for this exercise.
 After auto-labeling finishes, the images move from Unassigned to the Annotating column. Roboflow has now drawn bounding boxes on every image it was confident about.
 
-### Step 3 --- Review and fix images the AI got wrong
+### Step 3 : Review and fix images the AI got wrong
 Auto-label is not perfect. Some images will have boxes in the wrong place, boxes that are too loose, or images where the object was missed entirely. You now go through and fix these manually.
 In the Annotating column, look for images flagged with warnings or that look incorrect in the thumbnail. Click any image to open it in the annotation editor.
 The annotation editor looks like this:
+
 ![The annotation editor looks like this:](original/BB.png)
 
 The annotation editor shows the image, class list, and bounding box controls.
@@ -185,10 +190,11 @@ Press the right arrow key to move to the next image. Press the left arrow key to
 !!! info "Fix the obvious errors first"
     You do not need to fix every single image perfectly. Aim to correct obvious errors: boxes on the wrong object or no box at all where one should be. Small imperfections in box tightness on a few images will not meaningfully hurt your model.
 
-### Step 4 --- How to draw a manual bounding box
+### Step 4 : How to draw a manual bounding box
 For any image where the AI missed the object or drew the wrong box, draw the correct box yourself.
 Press the **B** key to activate the Bounding Box tool. You can also click the rectangle icon in the right toolbar.
 Click and drag across your object from one corner to the opposite corner. Release the mouse. A popup appears asking for the class name. Type your class name and press Enter.
+
 ![BB.png](original/BB.png)
 
 Draw the bounding box tightly around the object.
@@ -198,8 +204,9 @@ Shortcut Action B Activate bounding box tool Right arrow Next image Left arrow P
 #### Labeling rules for manual boxes
 Draw tight. The box edge should touch the outer boundary of the object on all four sides. Loose boxes include background pixels which confuse the model about where the object ends. Label every instance. If your object appears twice in one image draw two boxes. Missing an instance penalizes the model during training for detecting something you left unlabeled. Skip heavily occluded instances. If less than 20 percent of the object is visible skip it. A barely visible instance adds noise without useful signal.
 
-### Step 5 --- Add images to the dataset and approve all
+### Step 5 : Add images to the dataset and approve all
 After reviewing and fixing an image, click the checkmark button in the top right of the annotation editor.
+
 ![BB.png](original/BB.png)
 
 Use the approve control after the label is correct.
@@ -225,7 +232,7 @@ Rule 1: Draw the box tightly around the object. The box edge should touch the ou
 
 This lesson teaches augmentation, dataset versioning, and how to get the dataset into Colab in the format YOLO26 expects. This lesson produces the download snippet used in PA.6.
 
-### Step 0 --- Verify your train / valid / test split before doing anything
+### Step 0 : Verify your train / valid / test split before doing anything
 Before generating a version, check that your images are divided correctly across the three splits. Click **Dataset** in the left sidebar. At the top of the page you will see three numbers showing how many images are in Train, Valid, and Test.
 Check that the train, validation, and test split counts are reasonable.
 The images the model learns from directly. Target: roughly 70 percent of your total images. For 150 images: around 105 in train.
@@ -242,18 +249,19 @@ If your split is badly unbalanced, for example 140 train and 5 valid, go back to
 ### What is dataset versioning?
 In Roboflow, a dataset version is a frozen snapshot of your images at a specific point in time with a specific set of preprocessing and augmentation settings baked in. Think of it like saving a named checkpoint. You can create multiple versions of the same dataset, one with light augmentation and one with heavier augmentation, and compare how each affects training accuracy. Once a version is generated it never changes, so your experiments are reproducible.
 
-### Step 1 --- Navigate to the Generate section
+### Step 1 : Navigate to the Generate section
 Click **Versions** in the left sidebar. You will see a page with two sections: Preprocessing and Augmentation.
 The Versions page is where preprocessing and augmentation settings are configured.
 
-### Step 2 --- Preprocessing settings
+### Step 2 : Preprocessing settings
 Preprocessing modifies your images before they reach the model. Leave the default settings exactly as they are. Roboflow has already applied two sensible defaults:
 Auto-Orient: corrects rotation metadata from phone cameras. Without this fix the model sees sideways images during training. Resize to 416x416: every image is resized to this square before training begins. Roboflow automatically adjusts all your bounding box coordinates to match the new dimensions so your labels remain accurate after resizing.
 !!! info "Why 416 and not 640?"
     Larger input images give the model more detail to work with but cost significantly more compute time per image. 640x640 is common for production models with GPU access. We use 416x416 because it runs at acceptable speed on a CPU laptop during inference while retaining enough detail to reliably detect a single prominent object like a ball or cone in the frame. If you later find the model misses small distant objects, retraining at 640 is the first thing to try.
 
-### Step 3 --- Augmentation settings
+### Step 3 : Augmentation settings
 Augmentation creates modified copies of your training images. Each augmented copy is a new training example showing the object under a slightly different condition. This expands your effective dataset size and teaches the model to be robust to variation.
+
 ![augmentation.png](original/augmentation.png)
 
 Choose only the augmentation options needed for this first detector.
@@ -263,25 +271,26 @@ Do **not** enable these for this exercise: rotation beyond 15 degrees, Cutout or
 !!! warning "More augmentation is not always better"
     Each augmentation type multiplies your dataset but also adds visual variation that the model must learn to ignore. On a small dataset of 150 images, extreme augmentation can confuse the model more than it helps. Start with the four settings above and add more only if your validation accuracy is low.
 
-### Step 4 --- Set the augmentation multiplier
+### Step 4 : Set the augmentation multiplier
 Roboflow shows a multiplier that controls how many augmented copies to generate per original image. Set this to **3x**.
 With 150 original training images and 3x augmentation you get approximately 450 training images. This is a good size for a single-class detector on a simple object.
 
-### Step 5 --- Generate the version
+### Step 5 : Generate the version
 Click **Generate** at the bottom of the page. Roboflow processes your images and augmentations. This takes 1 to 3 minutes depending on the number of images.
 When generation finishes you will see a summary showing the total image counts for train, valid, and test including augmented images.
+
 ![complete_roboflow.png](original/complete_roboflow.png)
 
 The generated version summary shows the finalized dataset version.
 
-### Step 6 --- Export the dataset
+### Step 6 : Export the dataset
 Click the **Export Dataset** button on the version summary page. A dialog appears asking for the export format.
 Select YOLO26 and choose the download-code option.
 Select **YOLOv26** from the format dropdown.
 !!! info "What YOLOv26 export creates"
     The YOLOv26 format creates the structure Ultralytics expects automatically: `train/images`, `train/labels`, `valid/images`, `valid/labels`, `test/images`, `test/labels`, and `data.yaml` listing class names and folder paths. You pass `data.yaml` to the YOLO training command and it finds everything else automatically.
 
-### Step 7 --- Get the download code snippet
+### Step 7 : Get the download code snippet
 After selecting YOLOv26, choose **Get download code** instead of downloading a zip file. Roboflow generates a Python code snippet.
 Copy the generated Python snippet for the Colab training notebook.
 The snippet looks like this. Your values will differ:

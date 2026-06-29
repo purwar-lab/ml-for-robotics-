@@ -317,7 +317,7 @@ What it gives you: a boundary defined by support vectors and a margin width. Thi
 ---
 
 ### The ML Pipeline
-Every ML project follows the same sequence of steps --- from raw data to a working predictor. This sequence is called the ML pipeline. Learning it once means you can apply it to any dataset. The next lesson walks through every step on a real engineering dataset. This lesson gives you the map first.
+Every ML project follows the same sequence of steps : from raw data to a working predictor. This sequence is called the ML pipeline. Learning it once means you can apply it to any dataset. The next lesson walks through every step on a real engineering dataset. This lesson gives you the map first.
 **Step 1: Get Data** — Data is the raw material of every ML project. In this course it comes from Kaggle, a platform hosting thousands of free labeled datasets. In industry it comes from sensors, databases, or instruments you build yourself.
 
 **Step 2: Explore (EDA)** — Before training anything, look at your data. Check how many rows and columns exist, what data types each column has, and whether the class distribution is balanced. Functions like `df.head()`, `df.info()`, and `df.describe()` give you this picture in seconds. Skipping this step means discovering problems only after hours of wasted training.
@@ -381,7 +381,7 @@ print("After: ", X_train_scaled[0].round(3))
 **Step 9: Tune** — Every algorithm has hyperparameters: settings you choose before training. Tuning means trying different values and keeping the combination that produces the best evaluation score.
 
 **Step 10: Deploy / Use** — A model that stays in a notebook helps no one. Deployment means saving the trained model to a file and loading it wherever predictions are needed, whether that is a web server, a laptop on a factory floor, or a robot.
-**Next step:** The next lesson applies every one of these steps to the AI4I Predictive Maintenance dataset --- real sensor readings from a CNC machine, real failure labels, and real engineering decisions.
+**Next step:** The next lesson applies every one of these steps to the AI4I Predictive Maintenance dataset : real sensor readings from a CNC machine, real failure labels, and real engineering decisions.
 
 ---
 
@@ -391,12 +391,12 @@ print("After: ", X_train_scaled[0].round(3))
 ---
 
 !!! tip "The problem we are solving"
-    A factory robot arm breaks without warning. Production stops for hours while engineers scramble to fix it --- every unplanned shutdown costs thousands of dollars. What if a model could look at sensor readings and say *"this arm is going to fail in the next few hours"* before it actually does? That is exactly what we will build.
+    A factory robot arm breaks without warning. Production stops for hours while engineers scramble to fix it : every unplanned shutdown costs thousands of dollars. What if a model could look at sensor readings and say *"this arm is going to fail in the next few hours"* before it actually does? That is exactly what we will build.
 ### What you will build
 By the end of this project you will have a program that reads sensor data from a robot arm and outputs a failure warning. Here is the full journey:
 Raw sensor CSV → Explore & clean → Train model → Predict failures
-We will build this step by step. Each cell is one small piece of that pipeline --- run them from top to bottom in Colab.
-### Step 0 --- Get the data (Kaggle setup)
+We will build this step by step. Each cell is one small piece of that pipeline : run them from top to bottom in Colab.
+### Step 0 : Get the data (Kaggle setup)
 The dataset lives on Kaggle, a free platform that hosts machine learning datasets. You need a free account and a one-time legacy API key so that Colab can download it for you. This only takes two minutes.
 1. **Go to Kaggle and sign in.** Open [kaggle.com](https://www.kaggle.com/) and sign in (or create a free account).
 2. **Open Settings.** Click your profile picture in the top-right corner, then click **Settings**.
@@ -404,15 +404,15 @@ The dataset lives on Kaggle, a free platform that hosts machine learning dataset
 4. **Open the downloaded file.** Your browser automatically downloads a file called `kaggle.json`. Open it in any text editor — it contains a short line that looks like `{"username":"…","key":"…"}`. Select and copy that entire line.
 5. **Keep it ready.** You will paste that copied text into the first Colab cell. The notebook will ask for it with a password-style prompt.
 !!! tip "Keep the token private"
-    Your token is like a password --- it gives access to your Kaggle account. Never share a notebook that still has the token text visible.
+    Your token is like a password : it gives access to your Kaggle account. Never share a notebook that still has the token text visible.
 ### Open the notebook
-Click the button below to open the project notebook in Google Colab. Then run the cells one by one --- each section below explains what each cell does and what you should see.
+Click the button below to open the project notebook in Google Colab. Then run the cells one by one : each section below explains what each cell does and what you should see.
 !!! tip "Dataset"
-    [AI4I 2020 Predictive Maintenance Dataset](https://www.kaggle.com/datasets/stephanmatzka/predictive-maintenance-dataset-ai4i-2020) --- 10,000 rows of real robot sensor readings, each labelled Normal or Failure.
+    [AI4I 2020 Predictive Maintenance Dataset](https://www.kaggle.com/datasets/stephanmatzka/predictive-maintenance-dataset-ai4i-2020) : 10,000 rows of real robot sensor readings, each labelled Normal or Failure.
 [Open in Colab →](https://colab.research.google.com/github/purwar-lab/ml-for-robotics-/blob/main/notebooks/ch3-failure-prediction.ipynb)
-### Phase 1 --- Set up Colab
+### Phase 1 : Set up Colab
 The first two cells connect Colab to Kaggle and download the data. You only need to run them once per session.
-**Cell 1** installs the Kaggle tool and asks for your token. When the cell runs you will see a password-style box --- paste your copied token text there and press Enter.
+**Cell 1** installs the Kaggle tool and asks for your token. When the cell runs you will see a password-style box : paste your copied token text there and press Enter.
 Cell 1: Install Kaggle API & set up credentials
 ```python
 !pip -q install kaggle
@@ -433,7 +433,7 @@ Cell 2: Download the dataset from Kaggle
 !unzip -o predictive-maintenance-dataset-ai4i-2020.zip -d data
 ```
 *Expected output:* Lines like `Downloading…` followed by `inflating: data/ai4i2020.csv`. One CSV file now lives under `data/`.
-**Cell 3** loads all the Python libraries we need. Think of this as opening a toolbox --- we are not doing any work yet, just laying the tools on the bench.
+**Cell 3** loads all the Python libraries we need. Think of this as opening a toolbox : we are not doing any work yet, just laying the tools on the bench.
 Cell 3: Import libraries
 ```python
 import numpy as np
@@ -446,9 +446,9 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, ConfusionMatrixDisplay, f1_score
 ```
 *Expected output:* No output at all — silence means all libraries loaded successfully.
-### Phase 2 --- Meet the data
+### Phase 2 : Meet the data
 Before training any model, always look at the data first. You want to understand what columns exist, what the numbers mean, and whether anything looks unusual. Skipping this step is the most common beginner mistake.
-**Cell 4** loads the CSV and prints three summaries. Read through each one --- they tell you the shape of the data before a single line of ML code runs.
+**Cell 4** loads the CSV and prints three summaries. Read through each one : they tell you the shape of the data before a single line of ML code runs.
 Cell 4: Load and explore the data
 ```python
 df = pd.read_csv("data/ai4i2020.csv")
@@ -474,7 +474,7 @@ plt.show()
     You will see a very tall green bar (normal) and a tiny red bar (failure). That is realistic — machines fail rarely. But it creates a trap: a model that just guesses "normal" every single time would score ~97% accuracy while being completely useless. Later cells fix this with `class_weight="balanced"`.
 
 *Expected output:* A bar chart with roughly 9,660 normal rows and 340 failure rows.
-**Cell 6** draws a correlation heatmap --- a grid that shows which columns tend to move together. Red squares mean two columns rise and fall together; blue squares mean they move in opposite directions.
+**Cell 6** draws a correlation heatmap : a grid that shows which columns tend to move together. Red squares mean two columns rise and fall together; blue squares mean they move in opposite directions.
 Cell 6: Visualize feature correlations
 ```python
 corr = df.select_dtypes(include="number").corr()
@@ -499,7 +499,7 @@ print(missing[missing > 0])
 print(f"\nTotal missing values: {missing.sum()}")
 ```
 *Expected output:* `Total missing values: 0` — this dataset is already clean, so we can move straight to modelling.
-### Phase 3 --- Prepare the data for training
+### Phase 3 : Prepare the data for training
 Raw data cannot go straight into a model. We need to pick the right columns, split the data into a training set and a test set, and make sure the numbers are on a comparable scale.
 **Cell 8** picks the five sensor columns we will use as inputs, and sets the failure column as the thing we want to predict.
 Cell 8: Choose features and label
@@ -519,7 +519,7 @@ print(X.shape, y.shape)
     Every supervised learning project follows this same shape. `X` is the table of clues (inputs). `y` is the column of answers (labels). The model learns the mapping from `X` to `y`.
 
 *Expected output:* `(10000, 5) (10000,)` — 10,000 rows, 5 input columns, 10,000 labels.
-**Cell 9** splits the data into a training set (80%) and a test set (20%). The model only ever sees the training set while learning. The test set is kept hidden until the final evaluation --- like a sealed exam paper.
+**Cell 9** splits the data into a training set (80%) and a test set (20%). The model only ever sees the training set while learning. The test set is kept hidden until the final evaluation : like a sealed exam paper.
 10,000 rows full dataset → 8,000 rows training set + 2,000 rows test set
 Cell 9: Train / test split
 ```python
@@ -532,7 +532,7 @@ print(f"Test rows:     {X_test.shape[0]}")
 *Expected output:* `Training rows: 8000, Test rows: 2000`. (`stratify=y` keeps the same ~3.4% failure rate in both halves.)
 **Cell 10** scales the numbers so they are all on a similar range. Without this, a column measured in Kelvin (≈300) would drown out a column measured in minutes (≈0--240) purely because its numbers are bigger.
 !!! warning "The golden rule of scaling"
-    We fit the scaler *only on training data*, then apply the same scaler to the test data. Why? The test set is the final exam --- if the scaler peeks at test data to calculate averages, the model gets an unfair preview and will appear better than it really is.
+    We fit the scaler *only on training data*, then apply the same scaler to the test data. Why? The test set is the final exam : if the scaler peeks at test data to calculate averages, the model gets an unfair preview and will appear better than it really is.
 Cell 10: Scale features
 ```python
 scaler = StandardScaler()
@@ -540,9 +540,9 @@ X_train_scaled = scaler.fit_transform(X_train)  # learn + apply
 X_test_scaled  = scaler.transform(X_test)        # apply only
 ```
 *Expected output:* No printed output — the scaled arrays are ready in memory.
-### Phase 4 --- Train two models and compare them
-We will train two different models on the same data and see which one is better at predicting failures. Think of it like testing two different doctors on the same set of patient records --- you want to know who gives the more accurate diagnosis.
-**Cell 11** trains the first model: Logistic Regression. It is the simplest possible approach --- a good baseline to beat.
+### Phase 4 : Train two models and compare them
+We will train two different models on the same data and see which one is better at predicting failures. Think of it like testing two different doctors on the same set of patient records : you want to know who gives the more accurate diagnosis.
+**Cell 11** trains the first model: Logistic Regression. It is the simplest possible approach : a good baseline to beat.
 Cell 11: Train Logistic Regression
 ```python
 log_reg = LogisticRegression(max_iter=1000, class_weight="balanced")
@@ -554,7 +554,7 @@ print("Logistic Regression trained.")
     Remember the imbalanced bar chart? `class_weight="balanced"` tells the model to treat a missed failure as more costly than a false alarm — otherwise it would just predict "normal" for everything and look accurate.
 
 *Expected output:* `Logistic Regression trained.`
-**Cell 12** evaluates that model and draws a confusion matrix --- a 2×2 grid that shows exactly which types of mistakes it made.
+**Cell 12** evaluates that model and draws a confusion matrix : a 2×2 grid that shows exactly which types of mistakes it made.
 |  | **Predicted Normal** | **Predicted Failure** |
 |--|--|--|
 | **Was actually Normal** | True Negative ✓ | False Positive ✗ |
@@ -572,7 +572,7 @@ plt.show()
     Look at the **Failure** row in the classification report. *Recall* tells you what fraction of real failures the model caught. A low recall means many failures slipped through undetected — that would be costly in a real factory.
 
 *Expected output:* A text table of precision/recall/F1 scores, then a 2×2 colour grid (the confusion matrix).
-**Cell 13** trains the second model: a Random Forest. Instead of one straight decision line, it builds 100 decision trees and takes a vote --- usually more accurate on sensor data like this.
+**Cell 13** trains the second model: a Random Forest. Instead of one straight decision line, it builds 100 decision trees and takes a vote : usually more accurate on sensor data like this.
 Cell 13: Train Random Forest
 ```python
 forest = RandomForestClassifier(
@@ -588,7 +588,7 @@ print("Random Forest trained.")
     Random forests split data by asking questions like "is torque > 40?" The threshold is always relative, so the scale of the numbers does not matter. Logistic Regression, by contrast, adds numbers together — so scale matters a lot.
 
 *Expected output:* `Random Forest trained.` (may take 5–10 seconds)
-**Cell 14** puts both models side by side using a single number --- the F1 score --- so you can directly compare them.
+**Cell 14** puts both models side by side using a single number : the F1 score : so you can directly compare them.
 !!! tip "Why F1 and not accuracy?"
     Accuracy counts all correct predictions equally. F1 specifically rewards catching real failures and penalises missing them. For rare events like equipment failures, F1 is the honest measure.
 Cell 14: Compare both models
@@ -603,7 +603,7 @@ winner = "Random Forest" if forest_f1 > log_f1 else "Logistic Regression"
 print(f"\nWinner: {winner}")
 ```
 *Expected output:* Two F1 scores and a winner line. Random Forest typically wins on this dataset — but by how much?
-### Phase 5 --- Challenge: does more trees mean better?
+### Phase 5 : Challenge: does more trees mean better?
 The Random Forest used 100 trees. What if we tried 10? Or 200? Cell 15 runs the model five times with different tree counts and plots the result. Your job is to look at the chart and decide: at what point do extra trees stop helping?
 Cell 15: Challenge — tune n_estimators
 ```python

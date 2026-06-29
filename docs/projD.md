@@ -68,7 +68,7 @@ Arduino 192.168.1.42 Laptop 192.168.1.15 Result Same prefix, likely reachable
 
 ---
 
-Before the full robot sketch, let us prove the whole pipeline with the smallest possible example: a Python window with two buttons that turn the Arduino's built-in LED on and off over WiFi. Once a single text packet can light an LED, everything later --- motors, servos, telemetry --- is just more of the same idea.
+Before the full robot sketch, let us prove the whole pipeline with the smallest possible example: a Python window with two buttons that turn the Arduino's built-in LED on and off over WiFi. Once a single text packet can light an LED, everything later : motors, servos, telemetry : is just more of the same idea.
 
 ### The Whole Idea in One Picture
 Your laptop and the Arduino are on the same WiFi network. Python sends a tiny text packet such as `D 13 1` to the Arduino's IP address and port. The Arduino reads it, acts on it, and sends a short reply back.
@@ -374,7 +374,7 @@ void loop() {
 }
 ```
 | Part | What it does |
-| --- | --- |
+| : | : |
 | `WiFiUDP udp;` and `udp.begin(UDP_PORT)` | Creates the UDP listener and opens port `5005` so the Arduino can receive packets. |
 | `udp.parsePacket()` | In `loop()`, checks whether a packet has arrived. Returns its size, or 0 if nothing is waiting. |
 | `udp.read(packet, ...)` then `packet[len] = '\0'` | Copies the bytes into a buffer and adds a string terminator so it can be treated as text. |
@@ -383,10 +383,10 @@ void loop() {
 | `sendReply("OK digital")` | Sends a short confirmation back to whoever sent the packet, using `udp.remoteIP()` and `udp.remotePort()`. |
 | `connectToWiFi()` | Connects and waits until a *valid* IP (not `0.0.0.0`) is assigned, retrying if needed. This is why your IP prints reliably in the Serial Monitor. |
 !!! tip "Note the port and IP"
-    Upload the sketch, open the Serial Monitor at **9600 baud,** and write down the **Arduino IP address** it prints. You will paste that into the Python script next. The port is `5005` on both sides --- they must match.
+    Upload the sketch, open the Serial Monitor at **9600 baud,** and write down the **Arduino IP address** it prints. You will paste that into the Python script next. The port is `5005` on both sides : they must match.
 
 ### The Python Sender (a tkinter GUI)
-On the laptop, a tiny program opens a window with two buttons. Each button sends one UDP command. There is no robot yet --- just you, a socket, and the Arduino.
+On the laptop, a tiny program opens a window with two buttons. Each button sends one UDP command. There is no robot yet : just you, a socket, and the Arduino.
 led_control.py
 ```python
 import socket
@@ -434,7 +434,7 @@ off_button.pack(pady=5)
 root.mainloop()
 ```
 | Line | What it does |
-| --- | --- |
+| : | : |
 | `socket.socket(socket.AF_INET, socket.SOCK_DGRAM)` | Creates a UDP socket. `SOCK_DGRAM` means UDP (datagrams); `SOCK_STREAM` would be TCP. |
 | `sock.settimeout(1.0)` | Waits at most one second for a reply, so the program never freezes if a packet is lost. |
 | `sock.sendto(command.encode(), (ARDUINO_IP, ARDUINO_PORT))` | Sends the command string (converted to bytes) to the Arduino's address and port. |
@@ -444,15 +444,15 @@ root.mainloop()
     Change `ARDUINO_IP` at the top of the Python file to the IP your Arduino printed in the Serial Monitor. If it is wrong, the buttons do nothing and you will see "No reply from Arduino".
 
 ### Understanding tkinter
-**tkinter** is Python's built-in toolkit for simple desktop windows --- it ships with Python, so there is nothing to install. You only need a few pieces to build a button panel like this one.
+**tkinter** is Python's built-in toolkit for simple desktop windows : it ships with Python, so there is nothing to install. You only need a few pieces to build a button panel like this one.
 Piece What it is root = tk.Tk() Creates the main window. Everything else lives inside it. root.title(...) / root.geometry("250x120") Sets the window title and its size in pixels. tk.Button(root, text="LED ON", command=led_on) Creates a button inside the window. command is the function to run when it is clicked. .pack(pady=10) Places the widget in the window. pack stacks widgets top to bottom; pady adds vertical spacing. root.mainloop() Starts the event loop. The program waits here, watching for clicks, until you close the window.
 !!! info "command=led_on, not led_on()"
-    You pass the function *itself* (`command=led_on`), with no parentheses. tkinter calls it later, each time the button is clicked. Writing `command=led_on()` would call it once immediately and store its return value instead --- a very common beginner mistake.
+    You pass the function *itself* (`command=led_on`), with no parentheses. tkinter calls it later, each time the button is clicked. Writing `command=led_on()` would call it once immediately and store its return value instead : a very common beginner mistake.
 
 ### Run It Yourself
 Create arduino_secrets.h . Add the arduino_secrets.h file shown above to the sketch folder, filling in your own SECRET_SSID and SECRET_PASS . Upload the sketch. Open udp_command_receiver.ino in the Arduino IDE and upload it to the UNO R4 WiFi. Read the IP. Open the Serial Monitor at 9600 baud. Note the printed Arduino IP address . Edit the Python file. Set ARDUINO_IP to that address. Make sure your laptop is on the same WiFi. Run it. Run python led_control.py . Click LED ON and LED OFF — the Arduino's pin 13 LED should follow, and the terminal should print Arduino replied: OK digital .
 !!! tip "Where this leads"
-    You just sent a one-shot command from a GUI. In **PD.2** the Arduino sketch becomes a dedicated robot receiver, and from PD.3 onward Python sends `MOTOR` commands many times per second instead of on a button press. The transport --- a small UDP text packet to an IP and port --- never changes.
+    You just sent a one-shot command from a GUI. In **PD.2** the Arduino sketch becomes a dedicated robot receiver, and from PD.3 onward Python sends `MOTOR` commands many times per second instead of on a button press. The transport : a small UDP text packet to an IP and port : never changes.
 
 ---
 
@@ -461,16 +461,16 @@ Create arduino_secrets.h . Add the arduino_secrets.h file shown above to the ske
 
 ---
 
-In PD.1b a single packet lit an LED. Now we send the same kind of packet to do real robot motion: a slider sweeps a servo, and five buttons drive two DC motors forward, backward, and turning. Nothing about the transport changes --- only the commands we send.
+In PD.1b a single packet lit an LED. Now we send the same kind of packet to do real robot motion: a slider sweeps a servo, and five buttons drive two DC motors forward, backward, and turning. Nothing about the transport changes : only the commands we send.
 !!! info "The Arduino sketch is unchanged"
-    Keep running the exact `udp_command_receiver.ino` from PD.1b. It already understands the `S` (servo) and `M` (motor) commands --- we just never sent them before. Only the Python side is new.
+    Keep running the exact `udp_command_receiver.ino` from PD.1b. It already understands the `S` (servo) and `M` (motor) commands : we just never sent them before. Only the Python side is new.
 
 ### Recap: the S and M Commands
 Command Format Example What it does Servo S pin angle S 10 90 Moves the servo on that pin to an angle from 0 to 180 degrees. Motor M in1 in2 pwm speed M 4 5 6 180 Drives one motor through a driver. speed ranges from -255 to 255; negative reverses direction.
 A motor driver needs three pins per motor: two direction pins (`in1`, `in2`) that set which way it spins, and one PWM pin that sets how fast. The Arduino sets the direction pins from the sign of `speed` and writes the magnitude to the PWM pin.
 
 ### Differential Drive in One Idea
-The robot has two driven wheels, one on each side. You steer it purely by spinning those two wheels at different speeds or directions --- there is no steering wheel. This is called **differential drive**.
+The robot has two driven wheels, one on each side. You steer it purely by spinning those two wheels at different speeds or directions : there is no steering wheel. This is called **differential drive**.
 Action Left motor Right motor Result Forward +speed +speed Both wheels push forward. Backward -speed -speed Both wheels push back. Turn left -speed +speed Wheels spin opposite ways; robot rotates left in place. Turn right +speed -speed Opposite again; robot rotates right in place. Stop 0 0 Both wheels off.
 
 ### The Python Controller
@@ -605,8 +605,8 @@ stop_button.pack(pady=10)
 root.mainloop()
 ```
 | Line | What it does |
-| --- | --- |
-| `def send(command):` | Sends one UDP packet. Note there is no `recvfrom` here --- this is fire-and-forget (see the note below). |
+| : | : |
+| `def send(command):` | Sends one UDP packet. Note there is no `recvfrom` here : this is fire-and-forget (see the note below). |
 | `def servo_changed(value):` | The slider's callback. tkinter passes the slider's current value in automatically; we convert it to `int` and send `S 10 angle`. |
 | `left_motor(speed)` / `right_motor(speed)` | Build one `M` command for a wheel from its three pins plus a speed. |
 | `forward()`, `backward()`, `turn_left()`, `turn_right()` | Combine the two wheels using the differential-drive table above. |
@@ -620,14 +620,14 @@ Piece What it is tk.Scale(..., from_=0, to=180, command=servo_changed) A slider.
 !!! info "pack vs grid"
     Do not mix `pack` and `grid` on the same parent. This program uses `pack` for the main window (stacking widgets top to bottom) and `grid` only *inside* the `button_row` frame. That separation keeps tkinter happy.
 !!! tip "Fire-and-forget"
-    Unlike PD.1b, this script does not wait for a reply after each command. When you drag the slider it sends dozens of packets per second, and waiting for an acknowledgement on each one would make the controls feel laggy. Dropping the occasional packet is fine --- the next one arrives a few milliseconds later. This is exactly why robot control loops use UDP.
+    Unlike PD.1b, this script does not wait for a reply after each command. When you drag the slider it sends dozens of packets per second, and waiting for an acknowledgement on each one would make the controls feel laggy. Dropping the occasional packet is fine : the next one arrives a few milliseconds later. This is exactly why robot control loops use UDP.
 
 ### Run It Yourself
 Keep the PD.1b sketch running. The Arduino should still have udp_command_receiver.ino uploaded and be printing its IP at 9600 baud. Wire the hardware. Connect the servo signal to pin 10, and the motor driver to the pins listed at the top of the script (left: 4, 5, 6; right: 12, 11, and IN2 on 13). Power the motors from their own supply, not the Arduino's 5V. Set ARDUINO_IP . Paste the Arduino's IP from the Serial Monitor into the Python file. Run it. Run python drive_control.py . Drag the slider to sweep the servo, and use the buttons to drive. Watch the terminal print each command as it is sent.
 !!! warning "Lift the wheels for the first test"
     Put the robot on a stand so the wheels spin freely before you let it drive on the floor. Confirm Forward, the turns, and especially STOP behave as expected first.
 !!! tip "Where this leads"
-    You are now sending real motion commands by hand. **PD.2** moves this logic onto the robot as a dedicated sketch, and the later lessons replace your button presses with a program that decides the speeds automatically --- the same `M` packets, just sent by code instead of a click.
+    You are now sending real motion commands by hand. **PD.2** moves this logic onto the robot as a dedicated sketch, and the later lessons replace your button presses with a program that decides the speeds automatically : the same `M` packets, just sent by code instead of a click.
 
 ---
 
@@ -638,8 +638,8 @@ Keep the PD.1b sketch running. The Arduino should still have udp_command_receive
 
 This sketch maintains a WiFi connection, listens for UDP motor command packets from the laptop, drives the motors through the SnappyXO shield, and sends encoder telemetry back every 50 ms.
 Upload this after you have confirmed Exercise C motor and encoder wiring. Leave the robot wheels lifted off the table for the first test.
-This sketch uses the same `arduino_secrets.h` file you created in [PD.1b](?lesson=projD-led) for your WiFi name and password --- keep it in this sketch's folder, no need to create it again.
-This sketch uses the same `wifi_helper.h` header you created in [PD.1b](?lesson=projD-led) --- it includes the header and calls `connectToWiFi()` / `printWiFiInfo()` in `setup()`. No need to recreate it.
+This sketch uses the same `arduino_secrets.h` file you created in [PD.1b](?lesson=projD-led) for your WiFi name and password : keep it in this sketch's folder, no need to create it again.
+This sketch uses the same `wifi_helper.h` header you created in [PD.1b](?lesson=projD-led) : it includes the header and calls `connectToWiFi()` / `printWiFiInfo()` in `setup()`. No need to recreate it.
 robot_udp.ino
 ```cpp
 #include <WiFiUDP.h>
@@ -945,7 +945,7 @@ def send_stop():
     cmd_sock.sendto(b"STOP", (ARDUINO_IP, CMD_PORT))
 
 
-# ---------------- PYGAME INIT ----------------
+# -------------: PYGAME INIT ----------------
 pygame.init()
 screen = pygame.display.set_mode((300, 200))  # required to capture input
 pygame.display.set_caption("Robot Control")
@@ -1045,9 +1045,9 @@ Key state Left command Right command Robot behavior W +180 +180 Drive forward. S
 
 ---
 
-The telemetry printed by `robot_keyboard.py` is real encoder tick data coming from the Arduino over UDP every 50 ms. Now you will save it to a CSV file so you can plot it after the robot moves. Because only one program can receive the telemetry on port `5002`, the logging goes directly inside `robot_keyboard.py` --- you do not run a second receiver.
+The telemetry printed by `robot_keyboard.py` is real encoder tick data coming from the Arduino over UDP every 50 ms. Now you will save it to a CSV file so you can plot it after the robot moves. Because only one program can receive the telemetry on port `5002`, the logging goes directly inside `robot_keyboard.py` : you do not run a second receiver.
 Run `robot_keyboard.py` and drive the robot forward in a straight line for about 50 cm. Both left and right tick counts should increase at roughly the same rate. If one grows much faster, your motors have different speeds at the same PWM value. That is normal hardware variation.
-Here is the complete `robot_keyboard.py` --- the PD.4 keyboard driver with CSV logging built in. Run this one script: it drives the robot, prints live ticks, and writes `telemetry_log.csv` when you press Esc.
+Here is the complete `robot_keyboard.py` : the PD.4 keyboard driver with CSV logging built in. Run this one script: it drives the robot, prints live ticks, and writes `telemetry_log.csv` when you press Esc.
 robot_keyboard.py (complete: drive + log)
 ```python
 import socket
@@ -1075,7 +1075,7 @@ def send_stop():
     cmd_sock.sendto(b"STOP", (ARDUINO_IP, CMD_PORT))
 
 
-# ---------------- PYGAME INIT ----------------
+# -------------: PYGAME INIT ----------------
 pygame.init()
 screen = pygame.display.set_mode((300, 200))  # required to capture input
 pygame.display.set_caption("Robot Control")
@@ -1165,7 +1165,7 @@ finally:
     print(f"\nStopped. Saved {len(log_rows)} rows to telemetry_log.csv")
 ```
 !!! warning "Only one telemetry receiver"
-    The Arduino sends telemetry to a single port (`5002`), and only one program can bind it. Do not run a separate logger at the same time as `robot_keyboard.py` --- on Windows the second one fails with `OSError: [WinError 10048]`. That is why the logging lives inside the driving script.
+    The Arduino sends telemetry to a single port (`5002`), and only one program can bind it. Do not run a separate logger at the same time as `robot_keyboard.py` : on Windows the second one fails with `OSError: [WinError 10048]`. That is why the logging lives inside the driving script.
 
 ### Logging Procedure
 Run python robot_keyboard.py in one terminal. Drive the robot around for about 30 seconds. Press Esc to stop — the script saves telemetry_log.csv as it exits. Open telemetry_log.csv in Excel, Google Sheets, or another plotting tool. Plot left_ticks and right_ticks against time_s .
@@ -1210,7 +1210,7 @@ Packet Direction Example Parser MOTOR,left,right Laptop to Arduino MOTOR,180,120
 
 ---
 
-Project 1's robot code includes two classes in a file called `shared.py`: `Commander` (sends motor commands) and `Telemetry` (receives encoder data). You have not started Project 1 yet, so both classes are printed below. Read through them now --- Exercise D was designed so they look familiar instead of mysterious. When you reach Project 1, this file will already make sense.
+Project 1's robot code includes two classes in a file called `shared.py`: `Commander` (sends motor commands) and `Telemetry` (receives encoder data). You have not started Project 1 yet, so both classes are printed below. Read through them now : Exercise D was designed so they look familiar instead of mysterious. When you reach Project 1, this file will already make sense.
 Commander and Telemetry (from Project 1's shared.py)
 ```python
 class Commander:
