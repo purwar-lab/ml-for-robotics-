@@ -81,35 +81,51 @@ This is the fastest way to get started if you do not have IP Webcam or Simple IP
 
 ### Install phonesense
 
-Install it on your laptop with `uvx` or `pipx`:
+Install it into your virtual environment the same way you installed other packages in Exercise A:
+```bash
+pip install phonesense
+```
+If you prefer to keep it isolated from your project, `uvx` and `pipx` also work:
 ```bash
 uvx phonesense
 # or
 pipx run phonesense
 ```
 
-### Start the Server
+### Start the Standalone Server
 
-phonesense is started from inside your Python script with one line. When you call `phonesense.start()` it prints a URL to the terminal. Open that URL on your phone's browser and the stream begins immediately.
-```python
-import phonesense
-cam = phonesense.start()
-print("Open on your phone:", cam.phone_url)
+Open a **second terminal** alongside your normal VS Code terminal and run:
+```bash
+phonesense
 ```
-Your phone does not need the same WiFi network name — it just needs to be able to reach your laptop's IP. phonesense automatically detects all available network addresses on your laptop and prints them all so you can try each one if the first does not load.
+If you used `uvx` or `pipx` instead of `pip install`, run `uvx phonesense` or `pipx run phonesense` instead.
+
+phonesense starts a server and prints one or more stream URLs, for example:
+```
+Phone page	https://192.168.1.10:8080/phone
+```
+Open the first URL in your phone's browser. Leave this terminal running the whole time you are working on the exercise.
+
+The URL you just opened on your phone but with `camera/stream` (e.g. `https://192.168.1.10:8080/camera/stream`) is your stream URL. You will paste it into `STREAM_URL` in `detect_stream.py` exactly the same way you would paste an IP Webcam or Simple IP Camera URL.
 !!! tip "phonesense uses HTTPS"
-    phonesense generates a self-signed certificate in pure Python and serves over HTTPS. Your phone browser will show a security warning the first time you open the URL. Tap **Advanced → Proceed** (Chrome) or **Show Details → visit this website** (Safari). This is expected and safe on a local network.
+    phonesense generates a self-signed certificate and serves over HTTPS. Your phone browser will show a security warning the first time you open the URL. This is expected and safe on a local network. Tap past it with your browser:
+
+    | Browser | Steps |
+    |---|---|
+    | Chrome (Android / Windows / Linux) | Tap **Advanced** → **Proceed to ... (unsafe)** |
+    | Safari (iOS / macOS) | Tap **Show Details** → **visit this website** |
+    | Edge (Windows) | Tap **Advanced** → **Continue to ... (unsafe)** |
+    | Firefox (any platform) | Tap **Advanced** → **Accept the Risk and Continue** |
+
 
 ### What phonesense Gives You
 
 | | IP Webcam / Simple IP Camera | phonesense |
 |---|---|---|
-| Phone-side setup | Install an app | Open a URL in the browser |
-| URL to configure | Copy from the app screen | Printed automatically in the terminal |
-| JPEG parsing | Manual (`buf.find`) | `cam.jpeg` |
-| Reconnect on drop | Not handled in simple script | Handled internally |
+| Phone-side setup | Install an app | Open a URL in the phone browser |
+| Stream URL | Copy from the app screen | Printed in the terminal |
 
-If you are using phonesense, skip the "Finding Your Phone's IP Address" and "Testing the Stream in a Browser" sections below. The URL phonesense prints is already correct. Jump straight to the phonesense detection script in the "Running Detection on the Stream" section.
+If you are using phonesense, skip to "Running Detection on the Stream" and follow the same steps as other users, using your phonesense URL.
 
 ---
 
@@ -271,11 +287,12 @@ if __name__ == "__main__":
 ```
 
 ### Step 1 : Edit The STREAM_URL Line
-Change `YOUR_PHONE_IP` to the IP address shown in your phone app.
+Change `YOUR_PHONE_IP` to the IP address shown in your phone app. If you are using phonesense, paste the URL that phonesense printed in your terminal.
 STREAM_URL examples
 ```bash
-Android: STREAM_URL = "http://192.168.1.47:8080/video"
-iOS:  STREAM_URL = "http://192.168.1.52:8080/live"
+Android (IP Webcam):        STREAM_URL = "http://192.168.1.47:8080/video"
+iOS (Simple IP Camera):     STREAM_URL = "http://192.168.1.52:8080/live"
+phonesense:                 STREAM_URL = "https://192.168.1.10:8765/video"
 ```
 
 ### Step 2 : Make Sure best.pt Is In The Same Folder
@@ -293,67 +310,6 @@ A window opens showing your phone camera feed live. When you hold your trained o
 4 to 12 fps depending on your laptop. This is usable for object tracking.
 20 to 40 fps. This feels much smoother, but is not required.
 
-### If You Are Using phonesense
-
-Create `detect_stream_phonesense.py` instead. phonesense replaces `open_stream` and `read_frame` entirely — you only need to call `cam.jpeg` to get the latest frame.
-detect_stream_phonesense.py
-```python
-import cv2
-import numpy as np
-import phonesense
-import time
-from ultralytics import YOLO
-
-MODEL_PATH = "best.pt"
-CONFIDENCE = 0.5
-
-print("Loading model...")
-model = YOLO(MODEL_PATH)
-print("Model loaded.")
-
-cam = phonesense.start()
-print("Open this URL on your phone:", cam.phone_url)
-print("Press Q to quit.")
-
-fps_timer = time.time()
-frame_count = 0
-
-while True:
-    jpeg = cam.jpeg          # latest JPEG bytes from the phone, or None
-    if jpeg is None:
-        continue
-
-    frame = cv2.imdecode(np.frombuffer(jpeg, np.uint8), cv2.IMREAD_COLOR)
-    if frame is None:
-        continue
-
-    results   = model(frame, imgsz=416, conf=CONFIDENCE, verbose=False)
-    annotated = results[0].plot()
-
-    frame_count += 1
-    elapsed = time.time() - fps_timer
-    if elapsed >= 1.0:
-        fps = frame_count / elapsed
-        frame_count = 0
-        fps_timer = time.time()
-        cv2.putText(annotated, f"FPS: {fps:.1f}", (10, 30),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
-
-    cv2.imshow("Phone Stream - YOLO Detection", annotated)
-    if cv2.waitKey(1) & 0xFF == ord("q"):
-        break
-
-cam.stop()
-cv2.destroyAllWindows()
-print("Stopped.")
-```
-
-Run it the same way:
-```bash
-python detect_stream_phonesense.py
-```
-
-The model call, the FPS counter, and the display window are identical to the IP Webcam version. The only difference is where the frame comes from: `cam.jpeg` instead of `read_frame(stream)`.
 
 ---
 
