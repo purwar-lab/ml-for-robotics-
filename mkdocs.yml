@@ -11,10 +11,10 @@ nav:
   - "Chapter 6: Neural Networks": ch6.md
   - "Chapter 7: Computer Vision for Robotics": ch7.md
   - "Chapter 8: What's Next?": ch8.md
-  - "Exercise A: Train Your First Detector": projA.md
-  - "Exercise B: Your Phone as a Robot Camera": projB.md
-  - "Exercise C: Precise Movement with Encoders": projC.md
-  - "Exercise D: Talk to Your Robot Over WiFi": projD.md
+  - "Exercise A: Train Your First Detector": exA.md
+  - "Exercise B: Your Phone as a Robot Camera": exB.md
+  - "Exercise C: Precise Movement with Encoders": exC.md
+  - "Exercise D: Talk to Your Robot Over WiFi": exD.md
   - "Project 1: Object Tracker": proj1.md
   # - "Project 2: Lane Follower": proj2.md
   # - "Project 3: Gesture Controlled Robot": proj3.md
@@ -22,18 +22,13 @@ nav:
 
 plugins:
   - search
-  - enumerate-headings:
-      strict: false
-      start_level: 1
-      toc_depth: 3
-      exclude:
-        - index.md
-        - ch0.md
-        # - projA.md
-        # - projB.md
-        # - projC.md
-        # - projD.md
-        # - proj1.md
+  # - enumerate-headings:
+  #     strict: false
+  #     start_level: 1
+  #     toc_depth: 3
+  #     exclude:
+  #       - index.md
+  #       - ch0.md
 
 theme: readthedocs
 markdown_extensions:
