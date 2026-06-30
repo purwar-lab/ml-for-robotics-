@@ -1,0 +1,2054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Object Follower Robot | Interactive ML x Robotics Project</title>
+<script>try{const theme=localStorage.getItem("mlr-theme");if(theme)document.documentElement.dataset.theme=theme;}catch(error){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #07111f;
+    --bg-soft: #0b162a;
+    --panel: rgba(14, 24, 44, 0.88);
+    --panel-strong: #101c33;
+    --card: #12213e;
+    --card-2: #16284b;
+    --line: #23406b;
+    --cyan: #49f2d5;
+    --cyan-soft: rgba(73, 242, 213, 0.12);
+    --orange: #ff8552;
+    --orange-soft: rgba(255, 133, 82, 0.12);
+    --blue: #73b2ff;
+    --green: #65f0a5;
+    --yellow: #ffd46c;
+    --red: #ff7777;
+    --text: #d7e5f8;
+    --muted: #8b949e;
+    --white: #f6fbff;
+    --shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+    --radius: 22px;
+  }
+
+  html[data-theme="light"] {
+    --bg: #f6f8fb;
+    --bg-soft: #edf3f8;
+    --panel: rgba(255, 255, 255, 0.9);
+    --panel-strong: #f8fbff;
+    --card: #ffffff;
+    --card-2: #eef4fb;
+    --line: #d5dfeb;
+    --cyan: #0891b2;
+    --cyan-soft: rgba(8, 145, 178, 0.1);
+    --orange: #c2410c;
+    --orange-soft: rgba(194, 65, 12, 0.1);
+    --blue: #2563eb;
+    --green: #047857;
+    --yellow: #b45309;
+    --red: #be123c;
+    --text: #253247;
+    --muted: #64748b;
+    --white: #0f172a;
+    --shadow: 0 24px 70px rgba(15, 23, 42, 0.12);
+    color-scheme: light;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background:
+      radial-gradient(circle at top, rgba(73, 242, 213, 0.08), transparent 30%),
+      radial-gradient(circle at 85% 15%, rgba(255, 133, 82, 0.08), transparent 24%),
+      linear-gradient(180deg, #06101d 0%, #091324 42%, #08101d 100%);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    font-size: 17px;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  html[data-theme="light"] body {
+    background:
+      radial-gradient(circle at top, rgba(8, 145, 178, 0.12), transparent 30%),
+      radial-gradient(circle at 85% 15%, rgba(194, 65, 12, 0.1), transparent 24%),
+      linear-gradient(180deg, #f6f8fb 0%, #edf3f8 42%, #f6f8fb 100%);
+  }
+
+  a { color: inherit; }
+  button, input { font: inherit; }
+
+  #bg-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.34;
+  }
+
+  .wrap { position: relative; z-index: 1; }
+  .container { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+  section { padding: 96px 0; }
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(35, 64, 107, 0.9), transparent);
+  }
+
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    height: 68px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 0 22px;
+    background: rgba(5, 11, 22, 0.78);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid rgba(35, 64, 107, 0.7);
+  }
+
+  html[data-theme="light"] nav {
+    background: rgba(248, 250, 252, 0.9);
+    border-bottom-color: rgba(148, 163, 184, 0.45);
+  }
+
+  .nav-back, .nav-pill, .theme-toggle, .ghost-button, .cta-button, .mini-button, .copy-button {
+    text-decoration: none;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    transition: transform .2s ease, border-color .2s ease, background .2s ease, color .2s ease;
+  }
+
+  .nav-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+
+  .nav-brand {
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+  }
+
+  .nav-brand strong {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    letter-spacing: 0.04em;
+    color: var(--white);
+  }
+
+  .nav-brand span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .nav-pill {
+    padding: 7px 12px;
+    font-size: 12px;
+    color: var(--text);
+    background: transparent;
+  }
+
+  .theme-toggle {
+    appearance: none;
+    padding: 7px 12px;
+    color: var(--text);
+    background: transparent;
+    cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .nav-pill.active, .nav-pill:hover, .nav-back:hover, .theme-toggle:hover, .theme-toggle:focus-visible, .ghost-button:hover, .mini-button:hover, .copy-button:hover {
+    color: var(--white);
+    border-color: var(--cyan);
+    background: rgba(73, 242, 213, 0.08);
+    transform: translateY(-1px);
+  }
+
+  .theme-toggle:focus-visible {
+    outline: none;
+  }
+
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 88px;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 30px;
+    align-items: start;
+  }
+
+  .eyebrow, .section-num {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .eyebrow { color: var(--orange); margin-bottom: 22px; }
+  .section-num { color: var(--cyan); margin-bottom: 14px; }
+  .eyebrow::before, .section-num::before {
+    content: "";
+    width: 28px;
+    height: 2px;
+    display: inline-block;
+  }
+  .eyebrow::before { background: var(--orange); }
+  .section-num::before { background: var(--cyan); }
+
+  h1, h2, h3 {
+    font-family: 'Syne', sans-serif;
+    color: var(--white);
+    line-height: 1.08;
+  }
+
+  h1 {
+    font-size: clamp(42px, 7vw, 84px);
+    margin-bottom: 24px;
+    letter-spacing: -0.04em;
+  }
+
+  h2 {
+    font-size: clamp(30px, 4.4vw, 48px);
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+
+  .accent { color: var(--cyan); }
+  .accent-orange { color: var(--orange); }
+
+  .hero-copy p,
+  .lead,
+  p {
+    color: var(--text);
+  }
+
+  .hero-copy .hero-sub {
+    font-size: 19px;
+    max-width: 720px;
+    margin-bottom: 28px;
+    color: var(--muted);
+  }
+
+  .hero-tags, .stack-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    padding: 7px 13px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--white);
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 30px 0 34px;
+  }
+
+  .cta-button, .ghost-button, .mini-button, .copy-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+  }
+
+  .cta-button {
+    padding: 14px 20px;
+    background: linear-gradient(135deg, rgba(73, 242, 213, 0.22), rgba(73, 178, 255, 0.16));
+    color: var(--white);
+    border-color: rgba(73, 242, 213, 0.42);
+    box-shadow: 0 12px 40px rgba(73, 242, 213, 0.16);
+  }
+
+  .ghost-button {
+    padding: 14px 20px;
+    color: var(--text);
+  }
+
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .stat-card, .panel, .card, .code-block, .tab-panel, .accordion-item, .lab-stage, .detail-panel {
+    background: var(--panel);
+    border: 1px solid rgba(35, 64, 107, 0.82);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  html[data-theme="light"] .stat-card,
+  html[data-theme="light"] .panel,
+  html[data-theme="light"] .card,
+  html[data-theme="light"] .tab-panel,
+  html[data-theme="light"] .accordion-item,
+  html[data-theme="light"] .lab-stage,
+  html[data-theme="light"] .detail-panel,
+  html[data-theme="light"] .hardware-table {
+    border-color: rgba(148, 163, 184, 0.45);
+  }
+
+  .stat-card {
+    padding: 18px 16px;
+    backdrop-filter: blur(12px);
+  }
+
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .stat-value {
+    margin-top: 10px;
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 3vw, 42px);
+    line-height: 1;
+    color: #ffffff;
+    font-weight: 800;
+  }
+
+  html[data-theme="light"] .stat-value {
+    color: var(--white);
+  }
+
+  .hero-panel {
+    padding: 20px;
+    position: sticky;
+    top: 92px;
+    overflow: hidden;
+  }
+
+  .panel-kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--cyan);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .telemetry-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .telemetry-chip {
+    padding: 14px;
+    border-radius: 16px;
+    background: linear-gradient(180deg, rgba(18, 33, 62, 0.86), rgba(12, 22, 41, 0.86));
+    border: 1px solid rgba(35, 64, 107, 0.75);
+  }
+
+  .telemetry-chip strong {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .telemetry-chip span {
+    font-size: 20px;
+    color: var(--white);
+    font-weight: 700;
+  }
+
+  .status-track {
+    margin-top: 10px;
+    height: 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(35, 64, 107, 0.7);
+    overflow: hidden;
+  }
+
+  .status-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--cyan), var(--blue));
+    transition: width .25s ease, background .25s ease;
+  }
+
+  .state-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 999px;
+    margin-top: 18px;
+    border: 1px solid rgba(35, 64, 107, 0.8);
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--white);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+
+  .state-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--yellow);
+    box-shadow: 0 0 12px currentColor;
+  }
+
+  .section-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 18px;
+    align-items: end;
+    margin-bottom: 28px;
+  }
+
+  .lead {
+    max-width: 760px;
+    color: var(--muted);
+    font-size: 18px;
+  }
+
+  .detail-strip {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 28px;
+  }
+
+  .detail-panel {
+    padding: 18px;
+  }
+
+  .detail-panel strong {
+    display: block;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+  }
+
+  .card {
+    padding: 22px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .mini-kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--cyan);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .pipeline-explorer {
+    display: grid;
+    grid-template-columns: 320px minmax(0, 1fr);
+    gap: 18px;
+    margin-top: 30px;
+  }
+
+  .pipeline-list {
+    display: grid;
+    gap: 10px;
+  }
+
+  .pipeline-button {
+    width: 100%;
+    text-align: left;
+    padding: 16px 18px;
+    border-radius: 18px;
+    border: 1px solid rgba(35, 64, 107, 0.8);
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text);
+    cursor: pointer;
+    transition: transform .2s ease, border-color .2s ease, background .2s ease;
+  }
+
+  .pipeline-button strong {
+    display: block;
+    color: var(--white);
+    margin-bottom: 4px;
+    font-size: 16px;
+  }
+
+  .pipeline-button span {
+    display: block;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  .pipeline-button.active,
+  .pipeline-button:hover {
+    border-color: var(--cyan);
+    background: rgba(73, 242, 213, 0.08);
+    transform: translateY(-1px);
+  }
+
+  .detail-panel .detail-title {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .detail-panel .detail-title strong {
+    margin-bottom: 0;
+    font-size: 22px;
+  }
+
+  .detail-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .bullet-list {
+    display: grid;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .bullet {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    color: var(--text);
+  }
+
+  .bullet::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    margin-top: 10px;
+    border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 12px rgba(73, 242, 213, 0.45);
+    flex-shrink: 0;
+  }
+
+  .hardware-table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow: hidden;
+    border-radius: 22px;
+    background: var(--panel);
+    border: 1px solid rgba(35, 64, 107, 0.8);
+    box-shadow: var(--shadow);
+  }
+
+  .hardware-table th,
+  .hardware-table td {
+    text-align: left;
+    padding: 16px 18px;
+    border-bottom: 1px solid rgba(35, 64, 107, 0.5);
+    vertical-align: top;
+  }
+
+  .hardware-table th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .hardware-table td:first-child {
+    color: var(--yellow);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  .hardware-table td:nth-child(2) {
+    color: var(--white);
+    font-weight: 600;
+  }
+
+  .hardware-table tr:last-child td { border-bottom: none; }
+
+  .code-block {
+    overflow: hidden;
+    margin-top: 24px;
+  }
+
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 14px 18px;
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(35, 64, 107, 0.72);
+  }
+
+  .code-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .code-dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .code-dots span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  .code-dots span:nth-child(1) { background: #ff6c6c; }
+  .code-dots span:nth-child(2) { background: #ffd46c; }
+  .code-dots span:nth-child(3) { background: #65f0a5; }
+
+  .code-filename {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .copy-button {
+    padding: 10px 14px;
+    background: transparent;
+    color: var(--muted);
+  }
+
+  pre {
+    margin: 0;
+    padding: 22px;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.8px;
+    line-height: 1.8;
+    color: #cde0ff;
+    background: linear-gradient(180deg, rgba(7, 13, 24, 0.96), rgba(7, 13, 24, 0.84));
+  }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .86em;
+    color: var(--cyan);
+    background: rgba(255, 255, 255, 0.04);
+    padding: 2px 6px;
+    border-radius: 6px;
+    border: 1px solid rgba(35, 64, 107, 0.72);
+  }
+
+  .lab-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+    gap: 18px;
+    align-items: stretch;
+  }
+
+  .lab-stage {
+    padding: 24px;
+  }
+
+  .lab-canvas-wrap {
+    position: relative;
+    border-radius: 20px;
+    border: 1px solid rgba(35, 64, 107, 0.8);
+    background:
+      radial-gradient(circle at 50% 30%, rgba(73, 242, 213, 0.08), transparent 38%),
+      linear-gradient(180deg, rgba(11, 22, 42, 0.96), rgba(7, 15, 30, 0.96));
+    overflow: hidden;
+    min-height: 360px;
+  }
+
+  .lab-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: linear-gradient(180deg, rgba(0,0,0,0.95), rgba(0,0,0,0.3));
+  }
+
+  .frame-center,
+  .tracking-line,
+  .target-ball,
+  .robot-base,
+  .scan-pulse {
+    position: absolute;
+  }
+
+  .frame-center {
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    background: rgba(101, 240, 165, 0.8);
+  }
+
+  .tracking-line {
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 3px;
+    background: rgba(73, 242, 213, 0.95);
+    box-shadow: 0 0 18px rgba(73, 242, 213, 0.55);
+    transition: left .18s ease;
+  }
+
+  .target-ball {
+    top: 30%;
+    left: 50%;
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), transparent 22%),
+      radial-gradient(circle at 55% 58%, #ffbe70 0%, #ff7f47 54%, #cf4b1d 100%);
+    box-shadow:
+      0 0 36px rgba(255, 133, 82, 0.28),
+      inset -10px -12px 24px rgba(0, 0, 0, 0.18);
+    transform: translate(-50%, -50%);
+    transition: left .18s ease, transform .18s ease;
+  }
+
+  .target-ball::after {
+    content: "";
+    position: absolute;
+    inset: 12px;
+    border-radius: 50%;
+    border: 2px dashed rgba(255, 255, 255, 0.18);
+  }
+
+  .scan-pulse {
+    left: 50%;
+    top: 30%;
+    width: 180px;
+    height: 180px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    border: 1px solid rgba(73, 242, 213, 0.24);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(0.92); opacity: 0.25; }
+    50% { transform: translate(-50%, -50%) scale(1.06); opacity: 0.7; }
+  }
+
+  .robot-base {
+    left: 50%;
+    bottom: 22px;
+    width: 160px;
+    height: 70px;
+    transform: translateX(-50%);
+  }
+
+  .robot-body {
+    position: absolute;
+    inset: 14px 22px 0;
+    border-radius: 16px 16px 24px 24px;
+    background: linear-gradient(180deg, #23406b, #15294b);
+    border: 1px solid rgba(115, 178, 255, 0.35);
+  }
+
+  .wheel {
+    position: absolute;
+    top: 20px;
+    width: 20px;
+    height: 44px;
+    border-radius: 10px;
+    background: linear-gradient(180deg, #212b3f, #0b0f17);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .wheel.left { left: 10px; }
+  .wheel.right { right: 10px; }
+
+  .sensor {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 58px;
+    height: 26px;
+    border-radius: 14px 14px 8px 8px;
+    background: linear-gradient(180deg, #182944, #0f192e);
+    border: 1px solid rgba(73, 242, 213, 0.25);
+  }
+
+  .sensor::after {
+    content: "";
+    position: absolute;
+    inset: 7px 16px;
+    border-radius: 10px;
+    background: rgba(73, 242, 213, 0.6);
+    box-shadow: 0 0 16px rgba(73, 242, 213, 0.44);
+  }
+
+  .lab-controls {
+    padding: 22px;
+    display: grid;
+    gap: 16px;
+  }
+
+  .control-group {
+    display: grid;
+    gap: 8px;
+  }
+
+  .control-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: baseline;
+  }
+
+  .control-header label {
+    color: var(--white);
+    font-weight: 600;
+  }
+
+  .control-header span {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--cyan);
+    font-size: 12px;
+  }
+
+  input[type="range"] {
+    width: 100%;
+    accent-color: var(--cyan);
+  }
+
+  .metric-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .metric-card {
+    padding: 14px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(35, 64, 107, 0.7);
+  }
+
+  .metric-card strong {
+    display: block;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 8px;
+  }
+
+  .metric-card span {
+    display: block;
+    color: var(--white);
+    font-size: 22px;
+    font-weight: 700;
+  }
+
+  .state-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .state-card {
+    padding: 18px;
+    border-radius: 18px;
+    border: 1px solid rgba(35, 64, 107, 0.76);
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  .state-card strong {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .state-card p {
+    margin-bottom: 0;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  .state-card.stopped strong { color: var(--muted); }
+  .state-card.searching strong { color: var(--orange); }
+  .state-card.acquiring strong { color: var(--yellow); }
+  .state-card.tracking strong { color: var(--green); }
+
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .tab-button {
+    padding: 12px 16px;
+    border-radius: 999px;
+    border: 1px solid rgba(35, 64, 107, 0.76);
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--muted);
+    cursor: pointer;
+  }
+
+  .tab-button.active {
+    border-color: var(--cyan);
+    background: rgba(73, 242, 213, 0.08);
+    color: var(--white);
+  }
+
+  .tab-panel {
+    padding: 20px;
+    display: none;
+  }
+
+  .tab-panel.active {
+    display: block;
+  }
+
+  .accordion {
+    display: grid;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .accordion-item {
+    overflow: hidden;
+  }
+
+  .accordion-button {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: center;
+    border: 0;
+    background: transparent;
+    color: var(--white);
+    padding: 18px 20px;
+    cursor: pointer;
+  }
+
+  .accordion-button span:last-child {
+    color: var(--cyan);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .accordion-content {
+    padding: 0 20px 20px;
+    color: var(--muted);
+    display: none;
+  }
+
+  .accordion-item.open .accordion-content {
+    display: block;
+  }
+
+  .accordion-item.open .accordion-button span:last-child {
+    transform: rotate(45deg);
+  }
+
+  .fade-up {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .js-ready .fade-up {
+    opacity: 0;
+    transform: translateY(26px);
+    transition: opacity .6s ease, transform .6s ease;
+  }
+
+  .js-ready .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  footer {
+    padding: 54px 0 36px;
+    border-top: 1px solid rgba(35, 64, 107, 0.8);
+    color: var(--muted);
+    text-align: center;
+  }
+
+  footer p + p { margin-top: 8px; }
+
+  @media (max-width: 1040px) {
+    .hero-grid,
+    .lab-grid,
+    .pipeline-explorer {
+      grid-template-columns: 1fr;
+    }
+
+    .hero-panel {
+      position: static;
+    }
+  }
+
+  @media (max-width: 860px) {
+    .hero-stats,
+    .detail-strip,
+    .state-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 680px) {
+    nav {
+      height: auto;
+      min-height: 68px;
+      padding: 12px 14px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links {
+      width: 100%;
+      justify-content: flex-start;
+    }
+
+    .container { width: min(1120px, calc(100% - 24px)); }
+    section { padding: 78px 0; }
+    .hero-stats,
+    .detail-strip,
+    .telemetry-grid,
+    .metric-grid,
+    .state-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .section-head {
+      grid-template-columns: 1fr;
+    }
+
+    .hardware-table {
+      display: block;
+      overflow-x: auto;
+    }
+  }
+</style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+
+<nav>
+  <a class="nav-back" href="index.html">Back</a>
+  <div class="nav-brand">
+    <strong>Object Follower Robot</strong>
+    <span>ML x Robotics Project</span>
+  </div>
+  <div class="nav-links">
+    <a class="nav-pill" href="#demo">Walkthrough</a>
+    <a class="nav-pill" href="#architecture">Architecture</a>
+    <a class="nav-pill" href="#hardware">Hardware</a>
+    <a class="nav-pill" href="#vision">Vision</a>
+    <a class="nav-pill" href="#firmware">Firmware</a>
+  </div>
+  <button class="theme-toggle" id="projectThemeToggle" type="button">Light</button>
+</nav>
+
+<div class="wrap">
+  <section id="hero">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <div class="eyebrow fade-up">Project 01 / Autonomous Tracking Robot</div>
+        <h1 class="fade-up">A <span class="accent">ball-following robot</span> explained as a <span class="accent-orange">step-by-step tutorial</span>.</h1>
+        <p class="hero-sub fade-up">
+          This page is for someone opening the repository and asking, "How does this actually work?"
+          Instead of focusing on a live dashboard, it walks through the Python code, the control logic, and the firmware decisions in the same order the robot runs them.
+        </p>
+        <div class="hero-tags fade-up">
+          <span class="tag">YOLOv8</span>
+          <span class="tag">Python + OpenCV</span>
+          <span class="tag">ESP32 UDP Control</span>
+          <span class="tag">State Machine</span>
+          <span class="tag">Dual PID</span>
+          <span class="tag">MJPEG Phone Stream</span>
+        </div>
+        <div class="hero-actions fade-up">
+          <a class="cta-button" href="#demo">Start the code walkthrough</a>
+          <a class="ghost-button" href="#vision">Jump to control logic</a>
+        </div>
+        <div class="detail-strip fade-up" style="margin-top:18px">
+          <div class="detail-panel">
+            <strong>What this file is</strong>
+            <p>`Obj_track_adv.py` is the whole control stack: camera input, YOLO detection, PID control, UDP motor output, telemetry, and visualization.</p>
+          </div>
+          <div class="detail-panel">
+            <strong>What readers should learn</strong>
+            <p>How a bounding box becomes two errors, how those errors become motor commands, and why a state machine sits between perception and actuation.</p>
+          </div>
+          <div class="detail-panel">
+            <strong>What to edit first</strong>
+            <p>Start with `NETWORK_CONFIG`, `VISION_CONFIG`, and `CONTROL_CONFIG`, then move to `Tracker.control()` once the setup values make sense.</p>
+          </div>
+        </div>
+      </div>
+
+      <aside class="hero-panel panel fade-up">
+        <div class="panel-kicker">How To Read This Project</div>
+        <div class="telemetry-grid">
+          <div class="telemetry-chip">
+            <strong>Start here</strong>
+            <span>Top config block</span>
+          </div>
+          <div class="telemetry-chip">
+            <strong>Main loop</strong>
+            <span>`main()`</span>
+          </div>
+          <div class="telemetry-chip">
+            <strong>Core class</strong>
+            <span>`Tracker`</span>
+          </div>
+          <div class="telemetry-chip">
+            <strong>Output path</strong>
+            <span>UDP -> ESP32</span>
+          </div>
+        </div>
+        <div class="state-pill">
+          <span class="state-dot" style="background:var(--cyan);color:var(--cyan)"></span>
+          <span>Read code in execution order</span>
+        </div>
+        <div class="bullet-list" style="margin-top:18px">
+          <div class="bullet">First understand the config values at the top of `Obj_track_adv.py` because they define the whole robot setup.</div>
+          <div class="bullet">Then read the helper classes: video stream, commander, telemetry, and PID.</div>
+          <div class="bullet">Finally read `Tracker.control()` and `main()` together, because that is where perception becomes wheel commands.</div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="demo">
+    <div class="container">
+      <div class="section-head fade-up">
+        <div>
+          <div class="section-num">01 / Code Walkthrough</div>
+          <h2>Read the Python file in the same order the <span class="accent">robot runs</span>.</h2>
+          <p class="lead">
+            If someone checks out this project, they should not have to reverse-engineer the file structure.
+            This section explains what each part of `Obj_track_adv.py` is responsible for and why it exists.
+          </p>
+        </div>
+      </div>
+
+      <div class="lab-grid fade-up">
+        <div class="lab-stage">
+          <div class="panel-kicker">Code Map</div>
+          <div class="card-grid" style="grid-template-columns:1fr; margin-top:14px">
+            <div class="card">
+              <div class="mini-kicker">1. `NETWORK_CONFIG`, `VISION_CONFIG`, `CONTROL_CONFIG`</div>
+              <p>These blocks are the setup layer. They answer practical questions: which phone camera stream to use, which YOLO model to load, what object to track, what follow distance looks like, and how aggressive the controller should be.</p>
+            </div>
+            <div class="card">
+              <div class="mini-kicker">2. Helper classes</div>
+              <p><code>PID</code> computes corrections from error, <code>MobileVideoStream</code> keeps the newest camera frame available, <code>Commander</code> sends wheel commands, and <code>Telemetry</code> listens for encoder feedback.</p>
+            </div>
+            <div class="card">
+              <div class="mini-kicker">3. `Tracker`</div>
+              <p>This is the brain of the script. It loads YOLO, finds the target object, keeps track of the robot state, smooths noisy measurements, runs both PID loops, and mixes everything into left and right wheel speeds.</p>
+            </div>
+            <div class="card">
+              <div class="mini-kicker">4. `main()`</div>
+              <p>The main loop wires all the pieces together. It starts the stream, creates the tracker, processes frames forever, sends commands on a fixed interval, draws the debug overlay, and shuts everything down safely at the end.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel lab-controls">
+          <div class="panel-kicker">How To Think About The File</div>
+          <div class="metric-grid">
+            <div class="metric-card">
+              <strong>Input</strong>
+              <span>camera frame</span>
+            </div>
+            <div class="metric-card">
+              <strong>Detection</strong>
+              <span>bounding box</span>
+            </div>
+            <div class="metric-card">
+              <strong>Errors</strong>
+              <span>angle + area</span>
+            </div>
+            <div class="metric-card">
+              <strong>Controller</strong>
+              <span>turn + distance PID</span>
+            </div>
+            <div class="metric-card">
+              <strong>Output</strong>
+              <span>wheel speeds</span>
+            </div>
+            <div class="metric-card">
+              <strong>Transport</strong>
+              <span>UDP command</span>
+            </div>
+          </div>
+
+          <div class="bullet-list" style="margin-top:18px">
+            <div class="bullet">The important design choice is that vision and motor driving are separated by a clean control layer.</div>
+            <div class="bullet">The code does not say “ball is on the right, spin right.” It computes continuous error values and lets the controller decide how strongly to react.</div>
+            <div class="bullet">That is why the robot can be tuned instead of hard-coded.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-strip fade-up">
+        <div class="detail-panel">
+          <strong>Read top to bottom</strong>
+          <p>This file is one of the rare cases where reading top to bottom actually works well. Each section builds the next one.</p>
+        </div>
+        <div class="detail-panel">
+          <strong>Follow the data</strong>
+          <p>The key question is always: what information exists at this point, and how is it converted into something more useful?</p>
+        </div>
+        <div class="detail-panel">
+          <strong>Look for responsibility</strong>
+          <p>Each class owns one job. That makes it easier for a reader to understand what to modify without breaking unrelated behavior.</p>
+        </div>
+      </div>
+
+      <div class="code-block fade-up">
+        <div class="code-header">
+          <div class="code-meta">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <div class="code-filename">The simplest way to use this project</div>
+          </div>
+          <button class="copy-button" data-copy-target="tutorialRunCode">Copy command</button>
+        </div>
+<pre id="tutorialRunCode">1. Open Obj_track_adv.py
+2. Edit NETWORK_CONFIG, VISION_CONFIG, and CONTROL_CONFIG
+3. Run: python Obj_track_adv.py</pre>
+      </div>
+
+      <div class="code-block fade-up">
+        <div class="code-header">
+          <div class="code-meta">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <div class="code-filename">The three config blocks are the first thing a reader should understand</div>
+          </div>
+          <button class="copy-button" data-copy-target="configGuide">Copy snippet</button>
+        </div>
+<pre id="configGuide">NETWORK_CONFIG = NetworkConfig(...)
+VISION_CONFIG = VisionConfig(...)
+CONTROL_CONFIG = ControlConfig(...)</pre>
+      </div>
+
+      <div class="card-grid fade-up" style="margin-top:18px">
+        <div class="card">
+          <div class="mini-kicker">`NETWORK_CONFIG`</div>
+          <p>This block is not algorithmic. It just tells the script where the phone stream is and where to send motor and telemetry packets.</p>
+        </div>
+        <div class="card">
+          <div class="mini-kicker">`VISION_CONFIG`</div>
+          <p>This defines what the robot should look for and what counts as “the right distance.” The most important values are `target_object`, `target_area`, `imgsz`, and `confidence`.</p>
+        </div>
+        <div class="card">
+          <div class="mini-kicker">`CONTROL_CONFIG`</div>
+          <p>This is where robot behavior lives: smoothing strength, PID gains, dead zones, acceleration limits, and how long to keep searching after a target disappears.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="architecture">
+    <div class="container">
+      <div class="section-head fade-up">
+        <div>
+          <div class="section-num">02 / Architecture</div>
+          <h2>The full stack from <span class="accent">camera frame</span> to <span class="accent-orange">wheel torque</span>.</h2>
+          <p class="lead">
+            The project is easiest to understand as a chain of responsibility. Each stage does one thing well and hands the next stage a simpler problem.
+          </p>
+        </div>
+      </div>
+
+      <div class="pipeline-explorer fade-up">
+        <div class="pipeline-list">
+          <button class="pipeline-button active" data-step="0">
+            <strong>1. Phone camera stream</strong>
+            <span>An Android phone serves MJPEG over HTTP so Python can grab frames with almost zero setup friction.</span>
+          </button>
+          <button class="pipeline-button" data-step="1">
+            <strong>2. YOLO inference</strong>
+            <span>The model selects the largest `ball` detection and converts the bounding box into center and area measurements.</span>
+          </button>
+          <button class="pipeline-button" data-step="2">
+            <strong>3. Error computation</strong>
+            <span>The controller computes horizontal offset and relative area error, both normalized to stay dimensionless.</span>
+          </button>
+          <button class="pipeline-button" data-step="3">
+            <strong>4. State + PID control</strong>
+            <span>The state machine gates how aggressively the controller responds and decides whether the robot tracks, searches, or stops.</span>
+          </button>
+          <button class="pipeline-button" data-step="4">
+            <strong>5. UDP motor commands</strong>
+            <span>Python sends `MOTOR,left,right` packets every 30 ms, favoring freshness over guaranteed delivery.</span>
+          </button>
+        </div>
+
+        <div class="detail-panel" id="pipelineDetail">
+          <div class="detail-title">
+            <strong>Phone camera stream</strong>
+            <span class="detail-meta">Input stage</span>
+          </div>
+          <p id="pipelineSummary">
+            The phone is effectively a low-cost wireless vision sensor. It avoids running inference on-board while still delivering a real camera viewpoint from the robot's height.
+          </p>
+          <div class="bullet-list" id="pipelineBullets">
+            <div class="bullet">`requests.get(..., stream=True)` reads MJPEG chunks and extracts JPEG frame boundaries.</div>
+            <div class="bullet">The latest valid frame replaces the previous one inside a locked buffer so control code always sees the newest image.</div>
+            <div class="bullet">Reconnect backoff handles temporary WiFi glitches without crashing the process.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="code-block fade-up">
+        <div class="code-header">
+          <div class="code-meta">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <div class="code-filename">What the helper classes are really doing</div>
+          </div>
+          <button class="copy-button" data-copy-target="helperGuide">Copy snippet</button>
+        </div>
+<pre id="helperGuide">class PID:                # convert error into correction
+class MobileVideoStream:  # keep the newest camera frame ready
+class Commander:          # send UDP motor commands
+class Telemetry:          # receive encoder feedback
+class Tracker:            # combine vision + control</pre>
+      </div>
+
+      <div class="card-grid fade-up" style="margin-top:18px">
+        <div class="card">
+          <div class="mini-kicker">`PID.update(error)`</div>
+          <p>This method computes proportional, integral, and derivative terms from the current error. In this project, the turn PID and distance PID both reuse the same class, which keeps the control logic consistent.</p>
+        </div>
+        <div class="card">
+          <div class="mini-kicker">`MobileVideoStream`</div>
+          <p>The camera reader runs in its own thread because waiting for network video inside the control loop would make the robot sluggish and unpredictable.</p>
+        </div>
+        <div class="card">
+          <div class="mini-kicker">`Commander` and `Telemetry`</div>
+          <p>These two classes isolate networking details. That way, `Tracker` only worries about behavior and not about socket packet formatting.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="hardware">
+    <div class="container">
+      <div class="section-head fade-up">
+        <div>
+          <div class="section-num">03 / Hardware</div>
+          <h2>The robot is simple on purpose.</h2>
+          <p class="lead">
+            The hardware choices keep the robotics interesting without making the wiring or embedded code the bottleneck.
+            The heavy math lives on the laptop; the robot mostly needs clean actuation and stable telemetry.
+          </p>
+        </div>
+      </div>
+
+      <table class="hardware-table fade-up">
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Part</th>
+            <th>Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Microcontroller</td>
+            <td>ESP32 WROVER</td>
+            <td>Receives UDP commands, drives PWM channels, and returns encoder telemetry without carrying the ML workload.</td>
+          </tr>
+          <tr>
+            <td>Motor driver</td>
+            <td>TB6612FNG</td>
+            <td>Converts logic-level direction and PWM signals into bidirectional motor drive for the left and right wheels.</td>
+          </tr>
+          <tr>
+            <td>Drive motors</td>
+            <td>DG01D gear motors</td>
+            <td>Differential drive lets steering emerge from left/right speed differences instead of requiring a servo steering rack.</td>
+          </tr>
+          <tr>
+            <td>Vision sensor</td>
+            <td>Smartphone stream</td>
+            <td>Acts as a movable WiFi camera and gives the model the exact perspective the robot sees in deployment.</td>
+          </tr>
+          <tr>
+            <td>Compute</td>
+            <td>Laptop or desktop</td>
+            <td>Runs YOLO, smoothing, PID control, and visualization. CUDA is used when available and CPU remains a fallback.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="card-grid fade-up" style="margin-top:20px">
+        <div class="card">
+          <div class="mini-kicker">Motor sign convention</div>
+          <p>The command path sends <code>-left_speed, right_speed</code> because one motor is mounted in reverse. That inversion is not a hack in the UI; it reflects the actual drivetrain orientation.</p>
+        </div>
+        <div class="card">
+          <div class="mini-kicker">Power note</div>
+          <p>The motors should not share a noisy, under-regulated rail with the ESP32. Brownouts and encoder glitches are often power problems, not software problems.</p>
+        </div>
+        <div class="card">
+          <div class="mini-kicker">Telemetry note</div>
+          <p>Encoder ticks are already flowing back to Python. That is enough structure to add closed-loop wheel-speed regulation later without changing the network protocol.</p>
+        </div>
+      </div>
+
+      <div class="code-block fade-up">
+        <div class="code-header">
+          <div class="code-meta">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <div class="code-filename">Pin mapping overview</div>
+          </div>
+          <button class="copy-button" data-copy-target="pinsCode">Copy pins</button>
+        </div>
+<pre id="pinsCode">RIGHT MOTOR (A)
+MOTOR_A_PWM  -> GPIO 13
+MOTOR_A_IN1  -> GPIO 15
+MOTOR_A_IN2  -> GPIO 18
+
+LEFT MOTOR (B)
+MOTOR_B_PWM  -> GPIO 19
+MOTOR_B_IN1  -> GPIO 32
+MOTOR_B_IN2  -> GPIO 33
+
+DRIVER ENABLE
+MOTOR_STBY   -> GPIO 14</pre>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="vision">
+    <div class="container">
+      <div class="section-head fade-up">
+        <div>
+          <div class="section-num">04 / Vision + Control</div>
+          <h2>The updated Python loop is more honest about what the robot is doing.</h2>
+          <p class="lead">
+            The page now mirrors the code more closely. The tracker smooths horizontal error, uses the distance PID output for forward and reverse motion,
+            scales motion by state, and keeps the tunable values in one obvious config section near the top of the Python file.
+          </p>
+        </div>
+      </div>
+
+      <div class="tabs fade-up">
+        <button class="tab-button active" data-tab="tab-errors">Errors</button>
+        <button class="tab-button" data-tab="tab-control">Control</button>
+        <button class="tab-button" data-tab="tab-runtime">Runtime structure</button>
+      </div>
+
+      <div class="tab-panel active fade-up" id="tab-errors">
+        <div class="card-grid">
+          <div class="card">
+            <div class="mini-kicker">Angle error</div>
+            <p><code>(cx - width / 2) / width</code> measures horizontal offset from the image center. Negative means the ball is left of center, so the robot should steer left. Positive means the opposite.</p>
+          </div>
+          <div class="card">
+            <div class="mini-kicker">Distance error</div>
+            <p><code>(area - target_area) / target_area</code> compares the current apparent object size to the desired size. If the ball looks too large, the robot is too close and should back up.</p>
+          </div>
+          <div class="card">
+            <div class="mini-kicker">Why normalized</div>
+            <p>These values are normalized instead of raw pixels, which makes the controller easier to understand and less tied to one camera resolution.</p>
+          </div>
+        </div>
+
+        <div class="code-block fade-up" style="margin-top:18px">
+          <div class="code-header">
+            <div class="code-meta">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <div class="code-filename">How the script computes the two main errors</div>
+            </div>
+          </div>
+<pre>cx = (x1 + x2) / 2
+area = (x2 - x1) * (y2 - y1)
+
+angle_error = (cx - width / 2) / width
+dist_error  = (area - target_area) / target_area</pre>
+        </div>
+
+        <div class="card-grid fade-up" style="margin-top:18px">
+          <div class="card">
+            <div class="mini-kicker">Center position math</div>
+            <p>The box coordinates are <code>x1, y1, x2, y2</code>. Averaging <code>x1</code> and <code>x2</code> gives the horizontal center of the detected object, which tells the robot whether the target is left or right.</p>
+          </div>
+          <div class="card">
+            <div class="mini-kicker">Steering error math</div>
+            <p>The term <code>cx - width / 2</code> measures how far the object is from the center line of the image. Dividing by <code>width</code> turns that into a normalized fraction instead of a raw pixel value.</p>
+          </div>
+          <div class="card">
+            <div class="mini-kicker">Distance proxy math</div>
+            <p>The robot does not know real distance directly from one image, so it uses bounding-box area as a proxy. Bigger box means the object is closer; smaller box means it is farther away.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="tab-control">
+        <div class="card-grid">
+          <div class="card">
+            <div class="mini-kicker">Low-pass smoothing</div>
+            <p><code>smoothed_angle += alpha * (raw - smoothed)</code> means the controller does not trust one frame completely. It moves partway toward the latest measurement, which removes jitter.</p>
+          </div>
+          <div class="card">
+            <div class="mini-kicker">Distance PID</div>
+            <p>The distance PID decides whether the robot should move forward or backward. A positive distance error means the ball is too close, so the script makes <code>base_speed</code> negative and backs away.</p>
+          </div>
+          <div class="card">
+            <div class="mini-kicker">State scaling</div>
+            <p><code>ACQUIRING</code> limits speed while detections stabilize, <code>SEARCHING</code> rotates using the last known direction, and <code>STOPPED</code> resets controller memory so old errors do not leak into the next run.</p>
+          </div>
+        </div>
+
+        <div class="code-block fade-up" style="margin-top:18px">
+          <div class="code-header">
+            <div class="code-meta">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <div class="code-filename">How errors become wheel commands</div>
+            </div>
+          </div>
+<pre>smoothed_angle += alpha * (raw_angle_error - smoothed_angle)
+turn_cmd = turn_pid.update(smoothed_angle)
+dist_cmd = dist_pid.update(dist_error)
+
+base_speed = -dist_cmd
+tgt_left   = base_speed + turn_cmd
+tgt_right  = base_speed - turn_cmd</pre>
+        </div>
+
+        <div class="card-grid fade-up" style="margin-top:18px">
+          <div class="card">
+            <div class="mini-kicker">Smoothing</div>
+            <p><code>smoothed_angle += alpha * (raw - smoothed)</code> is a low-pass filter. It means the new angle estimate only moves partway toward the latest measurement, which reduces jitter from noisy detections.</p>
+          </div>
+          <div class="card">
+            <div class="mini-kicker">Distance sign</div>
+            <p><code>base_speed = -dist_cmd</code> matters because a positive distance error means the target looks too large, so the robot is too close. The minus sign turns that into a backward motion command.</p>
+          </div>
+          <div class="card">
+            <div class="mini-kicker">Differential steering</div>
+            <p>Adding <code>turn_cmd</code> to the left wheel and subtracting it from the right wheel makes the robot rotate. If <code>turn_cmd</code> is positive, the left side runs faster and the robot turns right.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="tab-runtime">
+        <div class="card-grid">
+          <div class="card">
+            <div class="mini-kicker">Top-of-file config</div>
+            <p>The top config blocks make the script approachable because most users can get the project running without editing the logic itself.</p>
+          </div>
+          <div class="card">
+            <div class="mini-kicker">Safer shutdown</div>
+            <p>The <code>try/finally</code> structure is there so motors stop and sockets close even if the user quits unexpectedly. This is more than neatness; it is a safety feature.</p>
+          </div>
+          <div class="card">
+            <div class="mini-kicker">Cleaner PID behavior</div>
+            <p>The integral term is clamped so that if `Ki` is enabled later, long periods of accumulated error do not explode into a huge delayed correction.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="code-block fade-up">
+        <div class="code-header">
+          <div class="code-meta">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <div class="code-filename">Updated control logic in `Obj_track_adv.py`</div>
+          </div>
+          <button class="copy-button" data-copy-target="controlCode">Copy logic</button>
+        </div>
+<pre id="controlCode">raw_angle_error = (cx - width / 2) / width
+smoothed_angle += smooth_rate * (raw_angle_error - smoothed_angle)
+
+dist_error = (area - target_area) / target_area
+turn_cmd = turn_pid.update(smoothed_angle)
+dist_cmd = dist_pid.update(dist_error)
+
+# Positive distance error means the target is too close.
+base_speed = -dist_cmd
+
+tgt_left = base_speed + turn_cmd
+tgt_right = base_speed - turn_cmd
+
+tgt_left *= speed_limit
+tgt_right *= speed_limit</pre>
+      </div>
+
+      <div class="card-grid fade-up" style="margin-top:18px">
+        <div class="card">
+          <div class="mini-kicker">Step 1: Measure</div>
+          <p>The code starts by turning the detection box into measurable quantities: center position and area. Without those, there is nothing to control.</p>
+        </div>
+        <div class="card">
+          <div class="mini-kicker">Step 2: Smooth</div>
+          <p>The raw angle can jump frame to frame, so smoothing produces a more trustworthy steering signal.</p>
+        </div>
+        <div class="card">
+          <div class="mini-kicker">Step 3: Correct</div>
+          <p>Turn PID handles left-right alignment, distance PID handles forward-backward spacing, and their outputs are mixed into wheel speeds.</p>
+        </div>
+      </div>
+
+      <div class="accordion fade-up" style="margin-top:24px">
+        <div class="accordion-item open">
+          <button class="accordion-button">
+            <span>What does a PID output mean here?</span>
+            <span>+</span>
+          </button>
+          <div class="accordion-content">
+            In this project, a PID output is just a correction value. The turn PID output says how strongly the robot should rotate left or right. The distance PID output says how strongly the robot should move forward or backward.
+          </div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-button">
+            <span>Why use two errors instead of one?</span>
+            <span>+</span>
+          </button>
+          <div class="accordion-content">
+            Horizontal position and apparent object size describe different physical problems. One controls steering, the other controls spacing. Keeping them separate makes the math easier to tune and understand.
+          </div>
+        </div>
+      </div>
+
+      <h3 class="fade-up" style="margin-top:30px">Robot behavior as a state machine</h3>
+      <div class="state-grid fade-up" style="margin-top:16px">
+        <div class="state-card stopped">
+          <strong>Stopped</strong>
+          <p>No recent detection. Motors off, controller state reset, waiting for a valid target.</p>
+        </div>
+        <div class="state-card searching">
+          <strong>Searching</strong>
+          <p>The ball was just lost, so the robot rotates in the last known direction instead of freezing immediately.</p>
+        </div>
+        <div class="state-card acquiring">
+          <strong>Acquiring</strong>
+          <p>The ball reappeared. Speed is intentionally limited while the detection is confirmed over several frames.</p>
+        </div>
+        <div class="state-card tracking">
+          <strong>Tracking</strong>
+          <p>Full control is active. Turn and distance corrections are mixed into left/right wheel commands in real time.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="firmware">
+    <div class="container">
+      <div class="section-head fade-up">
+        <div>
+          <div class="section-num">05 / Firmware</div>
+          <h2>The ESP32 stays lean so the robot stays responsive.</h2>
+          <p class="lead">
+            The firmware does not need to know about detection classes, confidence thresholds, or PID tuning.
+            It only needs to convert simple packets into motor actions and send lightweight telemetry back.
+          </p>
+        </div>
+      </div>
+
+      <div class="card-grid fade-up">
+        <div class="card">
+          <div class="mini-kicker">Command packet</div>
+          <p><code>MOTOR,L,R,LIGHT</code> keeps the protocol plain-text and easy to inspect while debugging over UDP.</p>
+        </div>
+        <div class="card">
+          <div class="mini-kicker">Stop packet</div>
+          <p><code>STOP,OFF</code> is sent at startup and shutdown so the robot fails safe even when the vision side restarts.</p>
+        </div>
+        <div class="card">
+          <div class="mini-kicker">Telemetry packet</div>
+          <p><code>ENC,leftTicks,rightTicks,cmdLeft,cmdRight</code> gives Python enough signal to visualize and later close the speed loop.</p>
+        </div>
+      </div>
+
+      <div class="code-block fade-up">
+        <div class="code-header">
+          <div class="code-meta">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <div class="code-filename">How the Python script sends a command</div>
+          </div>
+        </div>
+<pre>message = f"MOTOR,{int(left)},{int(right)},{light.upper()}"
+sock.sendto(message.encode(), (esp_ip, udp_cmd_port))</pre>
+      </div>
+
+      <div class="card-grid fade-up" style="margin-top:18px">
+        <div class="card">
+          <div class="mini-kicker">Packet format</div>
+          <p>The command is plain text, which makes it easy to inspect while debugging. The ESP32 only has to split the string and interpret left speed, right speed, and the light state.</p>
+        </div>
+        <div class="card">
+          <div class="mini-kicker">Why convert to integers</div>
+          <p>The math produces floating-point values, but motor drivers use discrete speed levels. Converting to <code>int</code> makes the command explicit before sending it over the network.</p>
+        </div>
+        <div class="card">
+          <div class="mini-kicker">Why keep sending commands</div>
+          <p>The script sends commands repeatedly at a short interval. That means the robot stays responsive and a single dropped UDP packet usually does not change behavior much.</p>
+        </div>
+      </div>
+
+      <div class="accordion fade-up">
+        <div class="accordion-item open">
+          <button class="accordion-button">
+            <span>Why UDP instead of TCP?</span>
+            <span>+</span>
+          </button>
+          <div class="accordion-content">
+            A stale motor command is worse than a dropped motor command. UDP lets the latest packet win without retransmission delays, which is exactly what a fast control loop wants.
+          </div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-button">
+            <span>What should be tuned first on the robot?</span>
+            <span>+</span>
+          </button>
+          <div class="accordion-content">
+            Verify motor polarity and power first. Then tune turn responsiveness, then distance behavior, and only then consider enabling integral compensation.
+          </div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-button">
+            <span>What is the next strong upgrade path?</span>
+            <span>+</span>
+          </button>
+          <div class="accordion-content">
+            Add wheel-speed PID using the existing encoder telemetry, or move inference onto an onboard SBC like a Jetson Nano or Raspberry Pi 5 to remove WiFi latency.
+          </div>
+        </div>
+      </div>
+
+      <div class="code-block fade-up">
+        <div class="code-header">
+          <div class="code-meta">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <div class="code-filename">Run command for the updated Python script</div>
+          </div>
+          <button class="copy-button" data-copy-target="runCode">Copy command</button>
+        </div>
+<pre id="runCode">python Obj_track_adv.py</pre>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="container">
+    <p>Project page for an ML-driven object follower robot built around Python, YOLO, and ESP32 motor control.</p>
+    <p><a href="index.html" style="color:var(--cyan);text-decoration:none">Back to the main project index</a></p>
+  </div>
+</footer>
+
+<script>
+  document.documentElement.classList.add('js-ready');
+
+  const projectThemeToggle = document.getElementById('projectThemeToggle');
+  function applyProjectTheme(theme) {
+    const nextTheme = theme === 'light' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = nextTheme;
+    projectThemeToggle.textContent = nextTheme === 'light' ? 'Dark' : 'Light';
+    projectThemeToggle.setAttribute(
+      'aria-label',
+      nextTheme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'
+    );
+    projectThemeToggle.setAttribute('title', projectThemeToggle.getAttribute('aria-label'));
+    try {
+      localStorage.setItem('mlr-theme', nextTheme);
+    } catch (error) {
+      // Theme still changes for the current page if storage is unavailable.
+    }
+  }
+  let projectStoredTheme = document.documentElement.dataset.theme || 'dark';
+  try {
+    projectStoredTheme = localStorage.getItem('mlr-theme') || projectStoredTheme;
+  } catch (error) {
+    projectStoredTheme = projectStoredTheme || 'dark';
+  }
+  applyProjectTheme(projectStoredTheme);
+  projectThemeToggle.addEventListener('click', () => {
+    const currentTheme = document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
+    applyProjectTheme(currentTheme === 'light' ? 'dark' : 'light');
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-up').forEach((element) => observer.observe(element));
+
+  const countUpElements = document.querySelectorAll('[data-count]');
+  const countObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      const element = entry.target;
+      const target = Number(element.dataset.count);
+      const suffix = target === 143 ? 'k' : target === 33 ? 'ms' : '+';
+      const duration = 1200;
+      const start = performance.now();
+
+      const tick = (now) => {
+        const progress = Math.min((now - start) / duration, 1);
+        const current = Math.round(target * (1 - Math.pow(1 - progress, 3)));
+        element.textContent = suffix === 'k' ? `${current}k` : suffix === 'ms' ? `${current}ms` : `${current}+`;
+        if (progress < 1) requestAnimationFrame(tick);
+      };
+
+      requestAnimationFrame(tick);
+      countObserver.unobserve(element);
+    });
+  }, { threshold: 0.4 });
+  countUpElements.forEach((element) => countObserver.observe(element));
+
+  const pipelineData = [
+    {
+      title: 'Phone camera stream',
+      meta: 'Input stage',
+      summary: 'The phone acts like a lightweight wireless camera head. That keeps the robot hardware cheap while preserving the real deployment viewpoint.',
+      bullets: [
+        '`requests` reads MJPEG chunks from `http://PHONE_IP:8080/video`.',
+        'Frames are decoded in a background thread so the control loop is not blocked by network waits.',
+        'Reconnect backoff lets the stream recover after temporary WiFi drops.'
+      ]
+    },
+    {
+      title: 'YOLO inference',
+      meta: 'Perception stage',
+      summary: 'Each incoming frame is passed to YOLO, and the largest detection matching the target class is treated as the active object.',
+      bullets: [
+        'The model uses `imgsz=320` for faster real-time inference.',
+        'Only the selected class, usually `ball`, contributes to control.',
+        'Bounding box center and area become the raw geometric signals.'
+      ]
+    },
+    {
+      title: 'Error computation',
+      meta: 'Signal stage',
+      summary: 'The tracker converts the bounding box into two normalized errors: horizontal offset and relative size error versus the target area.',
+      bullets: [
+        'Angle error tells the robot which way to steer.',
+        'Distance error tells the robot whether to move forward or backward.',
+        'Dead zones suppress jitter when the target is already close to ideal.'
+      ]
+    },
+    {
+      title: 'State + PID control',
+      meta: 'Decision stage',
+      summary: 'The state machine decides how assertive the robot should be, then PID outputs are mixed into differential wheel commands.',
+      bullets: [
+        'Low-pass smoothing damps noisy left-right motion.',
+        '`ACQUIRING` ramps speed to avoid chasing bad detections.',
+        'The updated script now uses distance PID output to set base forward or reverse speed.'
+      ]
+    },
+    {
+      title: 'UDP motor commands',
+      meta: 'Actuation stage',
+      summary: 'Fresh motor commands are sent to the ESP32 on a short interval. Delivery speed matters more than guaranteed transport.',
+      bullets: [
+        'Python sends `MOTOR,left,right,light` packets about every 30 ms.',
+        'The ESP32 converts them into PWM duty cycles and direction bits.',
+        'Encoder telemetry comes back on a second UDP port for inspection and future control upgrades.'
+      ]
+    }
+  ];
+
+  const pipelineButtons = [...document.querySelectorAll('.pipeline-button')];
+  const pipelineDetail = document.getElementById('pipelineDetail');
+  const pipelineSummary = document.getElementById('pipelineSummary');
+  const pipelineBullets = document.getElementById('pipelineBullets');
+
+  function renderPipeline(index) {
+    const data = pipelineData[index];
+    pipelineButtons.forEach((button, buttonIndex) => {
+      button.classList.toggle('active', buttonIndex === index);
+    });
+    pipelineDetail.querySelector('.detail-title strong').textContent = data.title;
+    pipelineDetail.querySelector('.detail-meta').textContent = data.meta;
+    pipelineSummary.textContent = data.summary;
+    pipelineBullets.innerHTML = data.bullets.map((item) => `<div class="bullet">${item}</div>`).join('');
+  }
+
+  pipelineButtons.forEach((button) => {
+    button.addEventListener('click', () => renderPipeline(Number(button.dataset.step)));
+  });
+
+  const tabButtons = [...document.querySelectorAll('.tab-button')];
+  const tabPanels = [...document.querySelectorAll('.tab-panel')];
+  tabButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const target = button.dataset.tab;
+      tabButtons.forEach((b) => b.classList.toggle('active', b === button));
+      tabPanels.forEach((panel) => panel.classList.toggle('active', panel.id === target));
+    });
+  });
+
+  document.querySelectorAll('.accordion-button').forEach((button) => {
+    button.addEventListener('click', () => {
+      button.parentElement.classList.toggle('open');
+    });
+  });
+
+  document.querySelectorAll('.copy-button').forEach((button) => {
+    button.addEventListener('click', async () => {
+      const target = document.getElementById(button.dataset.copyTarget);
+      if (!target) return;
+      try {
+        await navigator.clipboard.writeText(target.textContent);
+        const original = button.textContent;
+        button.textContent = 'Copied';
+        setTimeout(() => { button.textContent = original; }, 1200);
+      } catch (error) {
+        button.textContent = 'Clipboard blocked';
+        setTimeout(() => { button.textContent = 'Copy'; }, 1200);
+      }
+    });
+  });
+
+  const sections = [...document.querySelectorAll('section[id]')];
+  const navLinks = [...document.querySelectorAll('.nav-pill')];
+  const linkMap = new Map(navLinks.map((link) => [link.getAttribute('href').slice(1), link]));
+
+  const navObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      navLinks.forEach((link) => link.classList.remove('active'));
+      const active = linkMap.get(entry.target.id);
+      if (active) active.classList.add('active');
+    });
+  }, { rootMargin: '-40% 0px -45% 0px', threshold: 0.01 });
+  sections.forEach((section) => navObserver.observe(section));
+
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let dots = [];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    dots = Array.from({ length: Math.min(42, Math.floor(window.innerWidth / 34)) }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.35,
+      vy: (Math.random() - 0.5) * 0.35,
+      r: Math.random() * 2 + 1
+    }));
+  }
+
+  function drawBackground() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    dots.forEach((dot) => {
+      dot.x += dot.vx;
+      dot.y += dot.vy;
+      if (dot.x < 0 || dot.x > canvas.width) dot.vx *= -1;
+      if (dot.y < 0 || dot.y > canvas.height) dot.vy *= -1;
+    });
+
+    for (let i = 0; i < dots.length; i += 1) {
+      const a = dots[i];
+      ctx.beginPath();
+      ctx.fillStyle = 'rgba(73, 242, 213, 0.45)';
+      ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
+      ctx.fill();
+
+      for (let j = i + 1; j < dots.length; j += 1) {
+        const b = dots[j];
+        const dx = a.x - b.x;
+        const dy = a.y - b.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance < 120) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(115, 178, 255, ${0.12 * (1 - distance / 120)})`;
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    requestAnimationFrame(drawBackground);
+  }
+
+  resizeCanvas();
+  drawBackground();
+  window.addEventListener('resize', resizeCanvas);
+</script>
+</body>
+</html>

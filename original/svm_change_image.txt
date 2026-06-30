@@ -1,0 +1,6 @@
+| File | Concept |
+|---|---|
+| `svm_plot1_margin.png` | Side-by-side: "any line works" vs SVM's maximum margin — with support vectors circled and the margin gap annotated |
+| `svm_plot2_real_example.png` | Your exact real example with Torque vs Tool Wear axes, the separating boundary, margin edges, and a probability heatmap behind it |
+| `svm_plot3_kernel_trick.png` | Three-panel story — data that can't be split linearly in 2D → lifted into 3D where a flat plane separates it → RBF kernel's curved boundary back in 2D |
+| `svm_plot4_c_parameter.png` | C from 0.01 → 1000 side-by-side, showing how soft vs hard margin trades off tolerance for misclassification against margin width |
