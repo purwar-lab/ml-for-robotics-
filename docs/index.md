@@ -41,6 +41,6 @@ A browser-based course dashboard for learning Python, machine learning, reinforc
 | Project | Description |
 |:--|:--|
 | **Project 1** — Object Tracker | Build a local YOLO + PID vision loop that sends UDP motor commands. |
-| **Project 2** — Lane Follower | Replace YOLO with classical OpenCV thresholding, row scanning, and two-point steering. |
-| **Project 3** — Gesture Controlled Robot | Use MediaPipe hand landmarks to map two-hand gestures to UDP motor commands. |
-| **Project 4** — Pan-Tilt Ball Tracker | Use YOLO and two velocity-mode PID loops to center a ball by rotating a camera with servos. |
+<!-- | **Project 2** — Lane Follower | Replace YOLO with classical OpenCV thresholding, row scanning, and two-point steering. | -->
+<!-- | **Project 3** — Gesture Controlled Robot | Use MediaPipe hand landmarks to map two-hand gestures to UDP motor commands. | -->
+<!-- | **Project 4** — Pan-Tilt Ball Tracker | Use YOLO and two velocity-mode PID loops to center a ball by rotating a camera with servos. | -->
