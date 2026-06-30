@@ -6,13 +6,9 @@
 
 ### Machine Learning for Robotics Engineers
 
-You're a freshman ME student. You may have never written a line of code. That's exactly who this guide is for.
-
 **Mechanical Engineering x AI**
 
 This page is a long-scroll textbook, lab manual, and project checklist. You will learn the programming basics, the core ML families, and how to run full notebooks in Google Colab without installing anything locally.
-
-**Tags:** Python · Google Colab · Browser tools · Robotics sensors
 
 #### Learning Journey
 
@@ -76,13 +72,3 @@ Later in the course you will also create a free Kaggle account to access dataset
 - Read top to bottom the first time. The early Python ideas are used later without re-explaining them.
 - Use the sidebar to jump back to specific topics when a notebook cell feels unfamiliar.
 - Every Project section has a full Colab-style notebook on the page. Do not skip the projects.
-
-<!-- !!! info "Your progress is saved in this browser" -->
-<!--     When you click **Mark as Complete**, your progress is saved in your browser's local storage, the same place websites store your preferences. -->
-<!---->
-<!--     - ✓ Your progress persists when you close and reopen this tab. -->
-<!--     - ✓ No account or login needed. -->
-<!--     - ✗ Progress does not carry over to a different browser or device. -->
-<!--     - ✗ Clearing your browser history or cookies will reset your progress. -->
-<!---->
-<!--     If you want to track progress across devices, keep a personal checklist in Notion, Google Docs, or even a piece of paper. -->
