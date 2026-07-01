@@ -4,7 +4,7 @@
 
 ## What We Are Building
 
-<video controls height="100%"><source src="../original/project_1.mp4" type="video/mp4"></video>
+<video controls width="100%"><source src="../original/project_1.mp4" type="video/mp4"></video>
 
 ---
 
